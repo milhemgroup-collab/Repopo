@@ -29,6 +29,11 @@ Before starting, ensure:
 3. **Reboot** when prompted
 4. Run `verify_cowork_readiness.ps1` again to confirm all checks pass
 5. Open Claude Desktop and try the Cowork tab
+6. If you get **"VM service not running"**, run:
+   ```powershell
+   .\fix_cowork_vm_service.ps1
+   ```
+   Then reboot and try again
 
 ---
 
@@ -60,32 +65,76 @@ Windows 11 Home does not include Hyper-V by default. Claude Desktop checks for H
 
 ---
 
-## Issue 2: Hyper-V Installed but Cowork Still Fails
+## Issue 2: "VM service not running. The service failed to start."
 
 ### Symptoms
-- `verify_cowork_readiness.ps1` shows all checks passing
-- Cowork still shows a virtualization error
+- Cowork shows: *"Failed to start Claude's workspace — VM service not running"*
+- Hyper-V is installed and verification script shows most checks passing
+- This typically appears AFTER successfully enabling Hyper-V on Home edition
 
-### Root Cause
-Claude Desktop's detection may check the Windows edition registry key (`EditionID`) rather than actual Hyper-V availability.
+### Root Causes
 
-### Fix
+There are multiple possible causes:
 
-1. **Ensure the hypervisor launch type is set to Auto:**
-   ```cmd
-   bcdedit /set hypervisorlaunchtype auto
-   ```
-   Then reboot.
+**A. TEMP and AppData on different drives (EXDEV error)** — Claude downloads VM files to `%TEMP%` then tries to rename them to `%APPDATA%`. If these are on different drives, the rename fails silently. ([Issue #29657](https://github.com/anthropics/claude-code/issues/29657))
 
-2. **Manually start the required services:**
+**B. Hyper-V services not running** — The `vmms` and `vmcompute` services may not start automatically on Home edition.
+
+**C. Corrupt or incomplete VM bundle** — The `claudevm.bundle` directory may be empty or missing required files (`rootfs.vhdx`, `sessiondata.vhdx`).
+
+**D. Windows Defender Controlled Folder Access** — Can block Claude from writing VM files.
+
+### Fix (Automated)
+
+Run the all-in-one fix script:
+```powershell
+# Open PowerShell as Administrator
+.\fix_cowork_vm_service.ps1
+```
+This automatically checks and fixes all of the above issues. Then reboot and try Cowork.
+
+### Fix (Manual)
+
+1. **Check TEMP drive alignment:**
    ```powershell
+   # If these show different drive letters, that's the problem
+   Write-Host "TEMP: $env:TEMP"
+   Write-Host "APPDATA: $env:APPDATA"
+   ```
+   Fix: Set TEMP to be on the same drive as APPDATA:
+   ```powershell
+   # Example: if AppData is on C:
+   [System.Environment]::SetEnvironmentVariable("TEMP", "C:\ClaudeTemp", "User")
+   [System.Environment]::SetEnvironmentVariable("TMP", "C:\ClaudeTemp", "User")
+   mkdir "C:\ClaudeTemp" -Force
+   ```
+
+2. **Start Hyper-V services:**
+   ```powershell
+   Set-Service vmms -StartupType Automatic
+   Set-Service vmcompute -StartupType Automatic
    Start-Service vmms
    Start-Service vmcompute
    ```
 
-3. **Update Claude Desktop** to the latest version — Anthropic has been fixing detection issues in recent updates.
+3. **Set hypervisor launch type:**
+   ```cmd
+   bcdedit /set hypervisorlaunchtype auto
+   ```
 
-4. If the problem persists, this may require an update from Anthropic. Follow [Issue #27396](https://github.com/anthropics/claude-code/issues/27396) for progress.
+4. **Delete corrupt VM bundle** (Claude will re-download):
+   ```powershell
+   Remove-Item "$env:APPDATA\Claude\vm_bundles\claudevm.bundle" -Recurse -Force -ErrorAction SilentlyContinue
+   Remove-Item "$env:LOCALAPPDATA\AnthropicClaude\vm_bundles\claudevm.bundle" -Recurse -Force -ErrorAction SilentlyContinue
+   ```
+
+5. **Reboot**, then open Claude Desktop and try Cowork.
+
+6. If it still fails, click **"reinstall the workspace"** in the error message.
+
+7. **Update Claude Desktop** to the latest version — Anthropic has been fixing these issues in recent updates.
+
+8. If the problem persists, follow [Issue #29657](https://github.com/anthropics/claude-code/issues/29657) and [Issue #27396](https://github.com/anthropics/claude-code/issues/27396) for official fixes.
 
 ---
 
