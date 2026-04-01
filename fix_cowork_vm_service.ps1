@@ -74,10 +74,10 @@ foreach ($svc in $services) {
             Write-Host "  $svc started." -ForegroundColor Green
             $fixesApplied++
         } else {
-            Write-Host "  $svc: Running" -ForegroundColor Green
+            Write-Host "  ${svc}: Running" -ForegroundColor Green
         }
     } catch {
-        Write-Host "  $svc: Not found or cannot start - $($_.Exception.Message)" -ForegroundColor Yellow
+        Write-Host "  ${svc}: Not found or cannot start - $($_.Exception.Message)" -ForegroundColor Yellow
     }
 }
 
