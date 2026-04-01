@@ -22,14 +22,25 @@ Before starting Claude Desktop, ensure:
 - Server crashes immediately on startup
 
 ### Root Cause
-The `@modelcontextprotocol/server-filesystem` server validates all directory paths on startup. If **any single path** does not exist, the server crashes.
+Two possible causes:
 
-Common triggers:
+1. **Bare `npx` command** — On Windows, `"command": "npx"` often fails to resolve. Use the full path `C:\Program Files\nodejs\npx.cmd` instead (same fix as obsidian-mcp-server below).
+
+2. **Missing directory paths** — The server validates all directory paths on startup. If **any single path** does not exist, the server crashes.
+
+Common triggers for path issues:
 - Google Drive for Desktop is not running (the `G:\` drive is not mounted)
 - A folder was renamed or deleted (e.g., `G:\My Drive\5. AI Guides`)
 - A typo in the folder path in the config
 
 ### Fix
+
+First, change the command to the full path:
+```json
+"command": "C:\\Program Files\\nodejs\\npx.cmd"
+```
+
+Then verify all paths exist:
 
 1. Open File Explorer and verify **every** path listed in the `args` array exists exactly as written:
    - `G:\My Drive\1. Milhem Group_gdrive`
