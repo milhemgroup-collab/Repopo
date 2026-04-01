@@ -49,8 +49,12 @@ Write-Check "INFO" "Windows Build" "$build"
 # 3. BIOS Virtualization
 try {
     $virtEnabled = (Get-CimInstance Win32_Processor).VirtualizationFirmwareEnabled
+    # Also check if the hypervisor is actually running (more reliable indicator)
+    $hypervisorRunning = (Get-CimInstance Win32_ComputerSystem).HypervisorPresent
     if ($virtEnabled) {
         Write-Check "PASS" "BIOS Virtualization (VT-x/AMD-V)" "Enabled"
+    } elseif ($hypervisorRunning) {
+        Write-Check "PASS" "BIOS Virtualization (VT-x/AMD-V)" "Enabled (confirmed via active hypervisor)"
     } else {
         Write-Check "FAIL" "BIOS Virtualization (VT-x/AMD-V)" "DISABLED - Enable in BIOS/UEFI settings"
     }
