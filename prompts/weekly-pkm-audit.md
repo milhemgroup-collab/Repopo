@@ -39,8 +39,7 @@ Compare three fields:
 3. Notion 2026 Strategy Status Report "WCG CPAs" reference in Key Contacts
 
 If all three match: no action.
-If any disagree AND a Notion task with title `"Resolve CPA identity"` is NOT already open in Tasks & Action Items DB: create a new task with `Owner: Self`, `Priority: Red`, `Domain: Tax`, due date 14 days out, and link to the CPA Identity Reconciliation page (`36c6d7c3-34ef-8111-bba5-c273b97b2527`).
-If task already exists: do not create a duplicate.
+If any disagree: search the Tasks & Action Items DB for any open task (Status != Done, != Dropped) whose title **contains** the substring `"Resolve CPA identity"` (case-insensitive). If such a task exists, do not create another; instead, append a brief note to the existing task's Notes field documenting that the conflict is still present as of today. If no matching task exists, create one with `Owner: Self`, `Priority: Red`, `Domain: Tax`, due date 14 days out, title `"Resolve CPA identity — sources still disagree as of YYYY-MM-DD"`, and link to the CPA Identity Reconciliation page (`36c6d7c3-34ef-8111-bba5-c273b97b2527`).
 
 ## Step 3 — Inbox processing
 
@@ -99,10 +98,10 @@ Send `gmail_send_email` to `milhemgroup@gmail.com` with:
 Running this prompt twice in the same week should produce zero new content
 the second time (unless something genuinely changed between runs). Specifically:
 
-- REPS snapshot: only created if diff > 20 hours
-- Inbox files: skipped if `.processed-*` sidecar exists
-- Notion tasks: search-before-create by exact title
-- ALTO catalyst rows: search-before-create by catalyst name
+- REPS snapshot: only created if diff > 20 hours; also skip if a file with the same target name (`REPS-Status-YYYY-MM.md`) already exists in `Tax-Strategy/` (Drive permits same-name duplicates — explicit check required)
+- Inbox files: skipped if `.processed-*` sidecar exists for that filename
+- Notion tasks: search-before-create using **contains** (substring, case-insensitive) on title, scoped to open tasks (Status != Done, != Dropped). Never exact-match.
+- ALTO catalyst rows: search-before-create using **contains** match on the Catalyst column. If an open row exists for the same catalyst, append to its Notes field rather than creating a new row.
 - Errata file: dated so multiple same-day runs create separate files (acceptable)
 - Email: always sent; user can filter or ignore
 
