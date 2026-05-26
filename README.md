@@ -1,8 +1,10 @@
 # Repopo
 
-Corrected MCP server configuration for Claude Desktop, fixing the Filesystem and obsidian-mcp-server connectivity issues.
+MCP server configuration and connector recipes for Claude Desktop and Perplexity Comet on Windows.
 
 ## Files
 
 - **`claude_desktop_config.json`** — Fixed config template with corrected paths and commands
-- **`MCP_TROUBLESHOOTING.md`** — Troubleshooting guide with root causes, fixes, and pre-launch checklist
+- **`MCP_TROUBLESHOOTING.md`** — Troubleshooting for Filesystem and obsidian-mcp-server in Claude Desktop
+- **`PERPLEXITY_COMET_SETUP.md`** — Expose the Obsidian Local REST API plugin's MCP endpoint to Perplexity Comet via Cloudflare Tunnel
+- **`cloudflared/`** — Example tunnel config and a quick-start PowerShell script

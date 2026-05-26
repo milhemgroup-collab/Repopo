@@ -1,0 +1,22 @@
+# Cloudflare Tunnel config for exposing the Obsidian Local REST API
+# plugin's MCP endpoint to Perplexity Comet.
+#
+# Save as: %USERPROFILE%\.cloudflared\config.yml
+# Then run: cloudflared tunnel run obsidian-mcp
+#
+# Replace <TUNNEL-UUID> with the UUID printed by `cloudflared tunnel create obsidian-mcp`
+# and obsidian-mcp.yourdomain.com with the hostname you routed via
+# `cloudflared tunnel route dns obsidian-mcp obsidian-mcp.yourdomain.com`.
+
+tunnel: <TUNNEL-UUID>
+credentials-file: C:\Users\<YOU>\.cloudflared\<TUNNEL-UUID>.json
+
+ingress:
+  - hostname: obsidian-mcp.yourdomain.com
+    service: https://127.0.0.1:27124
+    originRequest:
+      # Local plugin uses a self-signed cert. Traffic never leaves the
+      # machine on this hop, so skipping verification is safe.
+      noTLSVerify: true
+      httpHostHeader: 127.0.0.1
+  - service: http_status:404
