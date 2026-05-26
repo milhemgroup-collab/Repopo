@@ -69,21 +69,22 @@ Title property: `Catalyst`. Selects: `Type` (Tax Credit / Regulatory / Index / D
 | Notion read | `mcp__Notion__notion-fetch` | Pass page ID OR `collection://<data-source-id>` |
 | Notion write | `mcp__Notion__notion-create-pages` | `parent` is a **top-level** key, not per-page |
 | Notion search | `mcp__Notion__notion-search` | Use to verify task existence by title before creating |
-| Gmail draft | `mcp__Gmail__create_draft` | **No send tool exists** — see workaround below |
+| Gmail send | `mcp__413623e5-ef64-4802-8984-253daaf1cc82__gmail_send_email` | Direct send available as of 2026-05-26; use for Step 7 summary. `create_draft` variants still exist if a draft is explicitly wanted. |
 | Sheets MCP | NOT AVAILABLE | Use Drive `read_file_content` on the spreadsheet ID |
 | SEC EDGAR MCP | NOT AVAILABLE | Step 5 must be skipped or fallback to WebFetch on data.sec.gov |
 
-### Gmail send workaround
+### Step 7 send
 
-Only `create_draft` is exposed. To get the summary email actually delivered:
+Default to `gmail_send_email` (direct send) for the routine summary. Recipient
+must be `milhemgroup@gmail.com` per stop-condition. Subject prefix: `[PKM Audit]`.
+Only fall back to `create_draft` if the run produced ambiguity the user should
+review before delivery.
 
-1. Create the draft as usual.
-2. Either (a) have the user send manually from Gmail, or (b) set up a Gmail filter
-   that matches `to:milhemgroup@gmail.com subject:"[PKM Audit]"` and labels for
-   review — then user batches sends. A future Apps Script could auto-send drafts
-   carrying a specific label, but that requires user setup outside this routine.
-
-Document this limitation in every Step 7 send so the user knows the email is a draft.
+**Quota caveat (observed 2026-05-26):** `gmail_send_email` is Zapier-backed and
+can return `insufficient tasks on account` when the Zapier plan is exhausted. If
+that happens, fall back to `mcp__2f946a94-...-__create_draft` (native Gmail MCP,
+draft only — no send tool on that server) and flag the delivery method in the
+body so the user knows to send manually from the Drafts folder.
 
 ---
 
@@ -140,7 +141,7 @@ For sidecar-only files (meta/operational), set `destination: N/A` with a brief `
 - **ALTO catalyst row**: Search-before-create by catalyst name.
 - **Inbox sidecar**: Skip any file with an existing `.processed-*` sidecar.
 - **Audit-run file**: Date-stamped, multiple per day are acceptable.
-- **Email draft**: Always created; user dedupes downstream.
+- **Email**: Sent directly via `gmail_send_email`; user dedupes downstream. (Pre-2026-05-26 runs created drafts only; assume any historical `[PKM Audit]` draft is from that era.)
 
 ## Stop conditions (DO NOT violate)
 
