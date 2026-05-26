@@ -36,7 +36,9 @@
 var WEBAPP_TOKEN_PROP = 'WEBAPP_TOKEN';
 var REPORT_EMAIL_PROP = 'REPORT_EMAIL';
 
-/** Run once. Generates the shared-secret token and captures your email. */
+/** Run once. Generates the shared-secret token and captures your email.
+ *  Prints the result via Logger.log so you can see it in the execution log
+ *  (Apps Script does NOT auto-print return values). */
 function setup() {
   var props = PropertiesService.getScriptProperties();
   if (!props.getProperty(WEBAPP_TOKEN_PROP)) {
@@ -45,11 +47,35 @@ function setup() {
   if (!props.getProperty(REPORT_EMAIL_PROP)) {
     props.setProperty(REPORT_EMAIL_PROP, Session.getEffectiveUser().getEmail() || '');
   }
-  return {
+  var result = {
     ok: true,
     token: props.getProperty(WEBAPP_TOKEN_PROP),
     email: props.getProperty(REPORT_EMAIL_PROP)
   };
+  Logger.log('=== SETUP COMPLETE ===');
+  Logger.log('WEBAPP_TOKEN: ' + result.token);
+  Logger.log('REPORT_EMAIL: ' + result.email);
+  Logger.log('Copy the WEBAPP_TOKEN value above — you need it for the env var step.');
+  return result;
+}
+
+/** Re-prints the current token without regenerating it. Run this any time
+ *  you need to look up the token again. */
+function showToken() {
+  var props = PropertiesService.getScriptProperties();
+  var token = props.getProperty(WEBAPP_TOKEN_PROP);
+  var email = props.getProperty(REPORT_EMAIL_PROP);
+  Logger.log('WEBAPP_TOKEN: ' + (token || '(not set — run setup first)'));
+  Logger.log('REPORT_EMAIL: ' + (email || '(not set)'));
+  return { token: token, email: email };
+}
+
+/** Send yourself a test email — handy for confirming the script is wired
+ *  up before deploying. Run this from the editor and check your inbox. */
+function sendTestEmail() {
+  var result = notify_({ subject: 'Test from Claude Notify', body: 'If you see this, the script works.' });
+  Logger.log(JSON.stringify(result));
+  return result;
 }
 
 function doPost(e) { return handle_(e, 'POST'); }
