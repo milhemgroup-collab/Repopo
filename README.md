@@ -15,8 +15,14 @@ Two purposes:
 - **`CLAUDE.md`** — Persistent context loaded into every routine session (canonical IDs, source-of-truth hierarchy, open conflicts, stop conditions)
 - **`.claude/settings.json`** — Hooks registration + pre-approved tool permissions for autonomous runs
 - **`.claude/hooks/session-start.sh`** — SessionStart hook (sets TZ, prints banner, writes marker file)
+- **`.claude/skills/pkm-audit/SKILL.md`** — Reusable skill wrapper around the weekly audit procedure (invokable mid-session via `Skill(skill="pkm-audit")`)
 - **`prompts/weekly-pkm-audit.md`** — Paste-into-routine prompt for the scheduled weekly run
 - **`prompts/on-demand-audit.md`** — Paste-into-routine prompt for applying user intake answers on demand
+
+### Live routine
+- **Routine URL:** https://claude.ai/code/routines/trig_0164Diw9WsLm2aKxKfbKikgA
+- **Schedule:** Weekly, Monday 9:00 AM ET
+- **First run:** Monday 2026-06-01 ~9:15 AM ET (output to `milhemgroup@gmail.com`)
 
 ## Setting up the routine (one-time, user-side)
 
