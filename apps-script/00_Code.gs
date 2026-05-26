@@ -173,6 +173,34 @@ function httpHandle_(e, method) {
     if (action === 'unlabelFailed') {
       return json_({ ok: true, report: unlabelFailed(params.label || body.label) });
     }
+    if (action === 'notify') {
+      return json_({ ok: true, report: notify_({
+        to:      params.to      || body.to,
+        subject: params.subject || body.subject,
+        body:    params.body    || body.body,
+        html:    params.html    || body.html,
+        tag:     params.tag     || body.tag
+      }) });
+    }
+    if (action === 'sheetAppend') {
+      var rows = body.rows || (params.rows ? JSON.parse(params.rows) : null);
+      if (!Array.isArray(rows)) return json_({ ok: false, error: 'rows required (array)' }, 400);
+      var sCfg = {
+        sheetId:   params.sheetId   || body.sheetId,
+        sheetName: params.sheetName || body.sheetName,
+        headers:   body.headers,
+        formulaColumns: body.formulaColumns
+      };
+      return json_({ ok: true, report: Sinks.sheet_append(rows, sCfg) });
+    }
+    if (action === 'driveWrite') {
+      return json_({ ok: true, report: Sinks.drive_write(body.rows || [body.content || ''], {
+        folderId:         params.folderId         || body.folderId,
+        filenameTemplate: params.filenameTemplate || body.filename || 'note_{{ts}}.txt',
+        mimeType:         params.mimeType         || body.mimeType || 'text/plain',
+        singleFile:       true
+      }, {}, { meta: {} }) });
+    }
     return json_({ ok: false, error: 'unknown action: ' + action }, 400);
   } catch (e2) {
     return json_({ ok: false, error: String(e2 && e2.message || e2), stack: e2 && e2.stack }, 500);
@@ -183,6 +211,24 @@ function json_(obj, _status) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * notify_({to?, subject, body, html?, tag?}) — generic email sender used by
+ * the "notify" Web App action. `to` defaults to the REPORT_EMAIL script prop.
+ * `tag` is appended to the subject line as "[tag]" so Gmail filters can sort.
+ */
+function notify_(opts) {
+  opts = opts || {};
+  var to = opts.to || PropertiesService.getScriptProperties().getProperty(DEFAULT_REPORT_EMAIL_PROP);
+  if (!to) throw new Error('notify: no recipient (set REPORT_EMAIL or pass to=)');
+  var subject = opts.subject || '(no subject)';
+  if (opts.tag) subject = '[' + opts.tag + '] ' + subject;
+  var sendOpts = {};
+  if (opts.html) sendOpts.htmlBody = opts.html;
+  GmailApp.sendEmail(to, subject, String(opts.body || ''), sendOpts);
+  log_('notify', { to: to, subject: subject, tag: opts.tag || null });
+  return { ok: true, to: to, subject: subject };
 }
 
 function sendRunReportIfRequested_(summary) {
