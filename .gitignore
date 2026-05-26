@@ -1,0 +1,9 @@
+# Runtime artifacts written by the SessionStart hook and Claude Code itself.
+# These are per-session state, not source.
+.claude/.session-start-ran
+.claude/settings.local.json
+
+# Editor / OS noise
+.DS_Store
+*.swp
+*~

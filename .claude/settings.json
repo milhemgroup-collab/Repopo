@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(date:*)",
+      "Bash(jq:*)",
+      "Bash(echo:*)",
+      "Bash(mkdir:*)",
+      "Read",
+      "Write",
+      "Edit",
+      "WebFetch",
+      "mcp__ce104558-397b-4e61-bb0e-dc7735a669f3__notion-fetch",
+      "mcp__ce104558-397b-4e61-bb0e-dc7735a669f3__notion-search",
+      "mcp__ce104558-397b-4e61-bb0e-dc7735a669f3__notion-create-pages",
+      "mcp__ce104558-397b-4e61-bb0e-dc7735a669f3__notion-update-page",
+      "mcp__ce104558-397b-4e61-bb0e-dc7735a669f3__notion-get-users",
+      "mcp__4a999ff4-0a9c-48da-8d02-400ed15a4070__search_files",
+      "mcp__4a999ff4-0a9c-48da-8d02-400ed15a4070__read_file_content",
+      "mcp__4a999ff4-0a9c-48da-8d02-400ed15a4070__get_file_metadata",
+      "mcp__4a999ff4-0a9c-48da-8d02-400ed15a4070__create_file",
+      "mcp__4a999ff4-0a9c-48da-8d02-400ed15a4070__list_recent_files",
+      "mcp__413623e5-ef64-4802-8984-253daaf1cc82__google_sheets_get_spreadsheet_by_id",
+      "mcp__413623e5-ef64-4802-8984-253daaf1cc82__google_sheets_get_data_range",
+      "mcp__413623e5-ef64-4802-8984-253daaf1cc82__google_sheets_find_worksheet",
+      "mcp__413623e5-ef64-4802-8984-253daaf1cc82__gmail_send_email",
+      "mcp__413623e5-ef64-4802-8984-253daaf1cc82__gmail_find_email",
+      "mcp__41e432ce-299a-427c-bbe8-cb1799960e2d__get_filings",
+      "mcp__41e432ce-299a-427c-bbe8-cb1799960e2d__get_filing_detail",
+      "mcp__41e432ce-299a-427c-bbe8-cb1799960e2d__search_document",
+      "mcp__41e432ce-299a-427c-bbe8-cb1799960e2d__search_companies"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)"
+    ]
+  }
+}
