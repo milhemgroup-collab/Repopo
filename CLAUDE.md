@@ -75,16 +75,47 @@ Title property: `Catalyst`. Selects: `Type` (Tax Credit / Regulatory / Index / D
 
 ### Step 7 send
 
-Default to `gmail_send_email` (direct send) for the routine summary. Recipient
-must be `milhemgroup@gmail.com` per stop-condition. Subject prefix: `[PKM Audit]`.
-Only fall back to `create_draft` if the run produced ambiguity the user should
-review before delivery.
+**Primary backend (2026-05-26+):** the Milhem Apps Script webapp is the
+preferred path for ALL routine side-effects (Drive edits, Gmail send, Sheets
+writes). It runs in the user's Google account, has no Zapier task quota, and
+preserves Drive file IDs on content updates. See "Apps Script webapp" section
+below for the contract.
 
-**Quota caveat (observed 2026-05-26):** `gmail_send_email` is Zapier-backed and
-can return `insufficient tasks on account` when the Zapier plan is exhausted. If
-that happens, fall back to `mcp__2f946a94-...-__create_draft` (native Gmail MCP,
-draft only — no send tool on that server) and flag the delivery method in the
-body so the user knows to send manually from the Drafts folder.
+Fallback order if the webapp is unreachable:
+
+1. `gmail_send_email` (Zapier-backed) — works when Zapier plan has tasks
+   remaining. Returns `insufficient tasks on account` on quota exhaustion.
+2. `mcp__2f946a94-...-__create_draft` (native Gmail MCP, draft only — no
+   send tool on that server). Flag the delivery method in the body so the
+   user sends manually from Drafts.
+
+Recipient must be `milhemgroup@gmail.com` per stop-condition. Subject prefix:
+`[PKM Audit]`.
+
+### Apps Script webapp
+
+**Purpose:** unified backend for Drive read/write/trash and Gmail send,
+bypassing per-MCP quotas and the create_draft-only limitation.
+
+**Connection details (env vars, NOT committed to this repo):**
+
+- `WEBAPP_URL` — deployed URL of the Apps Script webapp (`/exec` endpoint)
+- `APPS_SCRIPT_TOKEN` — shared secret passed with every call
+
+Both must be set as managed env vars on the Claude Code environment. They
+are NEVER hard-coded into this file or any committed source.
+
+**Prerequisite: outbound network allowlist must permit `script.google.com`.**
+Without it, both the container's `curl` and the harness's `WebFetch` return
+403 "Host not in allowlist". This is set at environment-creation time via
+the network policy. See https://code.claude.com/docs/en/claude-code-on-the-web
+
+**Invocation pattern (TBD until first successful probe):** GET vs POST,
+parameter shape, action names, and response envelope all need to be
+documented here after the first end-to-end call succeeds. Until then,
+treat the webapp as "configured but not yet reachable from web sessions";
+the user can still invoke it from their own machine or from script.google.com
+directly.
 
 ---
 
