@@ -1,93 +1,106 @@
-# MCP Server Troubleshooting Guide
+# MCP Troubleshooting Guide
 
-This guide covers common issues with the Filesystem and obsidian-mcp-server MCP servers in Claude Desktop on Windows.
+This guide covers the current Obsidian MCP setup for Claude Desktop on Windows.
 
----
+## Current Baseline
+
+As of 2026-06-22, the live Claude Desktop config uses:
+
+- Config path: `%APPDATA%\\Claude\\claude_desktop_config.json`
+- `obsidian` server command: `mcp-obsidian.exe`
+- `obsidian-mcp-tools` server command: plugin-bundled `mcp-server.exe`
+- Local REST API host: `127.0.0.1`
+- Local REST API port: `27124`
+
+This repo's `claude_desktop_config.json` is a sanitized template that matches that structure.
 
 ## Pre-Launch Checklist
 
 Before starting Claude Desktop, ensure:
 
-- [ ] **Google Drive for Desktop** is running and the `G:` drive is mounted
-- [ ] All configured Google Drive folders exist at their exact paths
-- [ ] **Obsidian** is open with the **Local REST API** plugin enabled
-- [ ] The Local REST API plugin is listening on `http://127.0.0.1:27123`
+- Obsidian is open
+- The Local REST API plugin is enabled
+- The Local REST API plugin is listening on the same host and port as the config
+- `mcp-obsidian.exe` exists at the configured path
+- `mcp-server.exe` exists in the `mcp-tools` plugin folder
+- The API key in the config matches the key in Obsidian
 
----
-
-## Issue 1: Filesystem Server — "Server disconnected"
+## Issue 1: Editing the Wrong Config File
 
 ### Symptoms
-- Filesystem MCP server shows as disconnected in Settings > Developer
-- Server crashes immediately on startup
+
+- Changes seem to save but do not affect Claude Desktop
+- MCP server status does not change after restart
 
 ### Root Cause
-Two possible causes:
 
-1. **Bare `npx` command** — On Windows, `"command": "npx"` often fails to resolve. Use the full path `C:\Program Files\nodejs\npx.cmd` instead (same fix as obsidian-mcp-server below).
-
-2. **Missing directory paths** — The server validates all directory paths on startup. If **any single path** does not exist, the server crashes.
-
-Common triggers for path issues:
-- Google Drive for Desktop is not running (the `G:\` drive is not mounted)
-- A folder was renamed or deleted (e.g., `G:\My Drive\5. AI Guides`)
-- A typo in the folder path in the config
+The active file is `%APPDATA%\\Claude\\claude_desktop_config.json`. Older notes that point somewhere else can send you to the wrong file.
 
 ### Fix
 
-First, change the command to the full path:
-```json
-"command": "C:\\Program Files\\nodejs\\npx.cmd"
-```
+1. Open Claude Desktop
+2. Go to `Settings > Developer > Edit Config`
+3. Confirm the file being edited is `%APPDATA%\\Claude\\claude_desktop_config.json`
+4. Apply changes there
+5. Fully quit Claude Desktop and relaunch
 
-Then verify all paths exist:
-
-1. Open File Explorer and verify **every** path listed in the `args` array exists exactly as written:
-   - `G:\My Drive\1. Milhem Group_gdrive`
-   - `G:\My Drive\2. Master Personal Data - Back up files`
-   - `G:\My Drive\3. Spend Analysis`
-   - `G:\My Drive\4. Finance & Spend Analysis`
-   - `G:\My Drive\5. AI Guides`
-2. If a folder no longer exists, either recreate it or remove/update the path in the config
-3. Make sure Google Drive for Desktop is running before launching Claude Desktop
-
----
-
-## Issue 2: obsidian-mcp-server — "Server disconnected"
+## Issue 2: `mcp-obsidian.exe` Missing or Moved
 
 ### Symptoms
-- obsidian-mcp-server shows as disconnected in Settings > Developer
-- Server fails to start
+
+- The `obsidian` MCP server shows disconnected
+- Claude Desktop reports that the command cannot be found
 
 ### Root Cause
-Using bare `"command": "npx"` does not always resolve on Windows. The system cannot find the `npx` executable without the full path and `.cmd` extension.
+
+The Python install path changed, the executable was removed, or the environment was rebuilt.
 
 ### Fix
 
-Replace the command in your config:
+1. Verify this file exists:
+   - `C:\\Users\\matts\\AppData\\Local\\Python\\pythoncore-3.14-64\\Scripts\\mcp-obsidian.exe`
+2. If it does not exist, reinstall or restore the package that provides `mcp-obsidian.exe`
+3. Update the config path if the executable moved
+4. Restart Claude Desktop
 
-**Before (broken):**
-```json
-"command": "npx"
-```
+## Issue 3: Obsidian API Key or Port Mismatch
 
-**After (fixed):**
-```json
-"command": "C:\\Program Files\\nodejs\\npx.cmd"
-```
+### Symptoms
 
-Also ensure:
-- Obsidian is running
-- The **Local REST API** plugin is installed and enabled in Obsidian
-- The API key in the config matches the one set in the plugin settings
+- The MCP server starts but cannot talk to Obsidian
+- Requests fail even though the executable launches
 
----
+### Root Cause
 
-## Applying Changes
+The API key in the Claude Desktop config does not match the Local REST API plugin, or the port in the config does not match the port Obsidian is listening on.
 
-1. Open Claude Desktop config: **Settings > Developer > Edit Config**
-2. Apply the fixes from `claude_desktop_config.json` in this repo
-3. Replace `YOUR_API_KEY_HERE` with your actual Obsidian REST API key
-4. Fully quit Claude Desktop (right-click system tray icon > **Exit**)
-5. Relaunch Claude Desktop
-6. Verify both servers show green in **Settings > Developer**
+### Fix
+
+1. Open Obsidian Local REST API settings
+2. Confirm the API key
+3. Confirm the listening host and port
+4. Update `%APPDATA%\\Claude\\claude_desktop_config.json` to match
+5. Restart Claude Desktop after saving
+
+## Issue 4: `obsidian-mcp-tools` Binary Missing
+
+### Symptoms
+
+- The `obsidian-mcp-tools` server shows disconnected
+- Claude Desktop reports that `mcp-server.exe` cannot be found
+
+### Root Cause
+
+The plugin folder moved, the binary was removed, or the vault path changed.
+
+### Fix
+
+1. Verify this file exists:
+   - `C:\\Users\\matts\\My Drive\\MilhemVault\\.obsidian\\plugins\\mcp-tools\\bin\\mcp-server.exe`
+2. If it does not exist, reinstall the plugin or restore the missing binary
+3. Update the command path in the config if the vault or plugin location changed
+4. Restart Claude Desktop
+
+## Legacy Note
+
+The repo previously focused on an `npx`-based config and a filesystem MCP server. That is no longer the current live baseline. If you intentionally return to a filesystem-server setup later, treat it as a separate configuration path rather than assuming this template still covers it.
