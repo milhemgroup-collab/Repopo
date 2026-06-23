@@ -5,11 +5,8 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "G:\\My Drive\\1. Milhem Group_gdrive",
-        "G:\\My Drive\\2. Master Personal Data - Back up files",
-        "G:\\My Drive\\3. Spend Analysis",
-        "G:\\My Drive\\4. Finance & Spend Analysis",
-        "G:\\My Drive\\5. AI Guides"
+        "G:\\My Drive\\Example Vault",
+        "G:\\My Drive\\Example Reference Files"
       ]
     },
     "obsidian-mcp-server": {

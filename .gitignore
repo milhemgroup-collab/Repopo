@@ -1,0 +1,21 @@
+# Local secrets and machine-specific config
+.env
+.env.*
+*.local.json
+claude_desktop_config.json
+claude_desktop_config.local.json
+
+# Logs, transcripts, and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.ps1xml
+PowerShell_transcript*.txt
+Transcript*.txt
+
+# Editor and OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
