@@ -1,22 +1,18 @@
 {
+  "globalShortcut": "",
   "mcpServers": {
-    "filesystem": {
-      "command": "C:\\Program Files\\nodejs\\npx.cmd",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "G:\\My Drive\\Example Vault",
-        "G:\\My Drive\\Example Reference Files"
-      ]
-    },
-    "obsidian-mcp-server": {
-      "command": "C:\\Program Files\\nodejs\\npx.cmd",
-      "args": [
-        "obsidian-mcp-server"
-      ],
+    "obsidian": {
+      "command": "C:\\Path\\To\\mcp-obsidian.exe",
       "env": {
-        "OBSIDIAN_API_KEY": "YOUR_API_KEY_HERE",
-        "OBSIDIAN_BASE_URL": "http://127.0.0.1:27123"
+        "OBSIDIAN_API_KEY": "YOUR_OBSIDIAN_API_KEY_HERE",
+        "OBSIDIAN_HOST": "127.0.0.1",
+        "OBSIDIAN_PORT": "27124"
+      }
+    },
+    "obsidian-mcp-tools": {
+      "command": "G:\\My Drive\\YourVault\\.obsidian\\plugins\\mcp-tools\\bin\\mcp-server.exe",
+      "env": {
+        "OBSIDIAN_API_KEY": "YOUR_OBSIDIAN_API_KEY_HERE"
       }
     }
   }

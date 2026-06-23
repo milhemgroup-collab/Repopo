@@ -10,7 +10,8 @@ if ([string]::IsNullOrWhiteSpace($ConfigPath)) {
 } else {
     $configPath = $ConfigPath
 }
-$expectedCommand = "C:\Program Files\nodejs\npx.cmd"
+$expectedObsidianCommandName = "mcp-obsidian.exe"
+$expectedToolsCommandName = "mcp-server.exe"
 $failures = New-Object System.Collections.Generic.List[string]
 
 function Add-Failure {
@@ -41,20 +42,29 @@ if (-not (Test-Path -LiteralPath $configPath)) {
 
 if ($config) {
     Test-Condition ($null -ne $config.mcpServers) "Config is missing mcpServers"
-    Test-Condition ($null -ne $config.mcpServers.filesystem) "Config is missing filesystem server"
-    Test-Condition ($null -ne $config.mcpServers.'obsidian-mcp-server') "Config is missing obsidian-mcp-server"
+    Test-Condition ($null -ne $config.mcpServers.obsidian) "Config is missing obsidian server"
+    Test-Condition ($null -ne $config.mcpServers.'obsidian-mcp-tools') "Config is missing obsidian-mcp-tools server"
 
-    if ($config.mcpServers.filesystem) {
-        Test-Condition ($config.mcpServers.filesystem.command -eq $expectedCommand) "Filesystem command must be $expectedCommand"
-        Test-Condition ($config.mcpServers.filesystem.args -contains "@modelcontextprotocol/server-filesystem") "Filesystem args must include @modelcontextprotocol/server-filesystem"
+    if ($config.mcpServers.obsidian) {
+        $obsidian = $config.mcpServers.obsidian
+        Test-Condition ($obsidian.command -like "*$expectedObsidianCommandName") "Obsidian command must point to $expectedObsidianCommandName"
+        Test-Condition ($obsidian.env.OBSIDIAN_API_KEY -eq "YOUR_OBSIDIAN_API_KEY_HERE") "Committed Obsidian API key must remain YOUR_OBSIDIAN_API_KEY_HERE"
+        Test-Condition ($obsidian.env.OBSIDIAN_HOST -eq "127.0.0.1") "Obsidian host must remain 127.0.0.1"
+        Test-Condition ($obsidian.env.OBSIDIAN_PORT -eq "27124") "Obsidian port must remain 27124"
+    }
+
+    if ($config.mcpServers.'obsidian-mcp-tools') {
+        $tools = $config.mcpServers.'obsidian-mcp-tools'
+        Test-Condition ($tools.command -like "*$expectedToolsCommandName") "obsidian-mcp-tools command must point to $expectedToolsCommandName"
+        Test-Condition ($tools.env.OBSIDIAN_API_KEY -eq "YOUR_OBSIDIAN_API_KEY_HERE") "Committed obsidian-mcp-tools API key must remain YOUR_OBSIDIAN_API_KEY_HERE"
     }
 
     if ($config.mcpServers.'obsidian-mcp-server') {
-        $obsidian = $config.mcpServers.'obsidian-mcp-server'
-        Test-Condition ($obsidian.command -eq $expectedCommand) "Obsidian command must be $expectedCommand"
-        Test-Condition ($obsidian.args -contains "obsidian-mcp-server") "Obsidian args must include obsidian-mcp-server"
-        Test-Condition ($obsidian.env.OBSIDIAN_API_KEY -eq "YOUR_API_KEY_HERE") "Committed Obsidian API key must remain YOUR_API_KEY_HERE"
-        Test-Condition ($obsidian.env.OBSIDIAN_BASE_URL -eq "http://127.0.0.1:27123") "Obsidian base URL must remain http://127.0.0.1:27123"
+        Add-Failure "Config should use current obsidian server name, not legacy obsidian-mcp-server"
+    }
+
+    if ($config.mcpServers.filesystem) {
+        Add-Failure "Config should use current Obsidian MCP servers, not legacy filesystem server"
     }
 }
 
@@ -74,7 +84,7 @@ $blockedPatterns = @(
     [regex]::Escape(("C:\Users\" + "matts")),
     ("Master " + "Personal Data"),
     ("Comet-" + "Passwords"),
-    "OBSIDIAN_API_KEY`"\s*:\s*`"(?!YOUR_API_KEY_HERE`")[^`"]+",
+    "OBSIDIAN_API_KEY`"\s*:\s*`"(?!YOUR_OBSIDIAN_API_KEY_HERE`")[^`"]+",
     "(?i)(api[_-]?key|token|password|secret)\s*[:=]\s*['`"][^'`"]{8,}['`"]"
 )
 
