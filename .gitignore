@@ -1,0 +1,23 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Secrets — never commit real Claude Desktop configs or API keys
+claude_desktop_config.local.json
+*.secret
+*.key
+.env
+.env.*
+
+# Logs
+*.log
+
+# Node tooling (markdown linters, etc.)
+node_modules/

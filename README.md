@@ -25,3 +25,18 @@ This repo now keeps a sanitized template that matches the current structure with
 - Replace `YOUR_OBSIDIAN_API_KEY_HERE` before using the template.
 - Keep the real config in `%APPDATA%\\Claude\\claude_desktop_config.json`.
 - Do not treat this repo as the source of truth for personal preferences that do not affect MCP server startup.
+
+## Project Structure
+
+```
+.
+├── claude_desktop_config.json   # Sanitized Claude Desktop MCP config template
+├── MCP_TROUBLESHOOTING.md       # Issue/symptom/fix runbook for Obsidian MCP servers
+├── README.md                    # This file
+├── AGENTS.md                    # Instructions for AI coding agents
+└── CLAUDE.md                    # Claude Code wrapper pointing at AGENTS.md
+```
+
+## License
+
+Released under the [MIT License](LICENSE). Copyright (c) 2026 Milhem Group Properties.
