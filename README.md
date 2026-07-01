@@ -19,6 +19,7 @@ This repo now keeps a sanitized template that matches the current structure with
 
 - `claude_desktop_config.json`: sanitized current template for Claude Desktop
 - `MCP_TROUBLESHOOTING.md`: current troubleshooting notes plus legacy context
+- `gmail-assistant/`: reviewed source for the daily Gmail draft assistant (deployed to the MilhemVault control folder, see `gmail-assistant/UPGRADE.md`)
 
 ## Important Notes
 
@@ -32,6 +33,7 @@ This repo now keeps a sanitized template that matches the current structure with
 .
 ├── claude_desktop_config.json   # Sanitized Claude Desktop MCP config template
 ├── MCP_TROUBLESHOOTING.md       # Issue/symptom/fix runbook for Obsidian MCP servers
+├── gmail-assistant/             # Gmail draft assistant: config, prompt, scripts, tests
 ├── README.md                    # This file
 ├── AGENTS.md                    # Instructions for AI coding agents
 └── CLAUDE.md                    # Claude Code wrapper pointing at AGENTS.md
