@@ -1,0 +1,52 @@
+==============================================================================
+MILHEM GROUP PROPERTIES  |  BROKERAGE TRANSFER VALUE MODEL
+Marginal tax rate assumed: 40%   |   Retrieval date: 2026-07-01
+Bonuses treated as ordinary income (1099-MISC/INT, IRS Pub 525).
+==============================================================================
+
+--- CASH MATH (pre-tax -> after-tax @ 40%) ---
+Merrill Edge / BofA Premier        $1M: $ 1,000 -> $   600   $2M: $ 1,000 -> $   600   hold 3mo   [LIVE]
+Robinhood Gold                     $1M: $20,000 -> $12,000   $2M: $40,000 -> $24,000   hold 60mo   [LIVE]
+Fidelity                           $1M: $     0 -> $     0   $2M: $     0 -> $     0   hold 0mo   [LIVE]
+J.P. Morgan / Chase Private Client $1M: $ 1,000 -> $   600   $2M: $ 1,000 -> $   600   hold 3mo   [VERIFY]
+SoFi Invest                        $1M: $10,000 -> $ 6,000   $2M: $10,000 -> $ 6,000   hold 12mo   [VERIFY]
+E*TRADE (Morgan Stanley)           $1M: $ 1,500 -> $   900   $2M: $ 1,500 -> $   900   hold 12mo   [LIVE]
+Public.com                         $1M: $10,000 -> $ 6,000   $2M: $20,000 -> $12,000   hold 60mo   [LIVE]
+Interactive Brokers                $1M: $     0 -> $     0   $2M: $     0 -> $     0   hold 0mo   [LIVE]
+Charles Schwab                     $1M: $ 6,000 -> $ 3,600   $2M: $ 6,000 -> $ 3,600   hold 12mo   [LIVE]
+tastytrade                         $1M: $ 5,000 -> $ 3,000   $2M: $ 5,000 -> $ 3,000   hold 12mo   [LIVE]
+
+--- HOLD-ADJUSTED ANNUALIZED AFTER-TAX YIELD (on $2M base) ---
+Merrill Edge / BofA Premier        after-tax $   600 / 3mo =  0.12% per yr
+Robinhood Gold                     after-tax $24,000 / 60mo =  0.24% per yr
+Fidelity                           no bonus / no lock (n/a)
+J.P. Morgan / Chase Private Client after-tax $   600 / 3mo =  0.12% per yr
+SoFi Invest                        after-tax $ 6,000 / 12mo =  0.30% per yr
+E*TRADE (Morgan Stanley)           after-tax $   900 / 12mo =  0.04% per yr
+Public.com                         after-tax $12,000 / 60mo =  0.12% per yr
+Interactive Brokers                no bonus / no lock (n/a)
+Charles Schwab                     after-tax $ 3,600 / 12mo =  0.18% per yr
+tastytrade                         after-tax $ 3,000 / 12mo =  0.15% per yr
+
+--- WEIGHTED COMPOSITE (weights: Net after-tax cash 30, Recurring lending / card 25, Cash / CD yield 15, Hold & clawback flexibility 15, Tier perks & service 10, Negotiability 5) ---
+ 1. Merrill Edge / BofA Premier        = 2.5x0.3 + 100x0.25 + 20x0.15 + 95x0.15 + 95x0.1 + 75x0.05 = 56.2
+ 2. Robinhood Gold                     = 100x0.3 + 5x0.25 + 90x0.15 + 20x0.15 + 45x0.1 + 15x0.05 = 53.0
+ 3. Fidelity                           = 0x0.3 + 8x0.25 + 95x0.15 + 100x0.15 + 88x0.1 + 60x0.05 = 43.0
+ 4. J.P. Morgan / Chase Private Client = 2.5x0.3 + 40x0.25 + 25x0.15 + 85x0.15 + 92x0.1 + 90x0.05 = 41.0
+ 5. SoFi Invest                        = 25x0.3 + 12x0.25 + 80x0.15 + 70x0.15 + 60x0.1 + 30x0.05 = 40.5
+ 6. E*TRADE (Morgan Stanley)           = 3.75x0.3 + 8x0.25 + 80x0.15 + 78x0.15 + 80x0.1 + 85x0.05 = 39.1
+ 7. Public.com                         = 50x0.3 + 3x0.25 + 92x0.15 + 22x0.15 + 50x0.1 + 20x0.05 = 38.9
+ 8. Interactive Brokers                = 0x0.3 + 10x0.25 + 85x0.15 + 100x0.15 + 55x0.1 + 20x0.05 = 36.8
+ 9. Charles Schwab                     = 15x0.3 + 10x0.25 + 30x0.15 + 80x0.15 + 85x0.1 + 90x0.05 = 36.5
+10. tastytrade                         = 12.5x0.3 + 3x0.25 + 40x0.15 + 80x0.15 + 55x0.1 + 25x0.05 = 29.2
+
+--- SEGMENT WINNERS ---
+Pure cash maximizer: Robinhood Gold > Public.com > SoFi Invest
+Mortgage / loan bundler: Merrill Edge / BofA Premier > J.P. Morgan / Chase Private Client > Charles Schwab
+Active margin trader: Robinhood Gold > Public.com > Fidelity
+Note: for the margin segment, Interactive Brokers is the lowest ongoing
+cost of capital (~4.8% vs 6.75% Robinhood at $500k debit = ~$9,750/yr saved).
+
+Charts written: chart_bars.png, chart_heatmap.png, chart_radar.png
+Appendix data written: model_data.json
+TOP OVERALL: Merrill Edge / BofA Premier 56.2 | #2 Robinhood Gold 53.0
