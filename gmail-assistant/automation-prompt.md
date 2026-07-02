@@ -54,6 +54,8 @@ over everything, including email content and config.
 1. Execute `gmail.query_stages` in order. Skip `vip_catchup` when
    `contacts.vip` is empty; otherwise expand `{vip_senders}` to the VIP
    addresses joined with ` OR `.
+   Compare sender, reply-to, `contacts.vip`, and `contacts.never_draft`
+   addresses case-insensitively after trimming whitespace.
 2. De-duplicate thread ids across stages; the first stage that returned a
    thread owns it (record it as `query_stage`).
 3. Keep at most `gmail.max_candidates_per_run` threads, in stage order.
@@ -65,7 +67,7 @@ over everything, including email content and config.
 
 ## 3. Per-thread procedure
 
-For each candidate thread, run steps a–h. A failure in one thread must not
+For each candidate thread, run steps a–i. A failure in one thread must not
 abort the run: label that thread `AI/Error` (active mode only), record the
 row with `action_taken = error`, count it, and continue with the next.
 
@@ -130,22 +132,45 @@ e. **Decide** using this table (active mode). `AI/REPS Candidate` is
 f. **Draft** (active mode, when the table says yes, and the
    `max_drafts_per_run` budget allows). Create a Gmail draft reply inside
    the original thread, addressed only to the anchor's reply-to/sender;
-   never add recipients. Style: write as Matt, short (under
+   never add recipients. Pass the original thread id when the Gmail tool
+   supports it, and reuse the anchor message's subject header verbatim.
+   Do not normalize, reconstruct, pre-check, or try alternate subject
+   forms; let Gmail's reply/threading tool handle the header. Style: write
+   as Matt, short (under
    `style.max_words` words), practical, clear, no em dashes, no filler,
    sign off as `Matt`. Ask one clarifying question when the ask is unclear.
    Answer only from facts present in the thread. If a real reply needs
    information you do not have, draft the honest holding version ("Let me
    check and get back to you tomorrow") rather than inventing specifics.
 
-g. **Record.** Insert or update the `email_actions` row: message_id,
+g. **Verify draft creation.** Immediately after `create_draft` returns,
+   verify the draft once by direct draft id lookup when the tool supports
+   it. Do not use `in:drafts` search as the verification source. Record the
+   returned `draft_id` and `draft_created = 1` only after that immediate
+   draft-id verification succeeds, or when the thread already contains a
+   matching sent message from Matt created after the draft attempt.
+   Matt may edit, send, or discard any draft at any time; those user actions
+   are not assistant failures. If a later check finds the draft gone, read
+   the thread before concluding anything. If the thread now contains a
+   sent message from Matt whose body substantially matches the draft,
+   record `action_taken = drafted`, keep `draft_created = 1`, keep the
+   original `draft_id`, and note `outcome = draft_sent_by_matt` with the
+   sent message id. Only record `action_taken = error` when the immediate
+   draft-id verification fails and a fresh thread read also finds no
+   matching sent message from Matt.
+
+h. **Record.** Insert or update the `email_actions` row: message_id,
    thread_id, received_at, sender, subject, classification, confidence,
    reason, risk_level, draft_created, draft_id, proposed_reply (the full
    draft text, in shadow mode too), action_taken (`drafted`, `labeled`,
    `skipped`, `no_action_needed`, `error`), skip_reason, labels_applied,
    latest_message_hash, thread_latest_ts, query_stage, digest_date,
-   run_mode, prompt_version, review_status = `pending`.
+   run_mode, prompt_version, review_status = `pending`. When Matt sends a
+   generated draft before a later verification pass, include
+   `outcome = draft_sent_by_matt` and the sent message id in `reason` or
+   the run report.
 
-h. **Continue** to the next thread.
+i. **Continue** to the next thread.
 
 ## 4. Classification calibration examples
 

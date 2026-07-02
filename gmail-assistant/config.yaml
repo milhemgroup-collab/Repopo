@@ -69,7 +69,9 @@ gmail:
 contacts:
   # VIP senders bypass skip_rules (they are always read and classified) and
   # are fetched by the vip_catchup stage. Drafting rules still apply.
+  # Compare VIP addresses case-insensitively at runtime.
   # Fill in tenants, property managers, CPA, attorney, lender, family.
+  # Intentionally empty in git; the deployed copy carries the real addresses.
   vip: []
   # Senders whose threads are always labeled AI/Needs Review and never
   # drafted, no matter the classification (e.g. attorneys, IRS, insurers).
