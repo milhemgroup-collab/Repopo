@@ -214,7 +214,12 @@ Label only, never draft:
    candidates, errors, plus anything Matt marked `wrong` in yesterday's
    report that is still unresolved.
 3. Update the `run_history` row with finish time and all counts.
-4. Delete report files older than `reporting.keep_days`. Never delete
+4. **Missed-run check.** Compare this run's start time with the most
+   recent prior `run_started_at` in `run_history`. If the gap exceeds
+   36 hours, add a prominent warning line to both the run report and the
+   digest that scheduled runs were missed, including the date of the last
+   run, so silent scheduler failures surface the next time any run fires.
+5. Delete report files older than `reporting.keep_days`. Never delete
    anything else.
 
 ## 6. Final response
