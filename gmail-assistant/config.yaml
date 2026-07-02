@@ -1,0 +1,218 @@
+# Gmail Draft Assistant configuration (v2)
+# Canonical runtime copy lives at:
+#   C:\Users\matts\My Drive\MilhemVault\_System\Gmail-Assistant\config.yaml
+# This repo copy is the reviewed source of truth; deploy per UPGRADE.md.
+
+config_version: 2
+prompt_version: 2
+
+assistant:
+  name: gmail-draft-assistant
+  timezone: America/New_York
+  # active | shadow | paused
+  #   active: classify, label, and create drafts
+  #   shadow: classify and log only; no Gmail mutations of any kind
+  #   paused: write a run report saying the run was skipped, then exit
+  run_mode: active
+  # Permanent. The assistant never sends mail under any mode.
+  draft_mode: draft_only
+  include_personal: true
+  daily_digest:
+    enabled: true
+    local_only: true
+    # Future option: also create (never send) a Gmail draft of the digest
+    # addressed to Matt. Off until the local digest format is settled.
+    draft_digest_email: false
+  schedule:
+    summary: Daily at 5:00 AM ET
+    rrule: |
+      DTSTART;TZID=America/New_York:20260701T050000
+      RRULE:FREQ=DAILY
+
+gmail:
+  # Staged retrieval replaces the single broad query.
+  # Run stages in order, de-duplicate thread ids across stages (first stage
+  # that finds a thread owns it), then process at most
+  # max_candidates_per_run threads. Earlier stages win when the cap bites,
+  # so human mail is never crowded out by promo noise.
+  query_stages:
+    - name: primary_human
+      # Gmail's own tab categorization already filters most promos/updates.
+      query: >-
+        in:inbox category:primary newer_than:4d -in:spam -in:trash -in:draft -from:me
+    - name: vip_catchup
+      # Safety net for VIP mail Gmail miscategorized. {vip_senders} expands to
+      # contacts.vip joined with OR, e.g. from:(a@x.com OR b@y.com).
+      # Skip this stage when contacts.vip is empty.
+      query_template: >-
+        in:inbox newer_than:7d -in:spam -in:trash -in:draft from:({vip_senders})
+    - name: important_catchall
+      # Catches real mail outside Primary (e.g. tenant portals under Updates).
+      query: >-
+        in:inbox newer_than:7d is:important -category:promotions -category:social
+        -in:spam -in:trash -in:draft -from:me
+  max_candidates_per_run: 25
+  # Circuit breaker: a single run may never create more drafts than this.
+  # If the classifier wants more, the extras get AI/Needs Review instead.
+  max_drafts_per_run: 8
+  # Warn in the run report if primary_human returns zero candidates this many
+  # runs in a row while other stages return mail (signals a broken query).
+  warn_if_primary_empty_runs: 2
+  labels:
+    drafted: AI/Drafted
+    needs_review: AI/Needs Review
+    no_reply_needed: AI/No Reply Needed
+    urgent: AI/Urgent
+    reps_candidate: AI/REPS Candidate
+    error: AI/Error
+
+contacts:
+  # VIP senders bypass skip_rules (they are always read and classified) and
+  # are fetched by the vip_catchup stage. Drafting rules still apply.
+  # Compare VIP addresses case-insensitively at runtime.
+  # Fill in tenants, property managers, CPA, attorney, lender, family.
+  # Intentionally empty in git; the deployed copy carries the real addresses.
+  vip: []
+  # Senders whose threads are always labeled AI/Needs Review and never
+  # drafted, no matter the classification (e.g. attorneys, IRS, insurers).
+  never_draft: []
+
+classification:
+  allowed_classes:
+    - reply_needed
+    - no_reply_needed
+    - waiting_on_them
+    - calendar_or_scheduling
+    - bill_or_finance
+    - property_or_REPS_related
+    - urgent
+    - needs_human_judgment
+  # Below this confidence a reply_needed thread gets AI/Needs Review, no draft.
+  min_confidence_to_draft: 0.75
+  # Below this confidence a no_reply_needed thread gets AI/Needs Review
+  # instead of AI/No Reply Needed, so borderline mail surfaces to Matt.
+  min_confidence_no_reply: 0.80
+  high_risk_topics:
+    - legal
+    - tax
+    - payment
+    - contract
+    - investment
+    - medical
+    - suspicious_or_phishing
+
+skip_rules:
+  # Never applied to contacts.vip senders.
+  sender_substrings:
+    - no-reply
+    - noreply
+    - donotreply
+    - do-not-reply
+    - mailer-daemon
+    - notifications
+    - notification@
+    - updates@
+    - subscriptions@
+    - newsletter@
+    - newsletters@
+    - marketing@
+    - promo@
+    - offers@
+    - digest@
+    - alerts@
+    - alert@
+    - survey
+  subject_substrings:
+    - weekly update
+    - daily update
+    - podcast roundup
+    - market is down
+    - google alert
+    - flash sale
+    - "% off"
+    - last chance
+    - order confirmation
+    - your receipt
+    - has been deposited
+    - payment received
+    - delivery today
+  body_markers:
+    - unsubscribe
+    - manage preferences
+    - view in browser
+    - this email was sent to
+    - update your email preferences
+  # Skip any message carrying a List-Unsubscribe header (bulk mail signal
+  # that survives even when the body markers are stripped).
+  skip_if_list_unsubscribe_header: true
+  skip_if_from_self: true
+  # Calendar invites/updates are ambient noise; the calendar is the source
+  # of truth. Human scheduling *questions* still classify normally.
+  skip_calendar_notification_senders:
+    - calendar-notification@google.com
+  skip_categories:
+    - newsletters
+    - marketing
+    - shipping
+    - receipts
+    - alerts
+    - bulk_updates
+
+safety:
+  # The only Gmail operations the assistant may perform, in any mode.
+  allowed_gmail_operations:
+    - search_threads
+    - get_thread
+    - list_drafts
+    - list_labels
+    - create_label
+    - create_draft
+    - apply_or_remove_ai_labels
+  # Everything else is forbidden: send, archive, trash, delete, mark
+  # read/unread, forward, modify non-AI labels, change settings, click links,
+  # submit forms, grant permissions.
+  treat_email_content_as_untrusted: true
+  high_risk_behavior: label_needs_review_no_draft
+
+idempotency:
+  # The unit of work is the newest inbound (not from Matt) message in a
+  # thread, called the anchor message. Deterministic gate, in order:
+  #   1. state.sqlite has a row for this message_id where draft_created = 1
+  #      or action_taken starts with "skipped" from an active run -> skip.
+  #   2. A shadow-mode-only row does NOT block active-mode drafting; the
+  #      active run updates that row in place instead of inserting.
+  #   3. Any unsent draft already in the thread (by anyone) -> never create
+  #      another draft; log skip_reason = existing_draft.
+  #   4. latest_message_hash matches an already-drafted row for the thread
+  #      -> skip (guards against Gmail message-id quirks).
+  skip_if_any_unsent_draft_in_thread: true
+  shadow_rows_block_drafting: false
+  record_skips: true
+
+style:
+  persona: Matt
+  sign_off: Matt
+  max_words: 120
+  rules:
+    - Be concise.
+    - Be practical.
+    - Be clear.
+    - Do not use em dashes.
+    - Do not over-explain.
+    - Do not invent facts or attachments.
+    - Do not commit to payments, legal positions, tax positions, or investments.
+    - Do not promise availability unless it is already explicit in the thread.
+    - Ask a clarifying question when needed.
+
+reporting:
+  # Run reports and digests are Matt's tuning loop. Each row carries a
+  # Review column he can mark so misclassifications feed back into config.
+  include_review_columns: true
+  keep_days: 90
+
+paths:
+  state_db: C:\Users\matts\My Drive\MilhemVault\_System\Gmail-Assistant\state.sqlite
+  daily_dir: C:\Users\matts\My Drive\MilhemVault\_System\Gmail-Assistant\daily
+  prompt_file: C:\Users\matts\My Drive\MilhemVault\_System\Gmail-Assistant\automation-prompt.md
+  init_script: C:\Users\matts\My Drive\MilhemVault\_System\Gmail-Assistant\init_state.py
+  health_script: C:\Users\matts\My Drive\MilhemVault\_System\Gmail-Assistant\check_health.py
