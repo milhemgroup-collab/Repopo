@@ -16,6 +16,18 @@ parallels, policy). Deck 2 is the channel-level companion (macro scale, the
 cash-flow-to-debt shift, private credit microdata, the pricing schism). They
 cross-reference each other and are meant to be read as a pair.
 
+### Copy-pasteable Markdown
+
+Each deck also ships as a Markdown file with the same slide-by-slide content
+(one heading per slide, real Markdown tables, speaker-notes blocks, source
+lines, and chart references by filename). These are the easy-to-copy versions
+for pasting into Docs, Slides, Gamma, or email:
+
+- `Deck-1_Circular-Money_BIS-AER-2026-Chapter-I.md`
+- `Deck-2_From-Cash-Flows-to-Debt_BIS-Bulletin-120.md`
+
+They are generated from the rendered HTML by `source/html_to_md.py`.
+
 ## Format
 
 - 16:9 landscape, one page per slide (a deck rendered to PDF).
