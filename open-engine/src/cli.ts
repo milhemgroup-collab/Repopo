@@ -4,6 +4,7 @@ import { config as loadEnv } from 'dotenv';
 import { Command } from 'commander';
 import { Engine } from './engine.js';
 import { MockAgentRunner } from './runners/mock-runner.js';
+import { runWizard } from './wizard.js';
 import type { TaskSpec, Ticket } from './types.js';
 
 loadEnv();
@@ -57,6 +58,45 @@ program
       });
       print({ ticket: { id: ticket.id, state: ticket.state }, validation });
       if (!validation.valid) process.exitCode = 2;
+    } finally {
+      e.close();
+    }
+  });
+
+program
+  .command('new')
+  .description('Guided wizard: answer plain questions and it builds + submits a valid ticket')
+  .action(async () => {
+    if (!process.stdin.isTTY) {
+      process.stderr.write(
+        'The `new` wizard needs an interactive terminal. In a non-interactive context, ' +
+          'use `open-engine submit -f <spec.json>` or pipe a spec via `submit --stdin`.\n',
+      );
+      process.exitCode = 1;
+      return;
+    }
+    const result = await runWizard();
+    if (!result) return;
+    if (!result.submit) {
+      process.stdout.write('Not submitted.' + (result.saveTo ? ` Spec saved to ${result.saveTo}.` : '') + '\n');
+      return;
+    }
+    const e = engine();
+    try {
+      const { ticket, validation } = e.submit(result.spec, {
+        queue: result.queue,
+        priority: result.priority,
+      });
+      if (validation.valid) {
+        process.stdout.write(`\n✓ Ticket ${ticket.id} created in state "${ticket.state}".\n`);
+        process.stdout.write('Next steps:\n');
+        process.stdout.write(`  open-engine show ${ticket.id}      # inspect it\n`);
+        process.stdout.write('  open-engine work                   # let an agent run the queue\n');
+      } else {
+        process.stdout.write('Validation failed:\n');
+        print(validation.issues);
+        process.exitCode = 2;
+      }
     } finally {
       e.close();
     }

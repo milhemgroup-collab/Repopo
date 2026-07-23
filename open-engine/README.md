@@ -92,32 +92,55 @@ Every transition and side effect writes an `AuditEvent`
 
 ## Quick start
 
+The fastest way in — no clone, no build (once published to npm):
+
+```bash
+# Guided wizard: answer a few plain questions, get a valid ticket. No JSON.
+npx open-engine new
+
+# Then let an agent claim and run it:
+npx open-engine work
+```
+
+`open-engine new` interviews you (objective, done-criteria, acceptance tests, …)
+and assembles a **valid** ticket for you — you never hand-write JSON or memorise
+the required fields. It can also save the spec to a file to re-use or edit.
+
+### From a clone (for development)
+
 ```bash
 cd open-engine
 npm install
-npm test          # 28 tests: validation, state machine, lifecycle, claims, delegation, adapters
+npm test          # 31 tests: validation, state machine, lifecycle, claims, delegation, adapters, wizard
 npm run build     # compile to dist/
+npm run engine -- new   # run the CLI via tsx without building
 ```
 
 ### CLI walkthrough
 
 ```bash
-# 1. Submit a structured statement of work (a bare prompt is rejected).
-npm run engine -- submit -f examples/health-endpoint.json
+# 0. Easiest: the guided wizard builds + submits a ticket for you.
+open-engine new
+
+# 1. Or submit a structured statement of work from a file (a bare prompt is rejected).
+open-engine submit -f examples/health-endpoint.json
 
 # 2. See the queue.
-npm run engine -- list
+open-engine list
 
 # 3. Let an agent claim + run the next available ticket (mock runner).
-npm run engine -- work
+open-engine work
 
 # 4. Inspect the ticket and its audit trail.
-npm run engine -- show <ticketId>
-npm run engine -- history <ticketId>
+open-engine show <ticketId>
+open-engine history <ticketId>
 
 # If a run raised a blocker:
-npm run engine -- answer <ticketId> <questionId> "OAuth2, per the security doc"
+open-engine answer <ticketId> <questionId> "OAuth2, per the security doc"
 ```
+
+> Using a clone instead of an installed binary? Prefix commands with
+> `npm run engine --` (e.g. `npm run engine -- list`).
 
 `examples/health-endpoint.json` is a fully-formed spec; `examples/underspecified.json`
 is a bare prompt that the validator refuses (exit code 2).
@@ -173,6 +196,7 @@ open-engine/
 │   ├── engine.ts            # Engine — orchestration core
 │   ├── db.ts                # node:sqlite store (no native deps)
 │   ├── cli.ts               # Commander CLI
+│   ├── wizard.ts            # interactive "new task" wizard (no hand-written JSON)
 │   ├── adapters/            # QueueAdapter: local + Linear/Jira (dry-run)
 │   └── runners/             # AgentRunner: interface + mock
 ├── test/                    # Vitest suite
