@@ -5,6 +5,7 @@ import { Command } from 'commander';
 import { Engine } from './engine.js';
 import { MockAgentRunner } from './runners/mock-runner.js';
 import { runWizard } from './wizard.js';
+import { formatReport, runDoctor } from './doctor.js';
 import type { TaskSpec, Ticket } from './types.js';
 
 loadEnv();
@@ -61,6 +62,20 @@ program
     } finally {
       e.close();
     }
+  });
+
+program
+  .command('doctor')
+  .description('Check that Open Engine is installed and working correctly on this machine')
+  .option('--json', 'output the report as JSON')
+  .action(async (opts) => {
+    const report = await runDoctor({ dbPath: DB_PATH });
+    if (opts.json) {
+      print(report);
+    } else {
+      process.stdout.write(formatReport(report, program.version() ?? '0.1.0'));
+    }
+    if (!report.healthy) process.exitCode = 1;
   });
 
 program

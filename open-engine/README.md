@@ -92,46 +92,67 @@ Every transition and side effect writes an `AuditEvent`
 
 ## Quick start
 
-The fastest way in — no clone, no build (once published to npm):
+Requires **Node.js ≥ 22.5** (for the built-in `node:sqlite`).
+
+Open Engine is not published to npm yet, so install it from this repo. From the
+`open-engine/` directory:
 
 ```bash
-# Guided wizard: answer a few plain questions, get a valid ticket. No JSON.
-npx open-engine new
+npm install
+npm run build
+npm link          # puts `open-engine` on your PATH
 
-# Then let an agent claim and run it:
-npx open-engine work
+open-engine doctor   # confirm the install is healthy
+open-engine new      # guided wizard: answer questions, get a valid ticket
 ```
 
 `open-engine new` interviews you (objective, done-criteria, acceptance tests, …)
 and assembles a **valid** ticket for you — you never hand-write JSON or memorise
 the required fields. It can also save the spec to a file to re-use or edit.
 
-### From a clone (for development)
+Undo the global link at any time with `npm unlink -g open-engine`.
+
+### Without linking
 
 ```bash
-cd open-engine
-npm install
-npm test          # 31 tests: validation, state machine, lifecycle, claims, delegation, adapters, wizard
-npm run build     # compile to dist/
-npm run engine -- new   # run the CLI via tsx without building
+npm run engine -- doctor   # run the CLI via tsx, no build needed
+node dist/cli.js doctor    # or the compiled binary after `npm run build`
+```
+
+### Once published to npm
+
+After `npm publish`, no clone or build is needed at all:
+
+```bash
+npx open-engine new
+```
+
+### Development
+
+```bash
+npm test          # 35 tests: validation, state machine, lifecycle, claims, delegation, adapters, wizard, doctor
+npm run typecheck
 ```
 
 ### CLI walkthrough
 
 ```bash
-# 0. Easiest: the guided wizard builds + submits a ticket for you.
+# 0. Not sure it's installed right? Ask it.
+open-engine doctor
+
+# 1. Easiest: the guided wizard builds + submits a ticket for you.
 open-engine new
 
-# 1. Or submit a structured statement of work from a file (a bare prompt is rejected).
+# 2. Or submit a structured statement of work from a file (a bare prompt is rejected).
 open-engine submit -f examples/health-endpoint.json
 
-# 2. See the queue.
+# 3. See the queue.
 open-engine list
 
-# 3. Let an agent claim + run the next available ticket (mock runner).
+# 4. Let an agent claim + run the next available ticket (mock runner).
 open-engine work
 
-# 4. Inspect the ticket and its audit trail.
+# 5. Inspect the ticket and its audit trail.
 open-engine show <ticketId>
 open-engine history <ticketId>
 
@@ -197,6 +218,7 @@ open-engine/
 │   ├── db.ts                # node:sqlite store (no native deps)
 │   ├── cli.ts               # Commander CLI
 │   ├── wizard.ts            # interactive "new task" wizard (no hand-written JSON)
+│   ├── doctor.ts            # `doctor` self-diagnosis: is this install working?
 │   ├── adapters/            # QueueAdapter: local + Linear/Jira (dry-run)
 │   └── runners/             # AgentRunner: interface + mock
 ├── test/                    # Vitest suite
