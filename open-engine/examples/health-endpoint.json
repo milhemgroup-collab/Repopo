@@ -1,0 +1,18 @@
+{
+  "objective": "Add a GET /health liveness endpoint to the API",
+  "background": "Ops needs a probe for the load balancer. The server is an Express app in src/server.ts.",
+  "inputSources": ["src/server.ts", "docs/ops-runbook.md"],
+  "artifacts": [],
+  "requiredCapability": ["code"],
+  "constraints": ["No new runtime dependencies", "Must respond in under 50ms"],
+  "risks": ["Endpoint must not touch the database on every call"],
+  "definitionOfDone": [
+    "GET /health returns HTTP 200",
+    "Body is {\"status\":\"ok\"}",
+    "Covered by an integration test"
+  ],
+  "acceptanceTests": [
+    "curl -s localhost:3000/health returns 200",
+    "npm test passes the new health.test.ts"
+  ]
+}

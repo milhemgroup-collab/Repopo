@@ -1,0 +1,61 @@
+{
+  "name": "open-engine",
+  "version": "0.1.0",
+  "description": "Ticket-as-state-manager multi-agent orchestration framework. The ticket is the source of truth, not the chat.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "agents",
+    "orchestration",
+    "multi-agent",
+    "workflow",
+    "tickets",
+    "state-machine",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milhemgroup-collab/Repopo.git",
+    "directory": "open-engine"
+  },
+  "homepage": "https://github.com/milhemgroup-collab/Repopo/tree/main/open-engine#readme",
+  "bin": {
+    "open-engine": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "examples",
+    "README.md",
+    ".env.example"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "engine": "tsx src/cli.ts",
+    "start": "node dist/cli.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepare": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}
