@@ -7,10 +7,6 @@ Repopo is a **documentation and configuration reference** repository for a Windo
 code, build pipeline, or runtime. It holds a sanitized Claude Desktop config template
 and troubleshooting notes for Obsidian Model Context Protocol (MCP) servers.
 
-- **Stack:** Markdown documentation + a single JSON config template.
-- **Runtime/target:** Claude Desktop on Windows, talking to Obsidian's Local REST API.
-- **No package manager**, no dependencies, no compiled artifacts.
-
 ## Build/Test/Lint
 
 There is no build step. "Testing" means validating the JSON config and Markdown.
@@ -20,7 +16,6 @@ There is no build step. "Testing" means validating the JSON config and Markdown.
   - `node -e "JSON.parse(require('fs').readFileSync('claude_desktop_config.json','utf8'))"`
 - **Lint Markdown** (optional, if tooling is available):
   - `npx markdownlint-cli2 "**/*.md"`
-- **Build:** none.
 
 ## Conventions
 
@@ -31,13 +26,8 @@ There is no build step. "Testing" means validating the JSON config and Markdown.
 
 ## Architecture
 
-Flat layout at the root, plus one project subdirectory.
-
 - `claude_desktop_config.json` — sanitized Claude Desktop MCP config template (entry point for the setup it documents).
-- `MCP_TROUBLESHOOTING.md` — issue/symptom/fix runbook for the Obsidian MCP servers.
-- `README.md` — overview and audit status for humans.
 - `gmail-assistant/` — reviewed source for the daily Gmail draft assistant (config, automation prompt, SQLite scripts, test fixtures). The runtime copy lives in the MilhemVault control folder; deploy per `gmail-assistant/UPGRADE.md`. Validate with a YAML parse of `config.yaml` and `python gmail-assistant/init_state.py <db> --check`.
-- No module boundaries; files are independent reference documents.
 
 ## Boundaries
 
