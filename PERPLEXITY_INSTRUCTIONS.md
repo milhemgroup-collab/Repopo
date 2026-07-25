@@ -120,9 +120,8 @@ one. Perplexity also explained the fake file's inaccessibility by citing the rou
 page written the day before, treating an authored claim as a test result. Hence the
 instruction line forbidding the routing pages as evidence about retrieval.
 
-Run 2, with Drive on, is still outstanding. It decides three things: whether the Doc
-is reachable at all, whether the Markdown gotcha has expired, and whether Perplexity
-confabulates Drive content when it genuinely has access.
+Run 2, with Drive on, followed and is recorded below. It settled the confabulation
+question and left the extraction question open.
 
 ## Personalization, Custom instructions
 
