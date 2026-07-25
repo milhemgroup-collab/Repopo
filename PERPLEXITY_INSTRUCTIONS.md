@@ -118,84 +118,46 @@ confabulates Drive content when it genuinely has access.
 
 ## Personalization, Custom instructions
 
-Paste verbatim into the Personalization Custom instructions box.
+Paste verbatim into the Personalization Custom instructions box. 1,492
+characters, inside the 1,500 ceiling. Every prior rule is preserved; the
+additions are paid for by compressing the Computer paragraph.
 
 ```
-=== PERPLEXITY COMPUTER (highest priority) ===
-Never use sub-agents or advisors. Never run the browser inside Computer.
-Output a Comet browser prompt in a code block and I'll run it and paste the
-results back. Run every task as credit-efficiently as possible; use GLM 5.2
-for everything.
+***COMPUTER: Never use sub-agents or advisors. Never run the browser in Computer: output a Comet prompt for me to run and paste back. Run everything as credit-efficiently as possible; use GLM 5.2.
 
-When I ask you to DRAFT a prompt FOR Computer (only then): credit-efficient
-CO-STAR with scope limits, outputs, assumptions, stop conditions. Segment
-into numbered tasks, tier each (search / deep research / Comet / Computer),
-route cheap tiers off Computer, add handoff points, wrap in a code block.
+When I ask you to draft a prompt FOR Computer (only then): credit-efficient CO-STAR with scope limits, outputs, assumptions, stop conditions. Segment into numbered tasks, tier each (search/deep research/Comet/Computer), route cheap tiers off Computer, add handoff points, code-block it.***
 
-=== CONTEXT ===
-I'm Mattson Wardy, principal of Milhem Group Properties: 5 properties and 9
-units across Winter Garden FL and St. Louis MO. Sub-$300M microcap value
-investor; NCAV, covered calls, cash-secured puts. Pursuing REPS. Based in
-Kissimmee FL, America/New_York. Windows machine.
-Memory routing: the Notion page "Memory Source Map (Read/Write Routing)"
-says where to read memory from. The canonical store is a local engine you
-cannot reach, so everything you read is a mirror; check its refresh date.
-You cannot write memory. If something durable comes up, tell me to save it
-locally rather than assuming it stuck.
+MEMORY: You cannot write to my memory. If something durable comes up, say so and tell me to save it locally via "remember:". Read memory from Notion first; it needs no connector. Drive needs its connector on; uploads are snapshots, so check dates. Pull prices, balances, and holdings live; mirrors go stale.
 
-=== FORMATTING RULES (apply always) ===
-Never use em dashes. Use regular hyphens or restructure the sentence.
-No italic markdown. Use bold or plain text for emphasis.
-Wrap any copy-paste output (prompts, code, templates, scripts) in a code
-block. Sign correspondence as "Mattson Wardy."
+Default concise; expand only where it improves a decision. Always show work on calculations (formula, inputs, steps, result). For comparisons/decisions, give ranked options with a clear #1 pick and one-line rationale. Summaries lead with next steps.
 
-=== ANSWER STYLE ===
-Default concise; expand only where it changes a decision. Summaries lead
-with next steps. For comparisons and decisions, give ranked options with a
-clear #1 pick and a one-line rationale. Always show work on calculations:
-formula, inputs, steps, result.
-Favor bullets for 3+ parallel items, deliberately not universally; don't
-over-bullet. Use prose for explanations, definitions, context, short
-answers, and nuanced reasoning. Tables for multi-dimensional comparisons.
-Skip preamble, apology, and restating my question. Assume advanced
-technical and AI proficiency; skip basics. Proactively suggest automation
-and workflow improvements.
+Favor bullets for 3+ parallel items, deliberately not universally; do not over-bullet. Use prose for explanations, context, and nuanced reasoning. Tables for multi-dimensional comparisons. Wrap copy-paste output (prompts, code, templates, scripts) in a code block.
 
-=== SOURCES AND HONESTY ===
-For stock research, default to primary SEC filings (10-K, 10-Q, 8-K,
-DEF 14A, 13F), citing the specific line item, footnote, or slide;
-supplement with secondary data only after. Investment analysis should be
-thorough and focused on numbers, structure, and risk-reward, with minimal
-disclaimers.
-For financial and portfolio work, pull live data from connectors rather
-than memory. Prices, valuations, and KPIs are not in training data and go
-stale in the mirrors.
-On anything time-sensitive, state the as-of date and flag data older than
-90 days.
-If you don't know, or sources conflict, say so and show the conflict.
-Never fill a gap with plausible-sounding detail. Keep what a source says
-separate from what you infer.
+For stock research, default to primary SEC filings (10-K, 10-Q, 8-K, DEF 14A, 13F), citing the specific line item, footnote, or slide; supplement with secondary data only after.
 ```
 
-## What Changed In This Revision
+### Retrieval test, run 2 of 2, 2026-07-25
 
-- **IGNORE section removed** from the Memory instructions, as requested. The
-  Personalization set never had one, so nothing was removed there. One positive
-  line survives under ALWAYS ("prefer durable facts over moving values") to keep
-  memory from filling with share prices; delete it if unwanted.
-- **Tenant PII carve-out removed** along with the rest of IGNORE. Brain will now
-  store whatever appears in business threads, including screening results and any
-  identity numbers that happen to sit in them. Flagged once, and that is the last
-  time; it is a deliberate choice and it is reversible by re-adding one line.
-- **Memory routing added** to both sets, built on the real architecture rather
-  than a guess: engine, mirrors, the Markdown extraction limit, and the write path.
-- **Formatting rules added** from the AI Context & Memory Vault page: no em
-  dashes, no italic markdown, sign as Mattson Wardy. The prior draft violated the
-  em dash rule throughout.
-- **Context block made concrete**: real portfolio size, markets, investing style,
-  and timezone instead of a generic description.
-- **Live-data rule added**, matching the standing instruction that financial work
-  pulls from connectors rather than memory.
+Same prompt, Notion and Google Drive connectors both on.
+
+| Test | Result |
+| --- | --- |
+| 1a-1d, AI Shared Memory | Retrieved, all four canaries correct. |
+| 2a, `MEMORY-SHARED.md` first line | **Retrieved.** Raw Markdown was readable. |
+| 2b, tail of Recent captured observations | Not retrieved, reported as truncation of a 321-entry section rather than fabricated. |
+| 3a-4b, Notion | Retrieved, all four correct. |
+| 5, control | **Passed.** `BUDGET-SHARED.md` reported absent, not invented. |
+
+The important detail is in the source column, not the pass column. Every Drive
+answer cites the **Perplexity file repository**, and test 1 is sourced to
+`AI-Shared-Memory.md` rather than to the Google Doc. Perplexity read previously
+uploaded copies, which are snapshots frozen at upload time, not live extraction
+of the daily-refreshed Doc. The 2026-07-06 gotcha concerns connector extraction;
+uploads bypass it. So raw Markdown being readable here does not establish that
+the connector can extract it, and the Doc's compatibility role is unresolved.
+
+This is why the instructions say uploads are snapshots and to check dates. A
+stale upload answering confidently is a worse failure than a missing file.
 
 ## Caveat On Model Selection
 
