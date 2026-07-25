@@ -1,0 +1,315 @@
+{
+  "$comment": "Source data for the ALTO research dossier (index.html). Every figure traces to a primary filing. Regenerate the page by re-extracting these from EDGAR and updating as_of.",
+  "as_of": "2026-07-25",
+  "units": "USD thousands unless noted",
+
+  "company": {
+    "name": "Alto Ingredients, Inc.",
+    "ticker": "ALTO",
+    "exchange": "NASDAQ Capital Market",
+    "cik": "0000778164",
+    "sector": "Basic Materials",
+    "industry": "Chemicals - Specialty",
+    "ceo": "Bryon T. McGregor",
+    "employees": 390,
+    "hq": "Pekin, Illinois",
+    "founded": 2003,
+    "ipo_date": "2005-03-24",
+    "former_name": "Pacific Ethanol, Inc. (renamed January 2021)",
+    "segments": ["Pekin Campus Production", "Marketing and Distribution", "Western Production", "Corporate and other"],
+    "plants": "5 alcohol production facilities: 3 Illinois (Pekin Campus), 1 Oregon (Columbia), 1 Idaho (Magic Valley, cold-idled)",
+    "source": "FMP company profile + FY2025 10-K"
+  },
+
+  "market": {
+    "price": 4.64,
+    "change": -0.325,
+    "change_pct": -6.55,
+    "market_cap": 359531.11,
+    "range_52w_low": 0.92,
+    "range_52w_high": 6.11,
+    "off_low_pct": 404.3,
+    "off_high_pct": -24.1,
+    "beta": 0.141,
+    "implied_shares_millions": 77.5,
+    "source": "Financial Modeling Prep, retrieved 2026-07-25"
+  },
+
+  "income_statement": {
+    "source": "FY2025 10-K accession 0001213900-26-027687, R5.htm",
+    "columns": ["FY2023", "FY2024", "FY2025"],
+    "net_sales": [1222940, 965258, 917927],
+    "cost_of_goods_sold": [1207287, 955536, 883014],
+    "gross_profit": [15653, 9722, 34913],
+    "sga": [-29864, -29736, -27208],
+    "acquisition_related": [-2800, -7701, 460],
+    "gain_loss_sale_assets": [-293, null, 830],
+    "asset_impairments": [-6544, -24790, -803],
+    "income_from_operations": [-23848, -51675, 7362],
+    "transferable_tax_credits_45z": [null, null, 7500],
+    "excess_insurance_proceeds": [null, null, 6688],
+    "income_from_cash_grant": [2812, null, null],
+    "interest_expense_net": [-7425, -7644, -10765],
+    "other_income_net": [553, 508, 1932],
+    "pretax_income": [-27908, -58811, 12717],
+    "tax_provision_benefit": [97, 173, -621],
+    "net_income": [-28005, -58984, 13338],
+    "preferred_dividends": [-1265, -1269, -1265],
+    "income_to_common": [-29270, -60253, 12073],
+    "eps_basic": [-0.40, -0.82, 0.16],
+    "eps_diluted": [-0.40, -0.82, 0.16],
+    "wavg_shares_basic": [73339, 73482, 74507],
+    "wavg_shares_diluted": [73339, 73482, 75663]
+  },
+
+  "quarterly": {
+    "source": "Q1'26 10-Q accession 0001213900-26-053870, R4.htm",
+    "columns": ["Q1 2025", "Q1 2026"],
+    "net_sales": [226540, 224680],
+    "cost_of_goods_sold": [228347, 215461],
+    "gross_profit": [-1807, 9219],
+    "sga": [7190, 6699],
+    "income_from_operations": [-8997, 2520],
+    "interest_expense_net": [-2729, -2198],
+    "transferable_tax_credits_45z": [null, 3900],
+    "other_income_net": [47, 49],
+    "pretax_income": [-11679, 4271],
+    "net_income": [-11679, 4271],
+    "preferred_dividends": [-312, -312],
+    "eps_basic": [-0.16, 0.05],
+    "wavg_shares_basic": [73836, 74789],
+    "wavg_shares_diluted": [73836, 76639]
+  },
+
+  "balance_sheet": {
+    "source": "FY2025 10-K, R3.htm",
+    "columns": ["2024-12-31", "2025-12-31"],
+    "cash_and_equivalents": [35469, 23415],
+    "restricted_cash": [742, 2258],
+    "accounts_receivable_net": [58217, 55069],
+    "inventories": [49914, 61676],
+    "transferable_tax_credits_net": [null, 7500],
+    "total_current_assets": [153118, 155917],
+    "property_equipment_net": [214742, 198501],
+    "intangible_assets_net": [4509, 7574],
+    "total_assets": [401438, 388786],
+    "accounts_payable": [20369, 14509],
+    "accrued_liabilities": [24214, 16691],
+    "current_portion_long_term_debt": [16600, null],
+    "total_current_liabilities": [57804, 59071],
+    "long_term_debt_net": [92904, 63027],
+    "total_liabilities": [176375, 143545],
+    "additional_paid_in_capital": [1044176, 1051795],
+    "accumulated_deficit": [-824166, -812093],
+    "total_stockholders_equity": [225063, 245241],
+    "derived": {
+      "total_debt": [109504, 63027],
+      "net_debt_ex_restricted": [74035, 39612],
+      "working_capital": [95314, 96846],
+      "debt_reduction_2025": 46477,
+      "debt_reduction_pct": 42.4
+    }
+  },
+
+  "cash_flow": {
+    "source": "FY2025 10-K, R8.htm",
+    "columns": ["FY2023", "FY2024", "FY2025"],
+    "net_income": [-28005, -58984, 13338],
+    "depreciation_amortization": [23080, 24408, 25216],
+    "asset_impairments": [6544, 24790, 803],
+    "transferable_tax_credits_generated": [null, null, -7500],
+    "stock_based_compensation": [3896, 4357, 3022],
+    "operating_cash_flow": [22025, -3521, 13245],
+    "capex_additions_to_ppe": [-29531, -11066, -4597],
+    "eagle_alcohol_deferred_payments": [-3500, -2800, -2240],
+    "kodiak_carbonic_purchase_net": [null, null, -7278],
+    "excess_insurance_proceeds_investing": [null, null, 6688],
+    "investing_cash_flow": [-33031, -13466, -7427],
+    "kinergy_line_of_credit_net": [12614, 8987, -10091],
+    "principal_payments_term_debt": [null, null, -5000],
+    "stock_repurchases": [null, null, -3674],
+    "preferred_dividends_paid": [-1265, -1269, -1265],
+    "financing_cash_flow": [6961, 7718, -16356],
+    "interest_paid_net_of_capitalized": [7923, 8319, 9016],
+    "capitalized_interest": [2454, 2517, 30],
+    "derived": {
+      "free_cash_flow_ocf_less_capex": [-7506, -14587, 8648],
+      "capex_as_pct_of_da": [128, 45, 18],
+      "fcf_at_maintenance_capex_equals_da_fy2025": -11971
+    }
+  },
+
+  "segments": {
+    "source": "FY2025 10-K, R52.htm — Schedule of Certain Financial Data for Operating Segments",
+    "columns": ["FY2023", "FY2024", "FY2025"],
+    "external_sales_fy2025": {
+      "pekin_alcohol": 415801,
+      "pekin_essential_ingredients": 174598,
+      "marketing_distribution_alcohol": 221306,
+      "western_alcohol": 67301,
+      "western_essential_ingredients": 31552,
+      "corporate_and_other": 7369,
+      "total": 917927,
+      "$comment": "Sums exactly to reported net sales; intersegment eliminated"
+    },
+    "mix_pct_fy2025": {
+      "pekin_alcohol": 45.3,
+      "marketing_distribution_alcohol": 24.1,
+      "essential_ingredients_combined": 22.5,
+      "western_alcohol": 7.3,
+      "corporate_and_other": 0.8,
+      "alcohol_all_grades": 76.7
+    },
+    "gross_profit": {
+      "pekin_campus_production": [11258, 23228, 19353],
+      "marketing_and_distribution": [15372, 14334, 17038],
+      "western_production": [-6076, -19989, 3653],
+      "corporate_and_other": [3712, -911, 680],
+      "intersegment_eliminations": [-8613, -6940, -5811],
+      "consolidated": [15653, 9722, 34913]
+    },
+    "pretax_income": {
+      "pekin_campus_production": [-1560, 6308, 15059],
+      "marketing_and_distribution": [7644, 5261, 7698],
+      "western_production": [-13506, -51086, -4291],
+      "corporate_and_other": [-20486, -19294, -5749],
+      "consolidated": [-27908, -58811, 12717]
+    },
+    "depreciation_amortization": {
+      "pekin_campus_production": [19789, 21017, 21620],
+      "western_production": [2381, 2409, 2957],
+      "corporate_and_other": [910, 982, 639],
+      "consolidated": [23080, 24408, 25216]
+    },
+    "impairments": {
+      "pekin_campus_production": [null, null, 803],
+      "western_production": [null, 21389, null],
+      "corporate_and_other": [6544, 3401, null]
+    },
+    "derived": {
+      "western_pretax_swing_2024_to_2025": 46795,
+      "total_pretax_swing_2024_to_2025": 71528,
+      "western_share_of_swing_pct": 65.4
+    }
+  },
+
+  "carbon": {
+    "source": "FY2025 10-K — Business Strategy, MD&A, risk factors, and Note 1 / RSM critical audit matter",
+    "section_45z": {
+      "description": "Clean fuel production credit; accounted for under IAS 20 as a government grant, presented as 'Transferable tax credits, net' below income from operations",
+      "fy2025_recognized": 7500,
+      "fy2025_per_gallon": 0.10,
+      "q1_2026_recognized": 3900,
+      "guidance_2026_per_gallon": 0.20,
+      "guidance_2026_total_net_proceeds": 15000,
+      "qualifying_gallons_annual_millions": 90,
+      "qualifying_facilities": ["Columbia", "Pekin dry mill"],
+      "non_qualifying_facilities": ["Pekin wet mill", "ICP plant"],
+      "statutory_window": "2025-01-01 through 2029-12-31",
+      "guidance_driver": "Removal of indirect land use change (iLUC) from the GREET model",
+      "auditor_note": "RSM US LLP flagged as critical audit matter; verified clean transportation fuel producer registrations, agreed emissions rates to third-party certifications, tested 45ZCF-GREET inputs"
+    },
+    "section_45q": {
+      "credit_per_metric_ton": 85,
+      "statutory_basis": "Inflation Reduction Act of 2022 as amended by the One Big Beautiful Bill Act",
+      "pekin_co2_produced_tpy": 600000,
+      "pekin_co2_sold_tpy": 190000,
+      "columbia_co2_produced_tpy": 120000,
+      "columbia_co2_sold_tpy": 57000,
+      "total_produced_tpy": 720000,
+      "total_sold_tpy": 247000,
+      "total_unmonetised_tpy": 473000,
+      "status": "Assessing large-scale CO2 utilisation and sequestration at Pekin; developing plans. No capture capex, timeline, Class VI permit status or offtake agreement disclosed.",
+      "scenario_gross_credit_usd_millions": {
+        "300000_tonnes": {"at_85": 25.5, "at_60": 18.0, "at_40": 12.0},
+        "473000_tonnes": {"at_85": 40.2, "at_60": 28.4, "at_40": 18.9},
+        "720000_tonnes": {"at_85": 61.2, "at_60": 43.2, "at_40": 28.8}
+      }
+    },
+    "kodiak_carbonic_acquisition": {
+      "purchase_price_net_of_cash": 7278,
+      "year": 2025,
+      "note": "Management states the acquisition 'materially changed our calculus for simply selling the facilities'"
+    }
+  },
+
+  "operating_notes": {
+    "crush_margin_q4_2025_per_gallon": 0.23,
+    "crush_margin_q4_2024_per_gallon": 0.08,
+    "fy2025_gross_profit_improvement": 25200,
+    "fy2025_net_income_improvement": 72400,
+    "fy2025_adjusted_ebitda_improvement": 53200,
+    "magic_valley": "Cold-idled at end of 2025; $21.4M impairment taken in FY2024; evaluating sale versus restart to capture 45Z and monetise CO2",
+    "columbia": "No longer actively marketed for sale following improved profitability",
+    "pekin_dock": "Damaged April 2025; $10.0M gross insurance proceeds, $6.7M booked as excess insurance proceeds; repair and second dock targeted for completion by end of 2026",
+    "eagle_alcohol_impairment_fy2024": 3401
+  },
+
+  "valuation_derived": {
+    "$comment": "All computed from the filings above; TTM = FY2025 + Q1'26 - Q1'25",
+    "net_debt": 39612,
+    "enterprise_value": 399143,
+    "ttm_revenue": 916067,
+    "ttm_income_from_operations": 18879,
+    "ttm_pretax": 28667,
+    "ttm_net_income": 29288,
+    "ttm_45z_credits": 11400,
+    "ttm_pretax_ex_credits_ex_insurance": 10579,
+    "fy2025_pretax_ex_credits_ex_insurance": -1471,
+    "fy2025_ebitda_op_plus_da": 32578,
+    "fy2025_ebitda_incl_credits_and_insurance": 46766,
+    "ev_ebitda_fy2025": 12.3,
+    "ev_ebitda_incl_credits": 8.5,
+    "ev_ebitda_2026_proxy_with_15m_45z": 8.4,
+    "pe_fy2025_eps": 29.0,
+    "pe_ttm": 12.6,
+    "price_to_book": 1.47,
+    "ev_to_sales": 0.43,
+    "price_to_fcf_reported": 42
+  },
+
+  "capital_structure_events": {
+    "s3_shelf": {"filed": "2026-05-08", "accession": "0001213900-26-053961", "amount": 150000, "effective": "2026-05-22", "pct_of_market_cap": 41.7,
+      "securities": "common stock, preferred stock, debt securities, warrants, units"},
+    "s8": {"filed": "2026-06-23", "accession": "0001213900-26-071143"},
+    "form_4_clusters": [
+      {"date": "2026-06-25", "count": 4},
+      {"date": "2026-04-03", "count": 5},
+      {"date": "2026-03-19", "count": 5}
+    ],
+    "def_14a": {"filed": "2026-04-30", "accession": "0001213900-26-050384"},
+    "fy2025_stock_repurchases": 3674,
+    "share_count_trend_basic_thousands": {"FY2023": 73339, "FY2024": 73482, "FY2025": 74507, "Q1_2026": 74789}
+  },
+
+  "comparable_gpre": {
+    "source": "Green Plains Inc. FY2025 10-K, accession 0001309402-26-000019 (filed 2026-02-10); price from FMP 2026-07-25",
+    "name": "Green Plains Inc.",
+    "ticker": "GPRE",
+    "cik": "0001309402",
+    "price": 16.95,
+    "market_cap": 1183586,
+    "range_52w": [7.08, 19.65],
+    "shares_outstanding": 69828077,
+    "revenue_fy2025": 2091680,
+    "operating_loss_fy2025": -67248,
+    "net_loss_attributable_fy2025": -121278,
+    "eps_fy2025": -1.80,
+    "cash": 182319,
+    "restricted_cash": 47813,
+    "total_debt": 399500,
+    "carbon_equipment_liabilities": 104217,
+    "carbon_equipment_liabilities_prior_year": 17918,
+    "interest_expense_fy2025": 76668,
+    "interest_expense_fy2024": 33095,
+    "total_stockholders_equity": 766247,
+    "derived": {"net_debt": 217181, "enterprise_value": 1400767, "price_to_book": 1.54, "ev_to_sales": 0.67}
+  },
+
+  "not_sourced": [
+    "Short interest for ALTO — no citable primary provider reachable in this environment; omitted rather than estimated",
+    "Form 4 transaction detail (buy/sell direction, size, 10b5-1 status) — filing dates captured, transactions not parsed",
+    "Green Plains cash flow statement — capex and FCF not extracted; comparison table omits P/FCF deliberately",
+    "Analyst estimates and price targets — FMP endpoint gated on current plan"
+  ]
+}

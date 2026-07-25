@@ -1,0 +1,630 @@
+<title>Alto Ingredients (ALTO) — Research Dossier</title>
+
+<style>
+:root{
+  --ground:#F4F6F1;
+  --surface:#FFFFFF;
+  --surface-2:#EDF0E9;
+  --ink:#1A1D16;
+  --ink-2:#3D4437;
+  --muted:#646B5A;
+  --faint:#8C9382;
+  --rule:#DCE0D3;
+  --rule-strong:#C3C9B6;
+  --accent:#2F6257;
+  --accent-soft:#E2ECE7;
+  --gold:#96701A;
+  --gold-soft:#F3EBD8;
+  --pos:#2C6B41;
+  --neg:#A34029;
+  --c1:#2F6257;
+  --c2:#5D9184;
+  --c3:#96701A;
+  --c4:#7C8570;
+  --c5:#C3C9B6;
+  --shadow:0 1px 2px rgba(26,29,22,.05),0 8px 24px -16px rgba(26,29,22,.18);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#111310;
+    --surface:#1A1D18;
+    --surface-2:#212520;
+    --ink:#E9EBE2;
+    --ink-2:#C3C8B8;
+    --muted:#949A87;
+    --faint:#767C6B;
+    --rule:#2C312A;
+    --rule-strong:#3D443A;
+    --accent:#79B9A8;
+    --accent-soft:#1E2E29;
+    --gold:#D7AC53;
+    --gold-soft:#2B2517;
+    --pos:#6FBA84;
+    --neg:#D97F65;
+    --c1:#79B9A8;
+    --c2:#487F72;
+    --c3:#D7AC53;
+    --c4:#8A9280;
+    --c5:#454C41;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -16px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="light"]{
+  --ground:#F4F6F1;--surface:#FFFFFF;--surface-2:#EDF0E9;--ink:#1A1D16;--ink-2:#3D4437;
+  --muted:#646B5A;--faint:#8C9382;--rule:#DCE0D3;--rule-strong:#C3C9B6;--accent:#2F6257;
+  --accent-soft:#E2ECE7;--gold:#96701A;--gold-soft:#F3EBD8;--pos:#2C6B41;--neg:#A34029;
+  --c1:#2F6257;--c2:#5D9184;--c3:#96701A;--c4:#7C8570;--c5:#C3C9B6;
+  --shadow:0 1px 2px rgba(26,29,22,.05),0 8px 24px -16px rgba(26,29,22,.18);
+}
+:root[data-theme="dark"]{
+  --ground:#111310;--surface:#1A1D18;--surface-2:#212520;--ink:#E9EBE2;--ink-2:#C3C8B8;
+  --muted:#949A87;--faint:#767C6B;--rule:#2C312A;--rule-strong:#3D443A;--accent:#79B9A8;
+  --accent-soft:#1E2E29;--gold:#D7AC53;--gold-soft:#2B2517;--pos:#6FBA84;--neg:#D97F65;
+  --c1:#79B9A8;--c2:#487F72;--c3:#D7AC53;--c4:#8A9280;--c5:#454C41;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -16px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:ui-serif,Georgia,Cambria,"Times New Roman",serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+.label,.eyebrow,th,.tile-k,.tag,.srcs,figcaption,.note{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+.num,td.n,.tile-v,.big{
+  font-family:ui-monospace,SFMono-Regular,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  font-variant-numeric:tabular-nums;
+}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.col{max-width:720px}
+
+/* ---------- masthead ---------- */
+header.mast{padding:64px 0 0}
+.eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 20px;
+}
+h1{
+  font-size:clamp(38px,6vw,60px);line-height:1.04;letter-spacing:-.02em;
+  margin:0 0 20px;font-weight:600;text-wrap:balance;
+}
+h1 .tick{color:var(--muted);font-weight:400}
+.dek{font-size:clamp(18px,2.4vw,21px);line-height:1.5;color:var(--ink-2);margin:0 0 26px;text-wrap:pretty}
+.provenance{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:12.5px;line-height:1.65;color:var(--faint);margin:0 0 40px;max-width:640px;
+}
+
+/* ---------- KPI strip ---------- */
+.tiles{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+  gap:1px;background:var(--rule);border-block:1px solid var(--rule);margin-bottom:56px;
+}
+.tile{background:var(--ground);padding:18px 20px 20px}
+.tile-k{font-size:10.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin:0 0 9px}
+.tile-v{font-size:25px;line-height:1.1;font-weight:500;letter-spacing:-.02em;margin:0 0 6px}
+.tile-s{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:12px;line-height:1.4;color:var(--muted);margin:0}
+.up{color:var(--pos)}.down{color:var(--neg)}
+.neg{color:var(--neg)}.gold{color:var(--gold)}
+
+/* ---------- one-page take ---------- */
+.take{
+  background:var(--surface);border:1px solid var(--rule);border-radius:2px;
+  padding:32px 34px;margin-bottom:64px;box-shadow:var(--shadow);
+}
+.take h2{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--faint);margin:0 0 20px;
+}
+.take p{margin:0 0 18px;max-width:66ch}
+.take p:last-child{margin-bottom:0}
+.take strong{font-weight:600}
+
+/* ---------- sections ---------- */
+section{margin-bottom:64px;scroll-margin-top:70px}
+.shead{display:flex;gap:16px;align-items:baseline;margin-bottom:8px}
+.snum{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:13px;font-weight:500;color:var(--accent);flex:none;padding-top:.35em;
+}
+h2.stitle{font-size:clamp(25px,3.4vw,32px);line-height:1.16;letter-spacing:-.018em;margin:0;font-weight:600;text-wrap:balance}
+.sdek{color:var(--muted);font-size:16px;margin:0 0 26px;padding-left:29px;max-width:64ch;text-wrap:pretty}
+section p{max-width:66ch}
+h3{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin:34px 0 12px;
+}
+
+/* ---------- tables ---------- */
+.scroller{overflow-x:auto;margin:0 0 8px;border:1px solid var(--rule);border-radius:2px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
+th{
+  font-size:10px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);
+  text-align:left;padding:12px 16px;border-bottom:1px solid var(--rule-strong);white-space:nowrap;
+}
+th.n,td.n{text-align:right}
+td{padding:11px 16px;border-bottom:1px solid var(--rule);vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+td:first-child{color:var(--ink);max-width:34ch}
+tr.total td{font-weight:600;border-top:1px solid var(--rule-strong);background:var(--surface-2)}
+tr.rule-top td{border-top:1px solid var(--rule-strong)}
+.sub{display:block;font-family:system-ui,-apple-system,sans-serif;font-size:11.5px;color:var(--faint);line-height:1.35;margin-top:2px}
+caption{caption-side:bottom;text-align:left;padding:10px 16px;font-family:system-ui,sans-serif;font-size:11.5px;color:var(--faint);line-height:1.5}
+
+/* ---------- callouts ---------- */
+.callout{
+  border:1px solid var(--rule);border-left:2px solid var(--accent);border-radius:2px;
+  background:var(--surface);padding:22px 26px;margin:26px 0 0;
+}
+.callout.gold{border-left-color:var(--gold);background:var(--gold-soft)}
+.callout.warn{border-left-color:var(--neg)}
+.callout h4{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:13.5px;font-weight:650;letter-spacing:-.005em;color:var(--ink);margin:0 0 10px;
+}
+.callout p{margin:0 0 12px;font-size:16px;max-width:64ch}
+.callout p:last-child,.callout ul:last-child{margin-bottom:0}
+.callout ul{margin:0 0 12px;padding-left:20px}
+.callout li{margin-bottom:9px;font-size:16px;max-width:62ch}
+.callout li:last-child{margin-bottom:0}
+
+ul.plain{padding-left:20px;margin:0 0 18px}
+ul.plain li{margin-bottom:11px;max-width:64ch}
+
+.note{font-size:12.5px;color:var(--faint);line-height:1.6;margin:10px 0 0;max-width:66ch}
+
+/* ---------- figures ---------- */
+figure{margin:0 0 26px}
+.donut-wrap{display:flex;flex-wrap:wrap;gap:32px;align-items:center;
+  background:var(--surface);border:1px solid var(--rule);border-radius:2px;padding:26px}
+.legend{display:flex;flex-direction:column;gap:11px;min-width:250px;flex:1}
+.lrow{display:flex;align-items:baseline;gap:10px;font-size:14px;line-height:1.35}
+.sw{width:10px;height:10px;border-radius:1px;flex:none;transform:translateY(1px)}
+.lname{flex:1;color:var(--ink-2)}
+.lval{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;
+  font-size:13.5px;color:var(--ink);font-weight:500}
+figcaption{font-size:11.5px;color:var(--faint);line-height:1.55;margin-top:10px}
+
+.bars{background:var(--surface);border:1px solid var(--rule);border-radius:2px;padding:26px 26px 20px}
+.brow{display:grid;grid-template-columns:172px 1fr;gap:16px;align-items:center;margin-bottom:18px;font-size:13.5px}
+.brow:last-of-type{margin-bottom:6px}
+.btrack{position:relative;height:26px}
+.bzero{position:absolute;left:50%;top:-5px;bottom:-5px;width:1px;background:var(--rule-strong)}
+.bseg{position:absolute;height:9px;border-radius:1px}
+.bseg.y24{top:2px}
+.bseg.y25{top:14px}
+.blab{position:absolute;font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;
+  font-size:11.5px;color:var(--ink-2);top:7px;white-space:nowrap}
+
+/* ---------- questions ---------- */
+ol.qs{counter-reset:q;list-style:none;padding:0;margin:0}
+ol.qs li{counter-increment:q;position:relative;padding-left:38px;margin-bottom:22px;max-width:66ch}
+ol.qs li::before{
+  content:counter(q,decimal-leading-zero);position:absolute;left:0;top:.18em;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12px;color:var(--accent);font-weight:500;
+}
+ol.qs strong{font-weight:600;display:block;margin-bottom:3px}
+ol.qs span{color:var(--ink-2);font-size:16px}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--rule-strong);padding:32px 0 72px;margin-top:16px}
+.foot-lead{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 16px;
+}
+.srcs{font-size:12.5px;line-height:1.7;color:var(--faint);margin:0 0 16px;max-width:78ch}
+.srcs a{color:var(--muted);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:.5px}
+.srcs a:hover{color:var(--accent)}
+.disc{font-family:system-ui,sans-serif;font-size:12.5px;line-height:1.7;color:var(--faint);margin:0;max-width:78ch}
+
+a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+@media (max-width:640px){
+  body{font-size:16px}
+  .wrap{padding:0 18px}
+  header.mast{padding-top:40px}
+  .take{padding:24px 22px}
+  .sdek{padding-left:0}
+  .shead{gap:12px}
+  .brow{grid-template-columns:1fr;gap:5px}
+  .donut-wrap{padding:20px;gap:24px}
+  section{margin-bottom:52px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Equity Research Dossier · Working Document</p>
+  <h1>Alto Ingredients <span class="tick">(ALTO)</span></h1>
+  <p class="dek">A synthesis for collaborative research: a corn-alcohol producer that has quietly fixed its worst assets, is now booking federal clean-fuel credits as the entirety of its profit, and is sitting on 720,000 tonnes a year of vented CO<sub>2</sub> that nobody is paying it for yet.</p>
+  <p class="provenance">Data as of 2026-07-25 · Financials: SEC EDGAR — FY2025 10-K (filed 2026-03-13) and Q1'26 10-Q (filed 2026-05-08) · Price, market cap &amp; share count: Financial Modeling Prep · Comparables: Green Plains FY2025 10-K (filed 2026-02-10) · Not investment advice.</p>
+</header>
+
+<div class="tiles">
+  <div class="tile">
+    <p class="tile-k">Price</p>
+    <p class="tile-v">$4.64</p>
+    <p class="tile-s"><span class="down">−6.5%</span> on the day</p>
+  </div>
+  <div class="tile">
+    <p class="tile-k">Market cap</p>
+    <p class="tile-v">~$360M</p>
+    <p class="tile-s">EV ~$399M · net debt $39.6M</p>
+  </div>
+  <div class="tile">
+    <p class="tile-k">52-week range</p>
+    <p class="tile-v">$0.92–6.11</p>
+    <p class="tile-s"><span class="up">+404%</span> off the low · −24% off high</p>
+  </div>
+  <div class="tile">
+    <p class="tile-k">EV / EBITDA</p>
+    <p class="tile-v">12.3x</p>
+    <p class="tile-s">FY25 · 8.5x incl. credits — see §02</p>
+  </div>
+  <div class="tile">
+    <p class="tile-k">45Z credits</p>
+    <p class="tile-v">$7.5M</p>
+    <p class="tile-s">FY25 · ~$15M guided for 2026</p>
+  </div>
+</div>
+
+<div class="take">
+  <h2>The one-page take</h2>
+  <p><strong>Alto is a commodity crush business that has stopped bleeding.</strong> Revenue has fallen three years running — $1,223M → $965M → $918M — but gross profit went the other way, $15.7M → $9.7M → $34.9M. The reason is almost entirely one segment: Western Production, the Oregon and Idaho plants, swung from a $51.1M pretax loss in 2024 to a $4.3M loss in 2025 after management cold-idled Magic Valley and stopped marketing Columbia. That single swing is $46.8M of the company's $71.5M pretax improvement. The core Pekin, Illinois campus earned $15.1M pretax and the trading arm another $7.7M.</p>
+  <p><strong>The asymmetry is carbon, and it arrives in two stages.</strong> Stage one is already in the numbers: Section 45Z clean-fuel credits contributed $7.5M in FY2025 at $0.10/gallon, and with indirect land-use change removed from the GREET model management guides to $0.20/gallon and roughly $15M net in 2026 — Q1 already booked $3.9M. Stage two is not in the numbers at all. The Pekin campus vents over 600,000 tonnes of CO<sub>2</sub> a year and sells only about 190,000; Columbia produces 120,000 and sells 57,000. Section 45Q now pays $85 a tonne for sequestration. Capture the whole 720,000 and the gross credit is $61M a year against a $360M company. See §05 and §06.</p>
+  <p><strong>The catch is that the profit is the credit, and the capital hasn't been spent.</strong> Strip 45Z and the $6.7M of insurance proceeds out of FY2025 and pretax income is <em>negative</em> $1.5M — the GAAP profit is entirely non-operating. Capex ran $4.6M against $25.2M of depreciation, or 18%: the reported $8.6M of free cash flow is borrowed from the asset base, and at maintenance capex the number is minus $12M. Meanwhile the sequestration option that makes the bull case work needs pipelines, Class VI wells and years of permitting that nobody has priced — and in May the company registered a <strong>$150M shelf</strong>, 42% of its own market cap. See §02 and §08.</p>
+</div>
+
+<!-- ============ 01 ============ -->
+<section id="s01">
+  <div class="shead"><span class="snum">01</span><h2 class="stitle">What you actually own</h2></div>
+  <p class="sdek">FY2025 net sales of $917.9M. Three reported segments, but the more useful cut is alcohol versus animal-feed ingredients — and where in the country it is made.</p>
+
+  <figure>
+    <div class="donut-wrap">
+      <svg width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="FY2025 revenue mix: Pekin alcohol 45.3%, marketing and distribution alcohol 24.1%, essential ingredients 22.5%, Western alcohol 7.3%, other 0.8%">
+        <g transform="rotate(-90 100 100)">
+          <circle cx="100" cy="100" r="70" fill="none" stroke="var(--c1)" stroke-width="30" stroke-dasharray="199.2 240.6" stroke-dashoffset="0"></circle>
+          <circle cx="100" cy="100" r="70" fill="none" stroke="var(--c2)" stroke-width="30" stroke-dasharray="106.0 333.8" stroke-dashoffset="-199.2"></circle>
+          <circle cx="100" cy="100" r="70" fill="none" stroke="var(--c3)" stroke-width="30" stroke-dasharray="99.0 340.8" stroke-dashoffset="-305.2"></circle>
+          <circle cx="100" cy="100" r="70" fill="none" stroke="var(--c4)" stroke-width="30" stroke-dasharray="32.1 407.7" stroke-dashoffset="-404.2"></circle>
+          <circle cx="100" cy="100" r="70" fill="none" stroke="var(--c5)" stroke-width="30" stroke-dasharray="3.5 436.3" stroke-dashoffset="-436.3"></circle>
+        </g>
+        <text x="100" y="95" text-anchor="middle" style="font-family:ui-monospace,Menlo,monospace;font-size:23px;font-weight:500;fill:var(--ink)">$918M</text>
+        <text x="100" y="113" text-anchor="middle" style="font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.09em;fill:var(--faint)">FY2025 SALES</text>
+      </svg>
+      <div class="legend">
+        <div class="lrow"><span class="sw" style="background:var(--c1)"></span><span class="lname">Pekin Campus — alcohol</span><span class="lval">45.3%</span></div>
+        <div class="lrow"><span class="sw" style="background:var(--c2)"></span><span class="lname">Marketing &amp; distribution — alcohol</span><span class="lval">24.1%</span></div>
+        <div class="lrow"><span class="sw" style="background:var(--c3)"></span><span class="lname">Essential ingredients (feed &amp; corn oil)</span><span class="lval">22.5%</span></div>
+        <div class="lrow"><span class="sw" style="background:var(--c4)"></span><span class="lname">Western Production — alcohol</span><span class="lval">7.3%</span></div>
+        <div class="lrow"><span class="sw" style="background:var(--c5)"></span><span class="lname">Corporate &amp; other</span><span class="lval">0.8%</span></div>
+      </div>
+    </div>
+    <figcaption>Alcohol of all grades is 76.7% of sales; animal-feed and corn-oil co-products are 22.5%. External sales only, intersegment eliminated. Components sum exactly to reported net sales of $917.9M.</figcaption>
+  </figure>
+
+  <h3>Segment gross profit ($ thousands)</h3>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Segment</th><th class="n">2023</th><th class="n">2024</th><th class="n">2025</th><th class="n">'24→'25</th></tr></thead>
+      <tbody>
+        <tr><td>Pekin Campus Production<span class="sub">Illinois — wet mill, dry mill, ICP</span></td><td class="n num">11,258</td><td class="n num">23,228</td><td class="n num">19,353</td><td class="n num down">−17%</td></tr>
+        <tr><td>Marketing &amp; distribution<span class="sub">Kinergy trading arm</span></td><td class="n num">15,372</td><td class="n num">14,334</td><td class="n num">17,038</td><td class="n num up">+19%</td></tr>
+        <tr><td>Western Production<span class="sub">Columbia (OR), Magic Valley (ID)</span></td><td class="n num neg">−6,076</td><td class="n num neg">−19,989</td><td class="n num up">3,653</td><td class="n num up">swing</td></tr>
+        <tr><td>Corporate &amp; other</td><td class="n num">3,712</td><td class="n num neg">−911</td><td class="n num">680</td><td class="n num up">+$1.6M</td></tr>
+        <tr><td>Intersegment eliminations</td><td class="n num">−8,613</td><td class="n num">−6,940</td><td class="n num">−5,811</td><td class="n num">—</td></tr>
+        <tr class="total"><td>Consolidated gross profit</td><td class="n num">15,653</td><td class="n num">9,722</td><td class="n num">34,913</td><td class="n num up">+259%</td></tr>
+      </tbody>
+      <caption>Source: FY2025 10-K, Segments note. Figures sum exactly to the consolidated income statement.</caption>
+    </table>
+  </div>
+
+  <div class="callout">
+    <h4>Why the mix matters</h4>
+    <p>Two-thirds of revenue is a commodity: fuel-grade ethanol whose margin is the crush spread — corn in, alcohol out — and which management does not control. The other third is where the business actually differentiates. Pekin's specialty alcohols go into mouthwash, cosmetics, pharmaceuticals and beverage-grade spirits at a premium to fuel; the essential-ingredients line sells dried yeast, gluten meal and distillers grains into animal feed.</p>
+    <p>The tell is that revenue fell 25% over three years while gross profit more than doubled. Alto is deliberately selling <em>less</em> — it idled a plant and stopped chasing low-margin gallons. Judge this company on gross profit per segment, not on the top line.</p>
+  </div>
+</section>
+
+<!-- ============ 02 ============ -->
+<section id="s02">
+  <div class="shead"><span class="snum">02</span><h2 class="stitle">Valuation — and why the reported numbers mislead</h2></div>
+  <p class="sdek">Alto's FY2025 GAAP profit is real cash, but it is not operating profit. Three separate distortions run through the statements in the same direction.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Metric</th><th class="n">Reported</th><th>What it really is</th></tr></thead>
+      <tbody>
+        <tr><td>Price / market cap</td><td class="n num">$4.64 / ~$360M</td><td>~77.5M shares implied</td></tr>
+        <tr><td>Enterprise value</td><td class="n num">~$399M</td><td>net debt $39.6M</td></tr>
+        <tr><td>P / E — FY2025 EPS $0.16</td><td class="n num">29.0x</td><td>meaningless — see below</td></tr>
+        <tr><td>P / E — TTM EPS ~$0.37</td><td class="n num">~12.6x</td><td>flattered by credits</td></tr>
+        <tr class="rule-top"><td>FY2025 pretax income</td><td class="n num">$12.7M</td><td>includes $14.2M of non-operating items</td></tr>
+        <tr><td>FY2025 pretax, ex-45Z &amp; ex-insurance</td><td class="n num neg">−$1.5M</td><td><strong>the operating truth</strong></td></tr>
+        <tr><td>TTM pretax, ex-45Z &amp; ex-insurance</td><td class="n num up">+$10.6M</td><td>the trend is genuinely better</td></tr>
+        <tr class="rule-top"><td>EV / EBITDA — FY2025</td><td class="n num">12.3x</td><td>operating only</td></tr>
+        <tr><td>EV / EBITDA — incl. credits &amp; insurance</td><td class="n num">8.5x</td><td>one-time insurance inflates it</td></tr>
+        <tr><td>EV / EBITDA — 2026 proxy, +$15M 45Z</td><td class="n num">8.4x</td><td>the fairest forward gauge</td></tr>
+        <tr class="rule-top"><td>P / FCF — as reported</td><td class="n num">~42x</td><td>capex was starved</td></tr>
+        <tr><td>FCF at maintenance capex = D&amp;A</td><td class="n num neg">−$12.0M</td><td><strong>the honest floor</strong></td></tr>
+        <tr><td>Price / book · EV / sales</td><td class="n num">1.47x · 0.43x</td><td>cleaner asset-based gauges</td></tr>
+      </tbody>
+      <caption>Computed from the FY2025 10-K and Q1'26 10-Q. TTM = Q2'25 through Q1'26. EBITDA here is income from operations plus D&amp;A; 45Z credits and insurance proceeds sit below the operating line and are added only where labelled.</caption>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <h4>Read the income statement carefully — three things sit below the operating line</h4>
+    <ul>
+      <li><strong>Section 45Z is not a tax line.</strong> Alto accounts for its clean-fuel credits under IAS 20 as a <em>government grant</em>, recognising $7.5M net of selling costs as "Transferable tax credits, net" — below income from operations, above pretax. It is real, transferable and saleable for cash. It is not operating margin, and it expires 31 December 2029 unless Congress acts.</li>
+      <li><strong>$6.7M of the profit was an insurance claim.</strong> The Pekin loading dock was damaged in April 2025; gross proceeds were $10.0M, of which $6.7M was booked as excess insurance proceeds. That does not recur.</li>
+      <li><strong>Do the subtraction.</strong> Income from operations $7.4M, less interest $10.8M, plus other income $1.9M, gives <strong>−$1.5M</strong>. Every dollar of FY2025's $13.3M net income — and more — came from the credit and the claim.</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <h4>Bottom line on the multiple: cheap on the tape, not cheap on the assets</h4>
+    <p>At ~8.4x forward EV/EBITDA and 1.47x book, Alto does not look expensive next to a specialty-chemicals peer group — and the TTM figures show the underlying business crossing into genuine profitability, +$10.6M pretax before any credits. That is a real change from FY2025's −$1.5M.</p>
+    <p>But the 42x P/FCF is the number to sit with. Free cash flow of $8.6M exists only because capex was $4.6M against $25.2M of depreciation. You cannot run five plants at 18% of depreciation indefinitely, and you certainly cannot build carbon-capture infrastructure at that rate. Charge maintenance capex at D&amp;A and free cash flow is <em>negative</em> $12M. The stock is priced as though the turnaround is done and the carbon option is free; the balance sheet says the capital cycle hasn't started.</p>
+  </div>
+</section>
+
+<!-- ============ 03 ============ -->
+<section id="s03">
+  <div class="shead"><span class="snum">03</span><h2 class="stitle">Cash flow &amp; balance sheet</h2></div>
+  <p class="sdek">The deleveraging is the least-discussed part of the story and arguably the most solid. Debt fell 42% in a single year.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>$ thousands</th><th class="n">2023</th><th class="n">2024</th><th class="n">2025</th></tr></thead>
+      <tbody>
+        <tr><td>Net sales</td><td class="n num">1,222,940</td><td class="n num">965,258</td><td class="n num">917,927</td></tr>
+        <tr><td>Gross profit</td><td class="n num">15,653</td><td class="n num">9,722</td><td class="n num">34,913</td></tr>
+        <tr><td>Income (loss) from operations</td><td class="n num neg">−23,848</td><td class="n num neg">−51,675</td><td class="n num up">7,362</td></tr>
+        <tr><td>Asset impairments</td><td class="n num">6,544</td><td class="n num">24,790</td><td class="n num">803</td></tr>
+        <tr><td>Transferable tax credits (45Z), net</td><td class="n num">—</td><td class="n num">—</td><td class="n num">7,500</td></tr>
+        <tr><td>Excess insurance proceeds</td><td class="n num">—</td><td class="n num">—</td><td class="n num">6,688</td></tr>
+        <tr><td>Net income (loss)</td><td class="n num neg">−28,005</td><td class="n num neg">−58,984</td><td class="n num up">13,338</td></tr>
+        <tr class="rule-top"><td>Operating cash flow</td><td class="n num">22,025</td><td class="n num neg">−3,521</td><td class="n num">13,245</td></tr>
+        <tr><td>Capital expenditure</td><td class="n num">29,531</td><td class="n num">11,066</td><td class="n num">4,597</td></tr>
+        <tr><td>Depreciation &amp; amortisation</td><td class="n num">23,080</td><td class="n num">24,408</td><td class="n num">25,216</td></tr>
+        <tr class="total"><td>Free cash flow (OCF − capex)</td><td class="n num neg">−7,506</td><td class="n num neg">−14,587</td><td class="n num up">8,648</td></tr>
+      </tbody>
+      <caption>Source: FY2025 10-K consolidated statements of operations and cash flows. Note the 45Z credit is <em>deducted</em> in the cash-flow reconciliation as a non-cash item — operating cash flow of $13.2M is genuinely operational.</caption>
+    </table>
+  </div>
+
+  <h3>Segment pretax income — the turnaround in one chart</h3>
+  <figure>
+    <div class="bars">
+      <div class="brow">
+        <span class="bname">Pekin Campus Production</span>
+        <span class="btrack"><span class="bzero"></span>
+          <span class="bseg y24" style="left:50.00%;width:5.73%;background:var(--c5)"></span>
+          <span class="bseg y25" style="left:50.00%;width:13.69%;background:var(--c1)"></span>
+          <span class="blab" style="left:65.69%">+$15.1M <span style="color:var(--faint)">(from +$6.3M)</span></span>
+        </span>
+      </div>
+      <div class="brow">
+        <span class="bname">Marketing &amp; distribution</span>
+        <span class="btrack"><span class="bzero"></span>
+          <span class="bseg y24" style="left:50.00%;width:4.78%;background:var(--c5)"></span>
+          <span class="bseg y25" style="left:50.00%;width:7.00%;background:var(--c1)"></span>
+          <span class="blab" style="left:59.00%">+$7.7M <span style="color:var(--faint)">(from +$5.3M)</span></span>
+        </span>
+      </div>
+      <div class="brow">
+        <span class="bname">Western Production</span>
+        <span class="btrack"><span class="bzero"></span>
+          <span class="bseg y24" style="left:3.56%;width:46.44%;background:var(--c5)"></span>
+          <span class="bseg y25" style="left:46.10%;width:3.90%;background:var(--c1)"></span>
+          <span class="blab" style="left:52.00%">−$4.3M <span style="color:var(--faint)">(from −$51.1M)</span></span>
+        </span>
+      </div>
+      <div class="brow">
+        <span class="bname">Corporate &amp; other</span>
+        <span class="btrack"><span class="bzero"></span>
+          <span class="bseg y24" style="left:32.46%;width:17.54%;background:var(--c5)"></span>
+          <span class="bseg y25" style="left:44.77%;width:5.23%;background:var(--c1)"></span>
+          <span class="blab" style="left:52.00%">−$5.7M <span style="color:var(--faint)">(from −$19.3M)</span></span>
+        </span>
+      </div>
+      <p class="note" style="margin-top:18px;display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+        <span style="display:inline-flex;align-items:center;gap:7px"><span class="sw" style="background:var(--c5)"></span>FY2024</span>
+        <span style="display:inline-flex;align-items:center;gap:7px"><span class="sw" style="background:var(--c1)"></span>FY2025</span>
+        <span>Symmetric scale −$55M to +$55M; vertical rule is zero.</span>
+      </p>
+    </div>
+    <figcaption>Pretax income by segment. Western Production alone accounts for $46.8M of the company's $71.5M pretax improvement.</figcaption>
+  </figure>
+
+  <h3>Balance sheet at 31 December 2025</h3>
+  <p>Cash $23.4M and restricted cash $2.3M against total debt of <strong>$63.0M</strong> — down from $109.5M a year earlier, a 42% reduction achieved by paying down $10.1M on the Kinergy line, $5.0M of term debt and retiring the $16.6M current portion. Net debt is $39.6M. Working capital is $96.8M. Stockholders' equity is $245.2M, so the shares change hands at 1.47x book.</p>
+  <p>One number gives the historical context: additional paid-in capital of $1,052M sits against an accumulated deficit of <strong>$812M</strong>. Across its life as Pacific Ethanol and then Alto, this company has consumed roughly four-fifths of every dollar shareholders ever put in. That is the base rate the turnaround is arguing against.</p>
+
+  <div class="callout warn">
+    <h4>The cyclicality, in one row</h4>
+    <p>Look at 2024: gross profit of $9.7M on $965M of sales — a 1.0% gross margin — a $51.7M operating loss and $24.8M of impairments. Nothing about the business model changed between 2024 and 2025 except crush margins, which went from $0.08 to $0.23 per gallon in the fourth quarter, and a decision to stop running the worst plant.</p>
+    <p>That is the drawdown you are underwriting. A corn-alcohol producer's margin is the spread between two commodities it does not control, and the spread has been negative before. Everything else in this dossier — 45Z, 45Q, specialty mix — is a modifier on top of that spread, not a replacement for it.</p>
+  </div>
+</section>
+
+<!-- ============ 04 ============ -->
+<section id="s04">
+  <div class="shead"><span class="snum">04</span><h2 class="stitle">The 45Z engine</h2></div>
+  <p class="sdek">The clean-fuel production credit is the one part of the bull case that is already banked, already audited, and already doubling.</p>
+
+  <p>Section 45Z of the Inflation Reduction Act pays producers per gallon of qualifying low-carbon transportation fuel sold, with the credit scaled to the fuel's carbon intensity against a statutory baseline. Alto's Columbia plant and the Pekin dry mill qualify; the Pekin wet mill and the ICP plant do not.</p>
+
+  <ul class="plain">
+    <li><strong>FY2025:</strong> $7.5M recognised, net of monetisation costs — about $0.10 per gallon, booked in the fourth quarter for the full year.</li>
+    <li><strong>2026 guidance:</strong> with indirect land-use change removed from the GREET model, management expects <strong>$0.20 per gallon</strong> and roughly <strong>$15M in total net proceeds</strong> across Columbia and the Pekin dry mill.</li>
+    <li><strong>Q1'26 actual:</strong> $3.9M booked in the quarter — an annualised $15.6M, tracking slightly ahead of guidance.</li>
+    <li><strong>Volume:</strong> approximately 90 million gallons of combined annual production qualifies.</li>
+    <li><strong>Auditor treatment:</strong> RSM flagged the credits as a critical audit matter, verifying clean-fuel producer registrations, agreeing emissions rates to third-party certifications and testing 45ZCF-GREET model inputs.</li>
+  </ul>
+
+  <div class="callout gold">
+    <h4>Why this line deserves a different multiple than the crush spread</h4>
+    <p>45Z revenue is a function of gallons produced and measured carbon intensity — not of the corn-to-ethanol spread. It is close to pure margin: no incremental cost of goods, only monetisation costs already netted out. In a year when crush margins collapse, the credit keeps paying.</p>
+    <p>Two things stop it being a growth story. It is <strong>capped by qualifying volume</strong> — roughly 90 million gallons, which does not grow unless Alto lowers carbon scores at the wet mill and ICP or restarts Magic Valley. And it has a <strong>hard expiry: 31 December 2029.</strong> Whatever multiple you assign this stream, it is a four-year annuity with legislative risk, not a perpetuity. Management is explicit that it continues to pursue lower carbon scores to widen eligibility.</p>
+  </div>
+</section>
+
+<!-- ============ 05 ============ -->
+<section id="s05">
+  <div class="shead"><span class="snum">05</span><h2 class="stitle">The 45Q option — 473,000 tonnes nobody is paying for</h2></div>
+  <p class="sdek">This is the part that is not in the numbers at all. Fermentation produces a nearly pure CO<sub>2</sub> stream — the cheapest carbon in industry to capture — and Alto vents most of its own.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Facility</th><th class="n">CO₂ produced /yr</th><th class="n">Currently sold</th><th class="n">Unmonetised</th></tr></thead>
+      <tbody>
+        <tr><td>Pekin Campus<span class="sub">Illinois — assessing large-scale utilisation and sequestration</span></td><td class="n num">&gt;600,000 t</td><td class="n num">~190,000 t</td><td class="n num gold">~410,000 t</td></tr>
+        <tr><td>Columbia<span class="sub">Oregon — expanding liquid CO₂ storage and truck-loading capture</span></td><td class="n num">&gt;120,000 t</td><td class="n num">~57,000 t</td><td class="n num gold">~63,000 t</td></tr>
+        <tr class="total"><td>Total</td><td class="n num">~720,000 t</td><td class="n num">~247,000 t</td><td class="n num">~473,000 t</td></tr>
+      </tbody>
+      <caption>Source: FY2025 10-K, Business Strategy. Magic Valley is cold-idled; management is weighing sale against restart specifically to capture 45Z and monetise the CO₂ that plant would produce.</caption>
+    </table>
+  </div>
+
+  <p>The Inflation Reduction Act, as amended by the One Big Beautiful Bill Act, raised the Section 45Q credit to <strong>$85 per tonne</strong> for carbon capture, utilisation and storage. Alto also bought Kodiak Carbonic during 2025 for $7.3M net of cash — a CO<sub>2</sub> business that management says has "materially changed our calculus" on whether to sell the Western plants at all.</p>
+
+  <div class="callout gold">
+    <h4>Size the option honestly</h4>
+    <p>Ethanol CO<sub>2</sub> is the best capture feedstock there is: the fermentation off-gas is already about 99% pure, so there is no expensive separation step. That is why ethanol plants are the first movers in US carbon sequestration. The credit at $85/tonne on 473,000 unmonetised tonnes is roughly $40M a year — more than the company's entire FY2025 EBITDA.</p>
+    <p>And yet: <strong>Alto has not built any of it.</strong> The 10-K language is "assessing" and "developing plans," not constructing. Sequestration needs compression, a pipeline or rail route, an EPA Class VI injection permit — a process that has historically taken years — and capital that a company spending $4.6M a year on capex does not currently deploy. Treat this as a free option with a real strike price, not a revenue line. The single metric to track is a Class VI permit application or a definitive sequestration agreement at Pekin. Until one appears, value Alto on the crush spread plus 45Z.</p>
+  </div>
+</section>
+
+<!-- ============ 06 ============ -->
+<section id="s06">
+  <div class="shead"><span class="snum">06</span><h2 class="stitle">Scenario — what if the CO₂ actually gets captured?</h2></div>
+  <p class="sdek">A stress-test of the bull case. These are gross credit values, before capture capex, operating cost and any revenue given up on the CO₂ Alto already sells commercially.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Tonnes captured per year</th><th class="n">at $85/t</th><th class="n">at $60/t</th><th class="n">at $40/t</th></tr></thead>
+      <tbody>
+        <tr><td>300,000 t<span class="sub">partial Pekin capture</span></td><td class="n num">$25.5M</td><td class="n num">$18.0M</td><td class="n num">$12.0M</td></tr>
+        <tr><td>473,000 t<span class="sub">all currently unmonetised volume</span></td><td class="n num gold">$40.2M</td><td class="n num">$28.4M</td><td class="n num">$18.9M</td></tr>
+        <tr><td>720,000 t<span class="sub">everything both plants produce</span></td><td class="n num gold">$61.2M</td><td class="n num">$43.2M</td><td class="n num">$28.8M</td></tr>
+      </tbody>
+      <caption>Volumes from the FY2025 10-K; $85/t is the statutory 45Q rate for secure geologic storage. Lower columns proxy utilisation-rate credits, an unfavourable carbon-intensity outcome, or a partial revenue share with a sequestration partner. Alto has disclosed no capture capex, no timeline and no offtake agreement.</caption>
+    </table>
+  </div>
+
+  <div class="callout">
+    <h4>Takeaway: the option is worth more than the company, which is exactly why it should be discounted hard</h4>
+    <p>At the top of the grid, $61M a year is 17% of today's market capitalisation and roughly 1.9x FY2025 EBITDA — annually, for a credit with a twelve-year life per facility. If Alto sequestered everything at the statutory rate, the credit alone would be worth a multiple of the current enterprise value. That is what the market is flirting with when a $0.92 stock trades at $4.64.</p>
+    <p>Three disciplines on that number. The capture and compression plant is <strong>not free</strong> — peer projects run to hundreds of millions, and Alto's entire market cap is $360M. The <strong>timeline is permit-bound</strong>, not management-bound. And roughly 247,000 tonnes a year are <em>already sold</em> to food and beverage customers at a commercial price, so the incremental credit applies to the unsold 473,000, not the full 720,000, unless those contracts are displaced. A sensible base case assigns this section a probability well under one and no cash flow before the back half of the decade.</p>
+  </div>
+</section>
+
+<!-- ============ 07 ============ -->
+<section id="s07">
+  <div class="shead"><span class="snum">07</span><h2 class="stitle">ALTO vs. GPRE — the head-to-head</h2></div>
+  <p class="sdek">Green Plains is the closest listed analogue: the same corn-alcohol base, the same pivot to ingredients and carbon. It has taken the opposite approach to capital.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>FY2025 unless noted</th><th class="n">ALTO</th><th class="n">GPRE (Green Plains)</th></tr></thead>
+      <tbody>
+        <tr><td>Market cap</td><td class="n num">~$360M</td><td class="n num">~$1,184M</td></tr>
+        <tr><td>Enterprise value</td><td class="n num">~$399M</td><td class="n num">~$1,401M</td></tr>
+        <tr><td>Revenue</td><td class="n num">$917.9M</td><td class="n num">$2,091.7M</td></tr>
+        <tr><td>Income (loss) from operations</td><td class="n num up">+$7.4M</td><td class="n num neg">−$67.2M</td></tr>
+        <tr><td>Net income (loss)</td><td class="n num up">+$13.3M</td><td class="n num neg">−$121.3M</td></tr>
+        <tr><td>Earnings per share</td><td class="n num up">+$0.16</td><td class="n num neg">−$1.80</td></tr>
+        <tr class="rule-top"><td>Total debt</td><td class="n num">$63.0M</td><td class="n num">$399.5M</td></tr>
+        <tr><td>Carbon equipment liabilities</td><td class="n num">—</td><td class="n num gold">$104.2M</td></tr>
+        <tr><td>Cash</td><td class="n num">$23.4M</td><td class="n num">$182.3M</td></tr>
+        <tr><td>Net debt</td><td class="n num">$39.6M</td><td class="n num">$217.2M</td></tr>
+        <tr><td>Interest expense</td><td class="n num">$10.8M</td><td class="n num">$76.7M</td></tr>
+        <tr class="rule-top"><td>Price / book</td><td class="n num">1.47x</td><td class="n num">1.54x</td></tr>
+        <tr><td>EV / sales</td><td class="n num">0.43x</td><td class="n num">0.67x</td></tr>
+        <tr><td>Capex</td><td class="n num">$4.6M</td><td class="n num">carbon build in progress</td></tr>
+        <tr class="rule-top"><td>Carbon posture</td><td class="n num">45Z harvested; 45Q "assessing"</td><td class="n num">45Q infrastructure being built</td></tr>
+        <tr><td>Dominant risk</td><td class="n num">crush spread + dilution</td><td class="n num">crush spread + leverage</td></tr>
+      </tbody>
+      <caption>ALTO from FY2025 10-K; GPRE from FY2025 10-K filed 2026-02-10. Prices and market caps as of 2026-07-25 via Financial Modeling Prep. GPRE's cash-flow detail was not extracted for this pass — the capex row is qualitative, and P/FCF is deliberately omitted rather than estimated.</caption>
+    </table>
+  </div>
+
+  <div class="callout">
+    <h4>Verdict: same thesis, opposite balance sheets, and the difference is who has already paid</h4>
+    <p><strong>Green Plains has spent the money.</strong> Carbon equipment liabilities went from $17.9M to $104.2M in one year, interest expense more than doubled to $76.7M, and the company lost $121.3M. It is further down the sequestration road and carries $217M of net debt to prove it. If carbon capture in corn ethanol works, GPRE owns more of the finished asset.</p>
+    <p><strong>Alto has not spent it.</strong> It is profitable, carries a sixth of the net debt, trades at a lower EV/sales — and its carbon story is still a paragraph in the strategy section. That is the cleaner balance sheet and the weaker option.</p>
+    <p>So the pairing is not "one is better." It is a choice about where you want the risk: <strong>GPRE has execution and leverage risk on an asset that exists; ALTO has financing and timing risk on an asset that does not.</strong> Alto's $150M shelf (§08) is the market's clue about which of those two positions it is about to move toward. An investor who believes the sequestration thesis and wants it already capitalised should look hard at GPRE despite the losses; one who wants the crush-spread recovery and 45Z annuity with an unpriced carbon kicker on top is describing ALTO.</p>
+  </div>
+</section>
+
+<!-- ============ 08 ============ -->
+<section id="s08">
+  <div class="shead"><span class="snum">08</span><h2 class="stitle">Positioning — the shelf, not the short interest</h2></div>
+  <p class="sdek">After a 404% run, the most decision-relevant positioning question for a microcap is not who is short. It is who is about to be diluted.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Date</th><th>Filing</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td class="num">2026-05-08</td><td>S-3</td><td>Shelf registration for up to <strong>$150,000,000</strong> of common stock, preferred, debt, warrants or units — 42% of the current market capitalisation</td></tr>
+        <tr><td class="num">2026-05-22</td><td>EFFECT</td><td>Shelf declared effective — the company can now issue off it at will</td></tr>
+        <tr><td class="num">2026-06-23</td><td>S-8</td><td>Additional shares registered for employee equity plans</td></tr>
+        <tr><td class="num">2026-06-25</td><td>Form 4 ×4</td><td>Cluster of insider transactions; a further five-filing cluster on 2026-04-03</td></tr>
+        <tr class="rule-top"><td class="num">FY2025</td><td>Cash flow stmt</td><td>The company <em>repurchased</em> $3.7M of stock during 2025 — before the run</td></tr>
+      </tbody>
+      <caption>Source: SEC EDGAR filing index for CIK 0000778164. Individual Form 4 transaction detail — buy versus sell, size, and whether under a 10b5-1 plan — was not parsed for this pass and is listed in §09 as an open item.</caption>
+    </table>
+  </div>
+
+  <p>Share count has been close to static: weighted-average basic shares were 73.3M in 2023, 73.5M in 2024, 74.5M in 2025 and 74.8M in Q1'26. Diluted was 76.6M in Q1'26. Historically this management has not been a serial diluter — it bought stock back in 2025.</p>
+
+  <div class="callout warn">
+    <h4>Why the shelf is the single most important item on this page</h4>
+    <p>A $150M shelf filed three months after the stock quintupled, by a company with $23M of cash, $4.6M of annual capex and an explicitly stated ambition to build large-scale CO<sub>2</sub> capture, is not a routine housekeeping filing. It is the financing plan for §05.</p>
+    <p>Read constructively, this is exactly right: raise equity when the stock is up 404% and use it to fund a project whose credit value exceeds the company's EBITDA. Read defensively, issuing $150M against a $360M market cap is up to <strong>40% dilution</strong>, and every scenario in §06 has to be run on the post-raise share count, not today's 77.5M. The shelf does not obligate the company to issue anything — but a management team that files one, gets it effective inside two weeks, and is publicly "developing plans to capture more value for our CO<sub>2</sub> as rapidly as possible" has told you what it intends to do.</p>
+    <p class="note" style="margin-top:14px">Short-interest data is normally the content of this section in a dossier of this type. It could not be sourced to a citable primary provider in this pass and is deliberately omitted rather than estimated. See §09.</p>
+  </div>
+</section>
+
+<!-- ============ 09 ============ -->
+<section id="s09">
+  <div class="shead"><span class="snum">09</span><h2 class="stitle">Open questions for the research</h2></div>
+  <p class="sdek">What this pass could not resolve, ordered by how much each would move the valuation.</p>
+
+  <ol class="qs">
+    <li><strong>What does the shelf get spent on, and when?</strong><span>$150M against a $360M company is the dominant variable. Is it carbon-capture capex, a Magic Valley restart, refinancing, or opportunistic equity with no committed use? Any prospectus supplement filed off this shelf reprices every scenario in §06.</span></li>
+    <li><strong>What does Pekin sequestration actually cost?</strong><span>No capture capex, no timeline and no Class VI permit status has been disclosed. Peer projects run into the hundreds of millions. Without a capex number, §05 and §06 are unfalsifiable. Check for a Class VI application at EPA Region 5 and for any sequestration or offtake agreement in the next 8-K.</span></li>
+    <li><strong>What is normalised crush margin through a cycle?</strong><span>Q4'25 was $0.23/gallon versus $0.08 a year earlier. What is the mid-cycle number, and what does a 2024-style year — 1.0% gross margin, $51.7M operating loss — look like on the post-turnaround cost base with 45Z running?</span></li>
+    <li><strong>What happens after 2029?</strong><span>45Z expires 31 December 2029. It is roughly $15M a year, and on the TTM numbers it is more than the entire underlying pretax profit. Is there a credible extension case, and what is the business worth with the credit set to zero?</span></li>
+    <li><strong>Why did Pekin gross profit fall 17% in a year when everything else improved?</strong><span>Pekin gross profit went $23.2M → $19.4M even as segment pretax income rose to $15.1M. Was that mix, the loading-dock outage, or wet-mill economics deteriorating? Pekin is two-thirds of the company.</span></li>
+    <li><strong>Sell Magic Valley or restart it?</strong><span>Management is explicitly weighing both, and the restart case is built on 45Z eligibility plus CO<sub>2</sub> monetisation. A restart consumes capital and adds qualifying gallons; a sale brings cash and shrinks the 45Q option. This is a live fork.</span></li>
+    <li><strong>Can capex stay at 18% of depreciation?</strong><span>$4.6M against $25.2M of D&amp;A. Which is right — that the asset base is over-depreciated and genuine maintenance is far lower, or that FY2025 free cash flow was borrowed from future reliability? The FY2026 capex line answers it.</span></li>
+    <li><strong>What are the insiders actually doing?</strong><span>Nine Form 4 filings across April and June 2026, unparsed here. Buy or sell, size, and 10b5-1 status after a 404% move is meaningful signal. Short interest should be sourced to a citable provider at the same time.</span></li>
+  </ol>
+</section>
+
+<footer>
+  <p class="foot-lead">Working document · Prepared for collaborative ALTO research · Data as of 2026-07-25</p>
+  <p class="srcs"><strong>Sources.</strong> Alto Ingredients FY2025 Form 10-K, filed 2026-03-13 (<a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000778164&amp;type=10-K">accession 0001213900-26-027687</a>) — consolidated statements of operations, balance sheets and cash flows, segment note, business strategy, risk factors and the RSM critical audit matter on 45Z. Alto Ingredients Q1'26 Form 10-Q, filed 2026-05-08 (accession 0001213900-26-053870). Alto Ingredients Form S-3, filed 2026-05-08 (accession 0001213900-26-053961), declared effective 2026-05-22. Filing calendar and Form 4 dates from the SEC EDGAR index for CIK 0000778164. Green Plains FY2025 Form 10-K, filed 2026-02-10 (accession 0001309402-26-000019). Price, market capitalisation, 52-week range and day change for ALTO and GPRE from Financial Modeling Prep, retrieved 2026-07-25.</p>
+  <p class="srcs"><strong>Method and caveats.</strong> Dollar figures are as reported in thousands and rounded for display; percentages are computed from unrounded values. TTM means the four quarters from Q2 2025 through Q1 2026, derived as FY2025 plus Q1'26 less Q1'25. EBITDA is income from operations plus depreciation and amortisation, with 45Z credits and insurance proceeds added only where explicitly labelled, since both sit below the operating line. Enterprise value uses unrestricted cash only. Share count of ~77.5M is implied from market capitalisation divided by price and is higher than the 74.8M weighted-average basic count reported for Q1'26; per-share figures should be treated accordingly. The 45Q scenario in §06 shows gross statutory credit value only — no capture capex, operating cost, permitting delay or displaced commercial CO<sub>2</sub> revenue is deducted, and Alto has disclosed none of these. Short interest and Form 4 transaction detail are not included; both are listed as open items in §09 rather than estimated.</p>
+  <p class="disc"><strong>Not investment advice.</strong> This is an internal research synthesis prepared for discussion, not a recommendation to buy or sell any security. Alto Ingredients is a sub-$400M microcap whose shares have risen more than fourfold in twelve months; positions in securities of this size and volatility can lose value rapidly. Do your own due diligence and consider your own circumstances.</p>
+</footer>
+
+</div>
