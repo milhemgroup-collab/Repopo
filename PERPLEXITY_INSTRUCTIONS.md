@@ -66,22 +66,21 @@ tolerate.
 
 ## Memory Settings, Instructions
 
-Paste verbatim into the Memory settings Instructions box. Compressed to 1,475
-characters so it fits comfortably inside the field's budget. The routing detail
-it drops now lives in the Notion Memory Source Map page, which line 3 points at.
+Paste verbatim into the Memory settings Instructions box. 1,448 characters.
+Notion-first, because a retrieval test on 2026-07-25 confirmed Notion is the
+only cloud memory path Perplexity can actually reach.
 
 ```
 READ ORDER
-1. Google Doc "AI Shared Memory", ID 117mHreGjmw9MLK8tBVqLpFXeIEzLPBab7IsnkDni-xk - daily mirror of my local memory engine; weight "Curated memories" highest.
-2. Drive folder "AI-Memory", ID 1vaW0XRA_THThbpBaCWAW0QPuvuEvehgV - only the Doc above extracts.
-3. Notion "Memory Source Map" - routing index.
-4. Notion "AI Context & Memory Vault" - profile, portfolio, tool stack.
-5. Sheets (REPS Master Log, Master Personal Data File), Calendar, GitHub.
-6. Gmail/Outlook, business threads only.
+1. Notion "AI Context & Memory Vault" - profile, portfolio, tool stack, output rules.
+2. Notion "Memory Source Map" - routing index and read/write rules.
+3. Sheets (REPS Master Log, Master Personal Data File), Calendar, GitHub.
+4. Gmail/Outlook, business threads only.
+Do not attempt Google Drive. Verified 2026-07-25: no Drive connector exists, so the AI Shared Memory Doc, MEMORY-SHARED.md, and the AI-Memory folder are all unreachable. If a fact lives only there, say so; do not substitute.
 
 FINDING MEMORY
-- Drive extraction cannot read .md or .txt. Skip MEMORY-SHARED.md and MilhemVault notes. Prefer Google-native files; if a fact lives only in .xlsx or .md, say so rather than guess.
-- All you read is a mirror of a local engine you cannot reach. Check its refresh date; flag staleness.
+- All you read is a mirror of a local engine at localhost:3111 you cannot reach. Check refresh dates; flag staleness.
+- Never cite my own routing or memory pages as evidence about what you can read. Report what you actually attempted and what happened.
 - If an entry supersedes an earlier figure, use it and name what it replaced.
 
 STORE
@@ -93,6 +92,23 @@ You cannot write to the engine. Surface durable facts and tell me to save them l
 ALWAYS
 Date-stamp ISO and cite source. One atomic fact per entry. Durable facts over moving values. Mark superseded, do not delete. Flag conflicts, do not pick.
 ```
+
+### Retrieval test results, 2026-07-25
+
+Run in plain Perplexity with Notion active and no Drive connector available.
+
+| Path | Result |
+| --- | --- |
+| Notion | Verified working. Four obscure canaries returned correctly, including the 7-row read-path table and `#D4AF37`. Not guessable, so this is real retrieval. |
+| Google Drive | Untested. No Drive connector exists on either the Brain side or the query side, so the Doc, the `.md` mirror, and the AI-Memory folder are all unreachable. |
+| The 2026-07-06 Markdown gotcha | Still unverified. Perplexity quoted the Memory Source Map page rather than testing a file. |
+
+The control test was **void, not passed**. `BUDGET-SHARED.md` does not exist, and
+the test only detects confabulation if the folder is reachable. With Drive absent,
+"not retrieved" for a fake file is indistinguishable from "not retrieved" for a real
+one. Perplexity also explained the fake file's inaccessibility by citing the routing
+page, which is a soft form of the failure the control was meant to catch. Hence the
+new instruction line forbidding the routing pages as evidence about retrieval.
 
 ## Personalization, Custom instructions
 
