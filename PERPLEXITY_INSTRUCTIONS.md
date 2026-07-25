@@ -20,49 +20,57 @@ Memory rules in the Personalization box do not reach Brain. Keep them separate.
 
 ## Why `agent-memory` Looked Unreachable
 
-Not a permissions problem and not a "precision file" problem. Two separate causes.
+Two causes. Testing on 2026-07-25 confirmed the first and narrowed the second.
 
-**Cause 1: Brain has no Drive connector.** Brain builds memory only from its own
-connector list. As of 2026-07-25 that list is Gmail with Calendar, GitHub, Notion,
-and Outlook, with Linear, Microsoft Teams, and Slack available but unconnected.
-Google Drive is not offered at all.
+**Cause 1: Brain cannot see Drive.** Brain builds its daily memory only from its
+own connector list. As of 2026-07-25 that is Gmail with Calendar, GitHub, Notion,
+and Outlook, with Linear, Microsoft Teams, and Slack offered as additions. Google
+Drive appears on neither list, so nothing in Drive reaches Brain. This is distinct
+from Perplexity's query-side Drive connector, which does exist and does work.
+Confirmed.
 
-**Cause 2: Drive extraction cannot read raw Markdown.** This was already recorded
-in the memory engine on 2026-07-06:
+**Cause 2: a Markdown extraction limit,** recorded in the memory engine on
+2026-07-06:
 
 > Google Drive content extraction used by Perplexity, Gemini, and Claude web
 > cannot read raw `.md` or `.txt` files, only Google-native Docs, Sheets, and
 > Slides, PDFs, and Office files. That is why those three could not read
 > `MEMORY-SHARED.md` while ChatGPT could.
 
-So `MEMORY-SHARED.md` is invisible to Perplexity regardless of connectors, and so
-is the entire Obsidian vault, because MilhemVault lives under `My Drive` as `.md`
-notes. The fix already exists: the Google-native **AI Shared Memory** Doc, Drive
-ID `117mHreGjmw9MLK8tBVqLpFXeIEzLPBab7IsnkDni-xk`, refreshed daily at about
-6:00 AM ET from the curated top of `MEMORY-SHARED.md`.
+Run 2 complicates this rather than confirming it. `MEMORY-SHARED.md` was read
+successfully, but from Perplexity's uploaded file repository, not from live
+connector extraction. The gotcha concerns extraction specifically, and uploads
+bypass extraction entirely, so the run neither confirms nor retires it. Connector
+extraction of raw Markdown remains untested.
 
 ## Memory Architecture
 
 The canonical store is the local `agentmemory` engine at `http://localhost:3111`,
 backed by `C:\Users\matts\.agentmemory\data`, shared by Claude Desktop, Claude
-Code, and Codex. No cloud tool can reach it. Everything Perplexity can read is a
-mirror with a refresh timestamp.
+Code, and Codex. No cloud tool can reach it. Everything Perplexity reads is a
+mirror, and each mirror has its own staleness profile.
 
-| Layer | Artifact | Readable by Perplexity |
+| Layer | Artifact | Status as of 2026-07-25 |
 | --- | --- | --- |
-| Canonical | `agentmemory` engine, localhost:3111 | No |
-| Raw mirror | `MEMORY-SHARED.md`, every ~20 min | No, raw Markdown |
-| Native mirror | AI Shared Memory Doc, daily ~6 AM ET | Yes, if a Drive connector is present |
-| Curated routing | Notion: AI Context & Memory Vault, Memory Source Map | Yes, via the Notion connector |
+| Canonical | `agentmemory` engine, localhost:3111 | Local only. Unreachable from any cloud tool. |
+| Raw mirror | `MEMORY-SHARED.md`, refreshed every ~20 min | Read in run 2, but from an upload rather than connector extraction. Upload snapshots do not inherit the 20-minute refresh. |
+| Native mirror | AI Shared Memory Doc, refreshed daily ~6 AM ET | Its canaries were answered in run 2, but sourced to `AI-Shared-Memory.md`, not the Doc. Connector extraction of the Doc is still untested. |
+| Curated routing | Notion: AI Context & Memory Vault, Memory Source Map | Verified working in both runs, with no connector toggled on in run 1. The only path Brain ingests. |
 
-Notion is the only one of these that Brain actually ingests today, which is why
-the routing lives there. The Notion routing page is
+Notion is therefore the load-bearing path, which is why the routing lives there.
+The routing page is
 [Memory Source Map (Read/Write Routing)](https://app.notion.com/p/3a86d7c334ef8100bfa9ea665e603c00),
 a child of the existing AI Context & Memory Vault page.
 
 There was no need to create a new canonical memory page. One already existed.
 Creating a rival would have produced exactly the drift a memory system cannot
 tolerate.
+
+**Open question.** The Google Doc exists solely to serve Drive-connector
+extraction for tools that cannot read raw Markdown. Neither run tested that path,
+because run 1 had Drive off and run 2 resolved to uploads. Until a test isolates
+connector extraction of the Doc, whether the Apps Script feeding it is still
+earning its keep is unknown.
 
 ## Memory Settings, Instructions
 
