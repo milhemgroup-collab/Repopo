@@ -66,86 +66,32 @@ tolerate.
 
 ## Memory Settings, Instructions
 
-Paste verbatim into the Memory settings Instructions box.
+Paste verbatim into the Memory settings Instructions box. Compressed to 1,475
+characters so it fits comfortably inside the field's budget. The routing detail
+it drops now lives in the Notion Memory Source Map page, which line 3 points at.
 
 ```
-SOURCE PRIORITY (read in this order)
-1. Notion page "Memory Source Map (Read/Write Routing)". Routing only; it
-   tells you where every other source lives.
-2. Notion page "AI Context & Memory Vault". Operator profile, portfolio,
-   tool stack, output rules. The canonical start-here reference.
-3. Google Doc "AI Shared Memory", Drive ID
-   117mHreGjmw9MLK8tBVqLpFXeIEzLPBab7IsnkDni-xk. Google-native mirror of
-   the local memory engine, refreshed daily about 6:00 AM ET.
-4. Live Google Sheets: REPS Master Log and Master Personal Data File.
-5. Google Calendar.
-6. GitHub.
-7. Gmail and Outlook, business threads only.
+READ ORDER
+1. Google Doc "AI Shared Memory", ID 117mHreGjmw9MLK8tBVqLpFXeIEzLPBab7IsnkDni-xk - daily mirror of my local memory engine; weight "Curated memories" highest.
+2. Drive folder "AI-Memory", ID 1vaW0XRA_THThbpBaCWAW0QPuvuEvehgV - only the Doc above extracts.
+3. Notion "Memory Source Map" - routing index.
+4. Notion "AI Context & Memory Vault" - profile, portfolio, tool stack.
+5. Sheets (REPS Master Log, Master Personal Data File), Calendar, GitHub.
+6. Gmail/Outlook, business threads only.
 
-HOW TO FIND GOOD MEMORY
-- The canonical store is the local agentmemory engine at localhost:3111
-  and you cannot reach it. Everything you can read is a mirror. Check the
-  refresh timestamp at the top of a mirror before trusting it, and say so
-  if it is stale.
-- Drive extraction cannot read raw .md or .txt. Do not try to read
-  MEMORY-SHARED.md or any Obsidian vault note. Read the Google-native
-  "AI Shared Memory" Doc instead; it carries the same curated layer.
-- The Obsidian vault (MilhemVault) lives under My Drive but is stored as
-  .md notes, so it is unreadable for the same reason. Treat Notion and the
-  AI Shared Memory Doc as the readable face of the vault.
-- Prefer Google-native formats. Docs, Sheets, and Slides extract cleanly.
-  .xlsx and .md often do not. If a fact exists only in an .xlsx or .md
-  file, say that plainly rather than guessing at its contents.
-- Inside the AI Shared Memory Doc, weight the "Curated memories" section
-  highest; every entry there was deliberately saved as durable. "Pinned
-  context" is second. "Recent captured observations" is raw working
-  history, so skim it only when detail is needed.
-- When an entry says a figure supersedes earlier figures, use the
-  superseding figure and name the ones it replaced.
-- Verify connector access at the time of use. Do not assume a past
-  indexing result still holds.
+FINDING MEMORY
+- Drive extraction cannot read .md or .txt. Skip MEMORY-SHARED.md and MilhemVault notes. Prefer Google-native files; if a fact lives only in .xlsx or .md, say so rather than guess.
+- All you read is a mirror of a local engine you cannot reach. Check its refresh date; flag staleness.
+- If an entry supersedes an earlier figure, use it and name what it replaced.
 
-PRIORITIZE - store these
-- Milhem Group Properties: entities, unit addresses, tenants, lease terms
-  and dates, rent amounts, loans, insurance policies, vendors, and the
-  current status of each.
-- Full tenant record: name, unit, lease dates, payment history, screening
-  outcome, maintenance history, and communication history.
-- REPS activity: logged hours, activity type, date, and the running total
-  against the 750-hour annual threshold.
-- Investment theses and my stance on a position, meaning the reasoning
-  rather than the price.
-- Tax and entity structure: entity setup, Schedule E treatment, cost
-  segregation and depreciation decisions.
-- Where things live: Drive folder names, Notion databases, Google Sheet
-  names and tab names, and which app owns which workflow.
-- My tool and routing preferences: model choices, credit-saving rules, and
-  which connector I use for which job.
-- Decisions, each with its date and a one-line rationale.
-- Recurring people and their role: accountant, lender, agents, property
-  manager, vendors.
+STORE
+Properties, units, tenants (full record), leases, rents, loans, insurance, vendors; REPS hours and total; investment theses and my stance, not prices; tax and entity structure; where files live; tool and routing preferences; decisions with date and rationale; recurring people and roles.
 
-EMAIL SCOPE
-- From Gmail and Outlook, store only business threads: property, tenant,
-  lender, insurer, vendor, tax, and investment correspondence.
-
-WRITING MEMORY
-- You cannot write to the canonical engine. When you learn something
-  durable, surface it and tell me to save it locally with the "remember:"
-  trigger in Claude Code, Codex, or Claude Desktop, or to drop a vault
-  note for promotion at the next local session. Never assume a fact
-  persisted just because it was discussed.
+WRITING
+You cannot write to the engine. Surface durable facts and tell me to save them locally via "remember:"; never assume it persisted.
 
 ALWAYS
-- Date-stamp every fact in ISO form, for example 2026-07-25, and record
-  its source: connector plus document or thread name.
-- One atomic fact per entry. No paragraphs.
-- Prefer durable facts over moving values. A lease term is memory; a share
-  price is not.
-- When a fact changes, mark the old entry superseded with its date rather
-  than deleting it.
-- When two sources conflict, keep both with dates and flag the conflict
-  instead of silently picking one.
+Date-stamp ISO and cite source. One atomic fact per entry. Durable facts over moving values. Mark superseded, do not delete. Flag conflicts, do not pick.
 ```
 
 ## Personalization, Custom instructions
