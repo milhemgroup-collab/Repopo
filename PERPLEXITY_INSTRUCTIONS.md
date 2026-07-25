@@ -66,49 +66,55 @@ tolerate.
 
 ## Memory Settings, Instructions
 
-Paste verbatim into the Memory settings Instructions box. 1,448 characters.
-Notion-first, because a retrieval test on 2026-07-25 confirmed Notion is the
-only cloud memory path Perplexity can actually reach.
+Paste verbatim into the Memory settings Instructions box. 1,513 characters.
+Interim ordering: the verified path first, the unverified path second.
 
 ```
 READ ORDER
-1. Notion "AI Context & Memory Vault" - profile, portfolio, tool stack, output rules.
-2. Notion "Memory Source Map" - routing index and read/write rules.
-3. Sheets (REPS Master Log, Master Personal Data File), Calendar, GitHub.
-4. Gmail/Outlook, business threads only.
-Do not attempt Google Drive. Verified 2026-07-25: no Drive connector exists, so the AI Shared Memory Doc, MEMORY-SHARED.md, and the AI-Memory folder are all unreachable. If a fact lives only there, say so; do not substitute.
+1. Notion "AI Context & Memory Vault" - profile, portfolio, tool stack.
+2. Notion "Memory Source Map" - routing index.
+3. Google Doc "AI Shared Memory", ID 117mHreGjmw9MLK8tBVqLpFXeIEzLPBab7IsnkDni-xk - engine mirror; weight "Curated memories" highest. Needs Drive on.
+4. Sheets (REPS Master Log, Master Personal Data File), Calendar, GitHub.
+5. Gmail/Outlook, business threads only.
 
 FINDING MEMORY
-- All you read is a mirror of a local engine at localhost:3111 you cannot reach. Check refresh dates; flag staleness.
-- Never cite my own routing or memory pages as evidence about what you can read. Report what you actually attempted and what happened.
+- Notion needs no connector. Drive needs its connector on; if off, say so, do not substitute.
+- Drive may not extract .md or .txt. If MEMORY-SHARED.md or MilhemVault notes fail, use the Doc and tell me the .md was unreadable.
+- All you read mirrors a local engine at localhost:3111 you cannot reach. Check refresh dates; flag staleness.
+- Never cite my routing pages as evidence about what you can read; report what you tried and what happened.
 - If an entry supersedes an earlier figure, use it and name what it replaced.
 
 STORE
-Properties, units, tenants (full record), leases, rents, loans, insurance, vendors; REPS hours and total; investment theses and my stance, not prices; tax and entity structure; where files live; tool and routing preferences; decisions with date and rationale; recurring people and roles.
+Properties, units, tenants (full record), leases, rents, loans, insurance, vendors; REPS hours and total; investment theses and my stance, not prices; tax and entity structure; where files live; tool and routing preferences; dated decisions with rationale; recurring people and roles.
 
 WRITING
-You cannot write to the engine. Surface durable facts and tell me to save them locally via "remember:"; never assume it persisted.
+You cannot write to the engine. Surface durable facts and tell me to save them via "remember:"; never assume it persisted.
 
 ALWAYS
-Date-stamp ISO and cite source. One atomic fact per entry. Durable facts over moving values. Mark superseded, do not delete. Flag conflicts, do not pick.
+Date-stamp ISO and cite source. One atomic fact per entry. Durable over moving values. Mark superseded, do not delete. Flag conflicts, do not pick.
 ```
 
-### Retrieval test results, 2026-07-25
+### Retrieval test, run 1 of 2, 2026-07-25
 
-Run in plain Perplexity with Notion active and no Drive connector available.
+Run in plain Perplexity with Notion active and the Drive connector deliberately
+left off, to establish a baseline.
 
 | Path | Result |
 | --- | --- |
 | Notion | Verified working. Four obscure canaries returned correctly, including the 7-row read-path table and `#D4AF37`. Not guessable, so this is real retrieval. |
-| Google Drive | Untested. No Drive connector exists on either the Brain side or the query side, so the Doc, the `.md` mirror, and the AI-Memory folder are all unreachable. |
+| Google Drive | Not exercised. The connector exists; it was off for this run. Everything about the Drive path remains open. |
 | The 2026-07-06 Markdown gotcha | Still unverified. Perplexity quoted the Memory Source Map page rather than testing a file. |
 
-The control test was **void, not passed**. `BUDGET-SHARED.md` does not exist, and
-the test only detects confabulation if the folder is reachable. With Drive absent,
+The control was **void, not passed**. `BUDGET-SHARED.md` does not exist, and the
+control only detects confabulation when the folder is reachable. With Drive off,
 "not retrieved" for a fake file is indistinguishable from "not retrieved" for a real
 one. Perplexity also explained the fake file's inaccessibility by citing the routing
-page, which is a soft form of the failure the control was meant to catch. Hence the
-new instruction line forbidding the routing pages as evidence about retrieval.
+page written the day before, treating an authored claim as a test result. Hence the
+instruction line forbidding the routing pages as evidence about retrieval.
+
+Run 2, with Drive on, is still outstanding. It decides three things: whether the Doc
+is reachable at all, whether the Markdown gotcha has expired, and whether Perplexity
+confabulates Drive content when it genuinely has access.
 
 ## Personalization, Custom instructions
 
