@@ -36,7 +36,7 @@ This repo now keeps a sanitized template that matches the current structure with
 ├── gmail-assistant/             # Gmail draft assistant: config, prompt, scripts, tests
 ├── README.md                    # This file
 ├── AGENTS.md                    # Instructions for AI coding agents
-└── CLAUDE.md                    # Claude Code wrapper pointing at AGENTS.md
+└── CLAUDE.md                    # Claude Code guide: structure, workflows, conventions
 ```
 
 ## License
