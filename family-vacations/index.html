@@ -24,6 +24,13 @@
   --board:#12222A;
   --board-fg:#F0B44E;
 
+  /* Mark tokens — for chart bars, map nodes and other data marks.
+     Validated with the dataviz palette checker against each mode's surface;
+     kept separate from the text tokens above, which are tuned for contrast
+     at small sizes rather than for mark separation. */
+  --mark-sea:#00819B;
+  --mark-void:#A82D22;
+
   --f-sign:"Helvetica Neue",Helvetica,Arial,"Liberation Sans",sans-serif;
   --f-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
   --f-prose:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Liberation Serif",serif;
@@ -34,6 +41,7 @@
 }
 @media (prefers-color-scheme:dark){
   :root{
+    --mark-sea:#0094B4; --mark-void:#CC5A44;
     --bg:#08131A; --bg-2:#0B1A22; --surface:#0F1F27;
     --fg:#DFE9ED; --muted:#8DA3AD; --faint:#5E7683;
     --line:#1E333D; --line-soft:#16272F;
@@ -43,6 +51,7 @@
   }
 }
 :root[data-theme="dark"]{
+  --mark-sea:#0094B4; --mark-void:#CC5A44;
   --bg:#08131A; --bg-2:#0B1A22; --surface:#0F1F27;
   --fg:#DFE9ED; --muted:#8DA3AD; --faint:#5E7683;
   --line:#1E333D; --line-soft:#16272F;
@@ -51,6 +60,7 @@
   --board:#050E13; --board-fg:#F0B44E;
 }
 :root[data-theme="light"]{
+  --mark-sea:#00819B; --mark-void:#A82D22;
   --bg:#E9EDEE; --bg-2:#DFE5E7; --surface:#FFFFFF;
   --fg:#0C1A21; --muted:#566B74; --faint:#8398A1;
   --line:#C7D2D6; --line-soft:#DBE3E6;
@@ -151,11 +161,11 @@ a{color:var(--sea)}
 .atlas__fig svg{display:block; width:100%; height:auto}
 .ring{fill:none; stroke:var(--line); stroke-width:1}
 .ring-lbl{font-family:var(--f-mono); font-size:9.5px; fill:var(--faint); letter-spacing:.09em}
-.spoke{stroke:var(--sea); stroke-width:1.4; opacity:.5}
-.spoke.is-void{stroke:var(--void); stroke-dasharray:4 4; opacity:.75}
+.spoke{stroke:var(--mark-sea); stroke-width:1.4; opacity:.5}
+.spoke.is-void{stroke:var(--mark-void); stroke-dasharray:4 4; opacity:.75}
 .node{cursor:pointer}
-.node circle{fill:var(--sea); stroke:var(--surface); stroke-width:2; transition:r .18s ease}
-.node.is-void circle{fill:var(--void)}
+.node circle{fill:var(--mark-sea); stroke:var(--surface); stroke-width:2; transition:r .18s ease}
+.node.is-void circle{fill:var(--mark-void)}
 .node .leader{stroke-width:1; opacity:.4}
 .node text{font-family:var(--f-mono); font-size:10.5px; fill:var(--fg); letter-spacing:.04em}
 .node:hover circle,.node:focus-visible circle{r:8}
@@ -197,7 +207,10 @@ a{color:var(--sea)}
   padding:.2rem .45rem; border:1px solid var(--line); color:var(--muted); border-radius:2px;
 }
 .tag.k-cancelled{color:var(--void); border-color:var(--void)}
-.tag.k-work{color:var(--amber); border-color:var(--amber)}
+/* 'Work' deliberately carries no hue: amber is this page's single accent, and
+   using it as a category put it right next to the stamp red, a pair that fails
+   the normal-vision separation floor. The word does the work instead. */
+.tag.k-work{color:var(--fg); border-color:var(--fg)}
 .pass__date{font-family:var(--f-mono); font-size:.7rem; letter-spacing:.1em; color:var(--faint); text-transform:uppercase}
 .pass h4{font-family:var(--f-sign); font-weight:800; letter-spacing:-.025em;
   font-size:clamp(1.25rem,3.2vw,1.85rem); margin:.1rem 0 .1rem; text-wrap:balance}
@@ -213,7 +226,7 @@ a{color:var(--sea)}
 /* stub — illustrated plate above a stamped caption */
 .pass__stub{
   border-left:1px dashed var(--line); padding:0;
-  display:flex; flex-direction:column;
+  display:flex; flex-direction:column; min-height:100%;
   background:var(--bg-2); position:relative; overflow:hidden;
 }
 @media (max-width:760px){.pass__stub{border-left:0; border-top:1px dashed var(--line)}}
@@ -275,6 +288,82 @@ a{color:var(--sea)}
 .src p{margin:0; color:var(--muted); font-size:.88rem}
 
 footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mono); font-size:.68rem; line-height:1.9}
+
+
+/* ============================================================
+   PASSPORT STAMPS — one per international entry
+   ============================================================ */
+.stamps{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:var(--s3)}
+.stamp{
+  position:relative; aspect-ratio:1; display:grid; place-items:center;
+  color:var(--mark-void);
+}
+.stamp svg{width:100%; height:100%; overflow:visible}
+.stamp figcaption{
+  position:absolute; inset:auto 0 -2.1rem 0; text-align:center;
+  font-family:var(--f-mono); font-size:.6rem; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--faint);
+}
+.stamp.is-teal{color:var(--mark-sea)}
+.st-country{font-family:var(--f-sign); font-weight:800; letter-spacing:.04em}
+.st-lbl{font-family:var(--f-mono); font-size:11px; letter-spacing:.16em}
+.st-date{font-family:var(--f-mono); font-size:15px; font-weight:700; letter-spacing:.06em}
+.st-port{font-family:var(--f-mono); font-size:9px; letter-spacing:.05em; opacity:.8}
+.stamps-wrap{padding-bottom:var(--s4)}
+
+/* ============================================================
+   ROUTE STRIP — the itinerary drawn as a line of stops
+   ============================================================ */
+.strip{display:flex; align-items:flex-start; gap:0; flex-wrap:wrap; margin-top:.2rem}
+.strip__seg{display:flex; align-items:center; gap:.4rem}
+.strip__stop{
+  font-family:var(--f-mono); font-size:.7rem; letter-spacing:.08em;
+  color:var(--fg); padding:.1rem .3rem; border:1px solid var(--line);
+  border-radius:2px; background:var(--bg-2); white-space:nowrap;
+}
+.strip__hop{display:block; width:34px; height:10px; color:var(--mark-sea); flex:0 0 auto}
+.pass.is-cancelled .strip__hop{color:var(--mark-void)}
+.strip__none{font-family:var(--f-mono); font-size:.7rem; color:var(--faint)}
+
+/* ============================================================
+   TICKET ANATOMY — perforation + barcode
+   ============================================================ */
+.pass__perf{position:absolute; top:0; bottom:0; right:268px; width:0; pointer-events:none; z-index:2}
+.pass__perf i{
+  position:absolute; left:-7px; width:14px; height:14px; border-radius:50%;
+  background:var(--bg); border:var(--rule);
+}
+.pass__perf i.t{top:-8px} .pass__perf i.b{bottom:-8px}
+@media (max-width:760px){.pass__perf{display:none}}
+.barcode{display:block; width:100%; height:34px; opacity:.7; color:var(--fg);
+  margin-top:auto; border-top:var(--rule); padding-top:0}
+.pass.is-cancelled .barcode{opacity:.3}
+
+/* ============================================================
+   SEASONALITY CHART
+   ============================================================ */
+.chart-card{background:var(--surface); border:var(--rule); padding:var(--s3)}
+.chart-wrap{overflow-x:auto}
+#months{display:block; width:100%; min-width:420px; height:auto}
+.bar{fill:var(--mark-sea)}
+.bar-hit{fill:transparent; cursor:pointer}
+.bar-g:hover .bar,.bar-g:focus-visible .bar{fill:var(--amber-bright)}
+.gridline{stroke:var(--line-soft); stroke-width:1}
+.axis-lbl{font-family:var(--f-mono); font-size:10px; fill:var(--faint); letter-spacing:.08em}
+.bar-val{font-family:var(--f-mono); font-size:11px; fill:var(--fg); font-weight:700}
+.chart-tip{
+  position:absolute; pointer-events:none; opacity:0; transition:opacity .12s;
+  background:var(--fg); color:var(--bg); font-family:var(--f-mono); font-size:.66rem;
+  padding:.35rem .5rem; border-radius:2px; white-space:nowrap; z-index:5; transform:translate(-50%,-115%);
+}
+.chart-tip.on{opacity:1}
+.chart-holder{position:relative}
+.data-table{margin-top:var(--s2)}
+.data-table summary{font-family:var(--f-mono); font-size:.64rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); cursor:pointer}
+.data-table table{border-collapse:collapse; margin-top:var(--s2); font-family:var(--f-mono); font-size:.72rem}
+.data-table th,.data-table td{border:var(--rule); padding:.3rem .6rem; text-align:left}
+.data-table td:last-child{text-align:right; font-variant-numeric:tabular-nums}
 
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms !important; transition-duration:.001ms !important}
@@ -840,11 +929,28 @@ footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mo
           </p>
           <p class="legend">
             <span class="k" style="background:var(--amber-bright)"></span>Orlando — home airport<br>
-            <span class="k" style="background:var(--sea)"></span>Travelled<br>
-            <span class="k" style="background:var(--void)"></span>Booked and cancelled
+            <span class="k" style="background:var(--mark-sea)"></span>Travelled<br>
+            <span class="k" style="background:var(--mark-void)"></span>Booked and cancelled
           </p>
         </div>
       </div>
+    </div>
+  </section>
+
+
+  <!-- ============ PASSPORT ============ -->
+  <section class="sect" id="passport">
+    <div class="wrap">
+      <div class="sect__head">
+        <p class="eyebrow">Border crossings</p>
+        <h2>Four stamps in six years</h2>
+        <p>
+          Every time this record left the United States. Dates are the arrival leg
+          from the itinerary; Toronto is a connection rather than a destination, and
+          is marked as one.
+        </p>
+      </div>
+      <div class="stamps stamps-wrap" id="stamps"></div>
     </div>
   </section>
 
@@ -858,6 +964,34 @@ footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mo
       </div>
       <div class="filters" id="filters"></div>
       <div id="entries"></div>
+    </div>
+  </section>
+
+
+  <!-- ============ SEASONALITY ============ -->
+  <section class="sect" id="season">
+    <div class="wrap">
+      <div class="sect__head">
+        <p class="eyebrow">Figure 2 — Departures by month</p>
+        <h2>They travel in July</h2>
+        <p>
+          Counting the month each trip began, cancellations excluded. Two clusters:
+          high summer, and a persistent February habit. Nothing at all in spring.
+        </p>
+      </div>
+      <div class="chart-card">
+        <div class="chart-holder">
+          <div class="chart-wrap">
+            <svg id="months" viewBox="0 0 640 210" role="img"
+                 aria-label="Bar chart of trips taken by month of departure; July is the peak with four"></svg>
+          </div>
+          <div class="chart-tip" id="tip"></div>
+        </div>
+        <details class="data-table">
+          <summary>View as table</summary>
+          <div style="overflow-x:auto"><table id="monthTable"></table></div>
+        </details>
+      </div>
     </div>
   </section>
 
@@ -1313,6 +1447,125 @@ function plateSvg(name,label){
        + `<use href="#p-${name}" width="320" height="200"/></svg>`;
 }
 
+
+/* ---------- route strip: the itinerary as a line of stops ---------- */
+function routeStrip(t){
+  if(!t.legs.length) return `<span class="strip__none">No flights — drove, or the ticket was someone else's.</span>`;
+  const stops=[t.legs[0][0]];
+  t.legs.forEach(([f,to])=>{ if(stops[stops.length-1]!==f) stops.push(f); stops.push(to); });
+  const hop=`<svg class="strip__hop" viewBox="0 0 34 10" aria-hidden="true">
+      <line x1="0" y1="5" x2="34" y2="5" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"/>
+      <path d="M15 1.5l6 3.5-6 3.5 1.4-3.5z" fill="currentColor"/></svg>`;
+  return `<span class="strip">`+stops.map((c,i)=>
+    `<span class="strip__seg">${i?hop:""}<span class="strip__stop" title="${AIRPORTS[c]?AIRPORTS[c].n:c}">${c}</span></span>`
+  ).join("")+`</span>`;
+}
+
+/* ---------- barcode: deterministic from the entry id, decorative only ---------- */
+function barcode(seed){
+  let h=0; for(let i=0;i<seed.length;i++) h=(h*31+seed.charCodeAt(i))>>>0;
+  let x=0, bars="";
+  while(x<300){
+    const w=1+(h%4); h=(h*1103515245+12345)>>>0;
+    const gap=1+(h%3); h=(h*1103515245+12345)>>>0;
+    bars+=`<rect x="${x}" y="0" width="${w}" height="34" fill="currentColor"/>`;
+    x+=w+gap;
+  }
+  return `<svg class="barcode" viewBox="0 0 300 34" preserveAspectRatio="none" aria-hidden="true">${bars}</svg>`;
+}
+
+/* ---------- passport stamps ---------- */
+const STAMPS=[
+  {country:"Mexico",port:"MEX · CDMX",date:"16 JUL 2021",via:"American Airlines",teal:false,rot:-7},
+  {country:"Costa Rica",port:"LIR · GUANACASTE",date:"27 AUG 2022",via:"Southwest",teal:false,rot:5},
+  {country:"Italy",port:"MXP · MALPENSA",date:"14 OCT 2025",via:"United",teal:false,rot:-4},
+  {country:"Canada",port:"YYZ · TORONTO",date:"24 OCT 2025",via:"In transit only",teal:true,rot:8}
+];
+document.getElementById("stamps").innerHTML=STAMPS.map(st=>`
+  <figure class="stamp${st.teal?" is-teal":""}" style="margin:0">
+    <svg viewBox="0 0 200 200" role="img" aria-label="Passport stamp: ${st.country}, ${st.date}">
+      <g transform="rotate(${st.rot} 100 100)" fill="none" stroke="currentColor">
+        <circle cx="100" cy="100" r="76" stroke-width="3.5" stroke-dasharray="${st.teal?"6 5":"0"}"/>
+        <circle cx="100" cy="100" r="66" stroke-width="1.4"/>
+        <path d="M34 100h132" stroke-width="1.2" opacity=".5"/>
+        <path d="M40 78h120M40 122h120" stroke-width="1" opacity=".3"/>
+        <text class="st-country" x="100" y="70" text-anchor="middle" fill="currentColor" stroke="none"
+              font-size="${st.country.length>8?16:21}"
+              textLength="${Math.min(112,st.country.length*(st.country.length>8?11:15))}"
+              lengthAdjust="spacingAndGlyphs">${st.country.toUpperCase()}</text>
+        <text class="st-lbl" x="100" y="96" text-anchor="middle" fill="currentColor" stroke="none">ENTRY</text>
+        <text class="st-date" x="100" y="118" text-anchor="middle" fill="currentColor" stroke="none"
+              textLength="104" lengthAdjust="spacingAndGlyphs">${st.date}</text>
+        <text class="st-port" x="100" y="142" text-anchor="middle" fill="currentColor" stroke="none"
+              textLength="${Math.min(104,st.port.length*6)}" lengthAdjust="spacingAndGlyphs">${st.port}</text>
+      </g>
+    </svg>
+    <figcaption>${st.via}</figcaption>
+  </figure>`).join("");
+
+/* ---------- Figure 2: departures by month ----------
+   One series, so one hue and no legend: the heading names it. Values are
+   direct-labelled only at the peak; every bar carries a hover tooltip, and the
+   same numbers are available as a table below. */
+(function(){
+  const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const counts=MONTHS.map(()=>0);
+  TRIPS.filter(took).forEach(t=>{ counts[+t.start.slice(5,7)-1]++; });
+  const max=Math.max(...counts), peak=counts.indexOf(max);
+
+  const svg=document.getElementById("months"), NS="http://www.w3.org/2000/svg";
+  const el=(t,a)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n};
+  const L=42, R=14, T=18, B=34, W=640, H=210;
+  const pw=W-L-R, ph=H-T-B;
+  const bw=pw/12, inner=bw*0.56;
+  const y=v=>T+ph-(v/max)*ph;
+
+  for(let v=0;v<=max;v++){
+    svg.appendChild(el("line",{x1:L,x2:W-R,y1:y(v).toFixed(1),y2:y(v).toFixed(1),class:"gridline"}));
+    const lb=el("text",{x:L-10,y:(y(v)+4).toFixed(1),"text-anchor":"end",class:"axis-lbl"});
+    lb.textContent=v; svg.appendChild(lb);
+  }
+  const tip=document.getElementById("tip"), holder=tip.parentElement;
+
+  counts.forEach((v,i)=>{
+    const cx=L+bw*i+bw/2;
+    const lb=el("text",{x:cx,y:H-14,"text-anchor":"middle",class:"axis-lbl"});
+    lb.textContent=MONTHS[i]; svg.appendChild(lb);
+    if(!v) return;
+
+    const g=el("g",{class:"bar-g",tabindex:"0",role:"listitem",
+      "aria-label":`${MONTHS[i]}: ${v} ${v===1?"trip":"trips"}`});
+    const bh=T+ph-y(v);
+    // 4px rounded data-end, square foot on the baseline
+    const r=4, x=cx-inner/2;
+    g.appendChild(el("path",{class:"bar",
+      d:`M${x} ${T+ph}V${y(v)+r}a${r} ${r} 0 0 1 ${r} -${r}h${inner-2*r}a${r} ${r} 0 0 1 ${r} ${r}V${T+ph}z`}));
+    g.appendChild(el("rect",{class:"bar-hit",x:(cx-bw/2).toFixed(1),y:T,width:bw.toFixed(1),height:ph}));
+    if(i===peak){
+      const val=el("text",{x:cx,y:(y(v)-7).toFixed(1),"text-anchor":"middle",class:"bar-val"});
+      val.textContent=v; svg.appendChild(val);
+    }
+    const show=()=>{
+      const bb=svg.getBoundingClientRect(), hb=holder.getBoundingClientRect();
+      tip.textContent=`${MONTHS[i]} — ${v} ${v===1?"trip":"trips"}`;
+      tip.style.left=(bb.left-hb.left+(cx/W)*bb.width)+"px";
+      tip.style.top=(bb.top-hb.top+(y(v)/H)*bb.height)+"px";
+      tip.classList.add("on");
+    };
+    const hide=()=>tip.classList.remove("on");
+    g.addEventListener("mouseenter",show); g.addEventListener("mousemove",show);
+    g.addEventListener("mouseleave",hide);
+    g.addEventListener("focus",show); g.addEventListener("blur",hide);
+    svg.appendChild(g);
+  });
+  svg.setAttribute("role","list");
+
+  document.getElementById("monthTable").innerHTML=
+    "<thead><tr><th>Month</th><th>Trips</th></tr></thead><tbody>"
+    + MONTHS.map((m,i)=>`<tr><td>${m}</td><td>${counts[i]}</td></tr>`).join("")
+    + "</tbody>";
+})();
+
 function render(){
   const list=TRIPS.filter(t=>
     (filter.kind==="all"||t.kind===filter.kind) &&
@@ -1333,9 +1586,7 @@ function render(){
     }
     const isC=t.kind==="cancelled";
     const nn=nights(t);
-    const route=t.legs.length
-      ? t.legs.map(([f,to])=>`${f}<i>→</i>${to}`).join(' <i>·</i> ')
-      : "—";
+    const route=routeStrip(t);
 
     html+=`
     <article class="pass ${isC?"is-cancelled":""}" id="trip-${t.id}">
@@ -1350,18 +1601,20 @@ function render(){
         <dl class="pass__meta">
           <div><dt>Party</dt><dd>${t.party.map(p=>PEOPLE[p].name).join(", ")}</dd></div>
           <div><dt>Nights</dt><dd>${isC?"—":nn||"day trip"}</dd></div>
-          <div><dt>Routing</dt><dd class="route">${route}</dd></div>
+          <div style="flex-basis:100%"><dt>Routing</dt><dd>${route}</dd></div>
           ${t.carrier?`<div><dt>Carrier</dt><dd>${t.carrier}</dd></div>`:""}
           ${t.lodging.length?`<div><dt>Stayed</dt><dd>${t.lodging.join("<br>")}</dd></div>`:""}
           <div><dt>Evidence</dt><dd>${t.evidence}</dd></div>
         </dl>
       </div>
+      <span class="pass__perf" aria-hidden="true"><i class="t"></i><i class="b"></i></span>
       <aside class="pass__stub">
         ${plateSvg(t.relic,`Illustration of ${t.place}`)}
         <div class="stub__foot">
           ${relicSvg(t.relic,"relic")}
           <span class="stub__n">${RELIC_NOTES[t.relic]?RELIC_NOTES[t.relic][0]:""}</span>
         </div>
+        ${barcode(t.id)}
         ${isC?`<div class="void-stamp">VOID</div>`:""}
       </aside>
     </article>`;

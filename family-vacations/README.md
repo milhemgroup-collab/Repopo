@@ -70,6 +70,36 @@ bearing from Orlando with distance on a log scale, so the short Florida hops sta
 next to the Atlantic crossing. Distances and bearings are computed at runtime from
 coordinates — no distance on the page is hand-typed.
 
+## Travel ephemera
+
+Beyond the plates, the page borrows the anatomy of real travel documents, and each
+piece carries information rather than decorating:
+
+- **Passport stamps** — one per international entry (Mexico, Costa Rica, Italy, plus
+  Canada as a transit stop, drawn with a dashed ring to mark it as a connection). Dates
+  are the arrival leg from the itinerary.
+- **Route strips** — each trip's flights drawn as a line of airport chips with a plane
+  between them, so `MCO → EWR → MXP` reads as a journey instead of a string. Trips with
+  no flights say so plainly.
+- **Perforation and barcode** — a notch on the stub seam and a barcode along the bottom
+  edge. The barcode is decorative but deterministic: it is generated from the trip id,
+  so a given entry always renders the same bars.
+- **Figure 2, departures by month** — a real derived finding. July is the peak, February
+  is a habit, and spring is completely empty.
+
+## Colour
+
+The chart and map marks use tokens (`--mark-sea`, `--mark-void`) kept separate from the
+text tokens, which are tuned for small-text contrast rather than mark separation. Both
+mark pairs were checked with the `dataviz` skill's palette validator against each mode's
+surface and pass all six checks.
+
+That check caught a real problem: the original light-mode amber and stamp red were only
+ΔE 12.1 apart in normal vision — below the readable floor — and they sat next to each
+other as the `work` and `cancelled` tags. The fix was to stop using amber as a category
+at all. It is the page's single accent (the hub, hover states, milestone figures); the
+`work` tag is now neutral ink and relies on the word itself.
+
 ## Editing
 
 To add a trip, append an object to the `TRIPS` array near the top of the `<script>` block
