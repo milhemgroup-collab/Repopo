@@ -111,13 +111,31 @@ a{color:var(--sea)}
 .hero h1 em{font-style:normal; color:var(--board-fg)}
 .hero__sub{max-width:56ch; color:#A9BEC7; margin:var(--s3) 0 0; font-size:1.02rem}
 
-/* split-flap */
-.flap{
-  margin-top:var(--s4); border-top:1px solid #22383F; border-bottom:1px solid #22383F;
-  padding:var(--s2) 0; display:flex; align-items:center; gap:var(--s3); flex-wrap:wrap;
+/* departure board */
+.fids{margin-top:var(--s4); border-top:1px solid #22383F; padding-top:var(--s2)}
+.fids__head,.fids__row{
+  display:grid; grid-template-columns:minmax(0,1fr) 108px 116px 104px;
+  gap:var(--s2); align-items:center;
 }
-.flap__label{font-family:var(--f-mono); font-size:.64rem; letter-spacing:.22em; color:#6E8894; text-transform:uppercase}
-.flap__cells{display:flex; gap:3px}
+.fids__head{
+  font-family:var(--f-mono); font-size:.58rem; letter-spacing:.2em; text-transform:uppercase;
+  color:#6E8894; padding-bottom:.5rem; border-bottom:1px solid #1B2E36;
+}
+.fids__row{padding:.42rem 0; border-bottom:1px solid #16262E}
+.fids__row .d,.fids__row .c{font-family:var(--f-mono); font-size:.76rem; color:#A9BEC7; letter-spacing:.04em;
+  font-variant-numeric:tabular-nums; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.fids__st{
+  font-family:var(--f-mono); font-size:.58rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--board-fg); border:1px solid currentColor; padding:.15rem .35rem; border-radius:2px;
+  justify-self:start; white-space:nowrap;
+}
+.fids__st.void{color:#E0836B}
+@media (max-width:720px){
+  .fids__head,.fids__row{grid-template-columns:minmax(0,1fr) 92px}
+  .fids__head span:nth-child(3),.fids__head span:nth-child(4),.fids__row .c{display:none}
+  .fids__st{grid-column:2; justify-self:end}
+}
+.flap__cells{display:flex; gap:2px}
 .cell{
   width:clamp(15px,3.4vw,26px); height:clamp(24px,5vw,38px);
   background:#050D11; color:var(--board-fg);
@@ -162,6 +180,13 @@ a{color:var(--sea)}
 .ring{fill:none; stroke:var(--line); stroke-width:1}
 .ring-lbl{font-family:var(--f-mono); font-size:9.5px; fill:var(--faint); letter-spacing:.09em}
 .spoke{stroke:var(--mark-sea); stroke-width:1.4; opacity:.5}
+/* routes draw outward from the hub when the figure first scrolls into view */
+.atlas__fig.draw .spoke{stroke-dasharray:var(--len); stroke-dashoffset:var(--len);
+  animation:draw .9s cubic-bezier(.22,.7,.3,1) forwards; animation-delay:var(--d)}
+.atlas__fig.draw .node{opacity:0; animation:pop .45s ease forwards; animation-delay:calc(var(--d) + .55s)}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{from{opacity:0; transform:scale(.6)} to{opacity:1; transform:scale(1)}}
+.node{transform-box:fill-box; transform-origin:center}
 .spoke.is-void{stroke:var(--mark-void); stroke-dasharray:4 4; opacity:.75}
 .node{cursor:pointer}
 .node circle{fill:var(--mark-sea); stroke:var(--surface); stroke-width:2; transition:r .18s ease}
@@ -189,7 +214,8 @@ a{color:var(--sea)}
 .chip:hover{border-color:var(--amber-bright); color:var(--fg)}
 .chip[aria-pressed="true"]{background:var(--fg); color:var(--bg); border-color:var(--fg)}
 
-.year{margin:var(--s5) 0 var(--s3); display:flex; align-items:center; gap:var(--s3)}
+.year{margin:var(--s5) 0 var(--s3); display:flex; align-items:center; gap:var(--s3);
+  position:sticky; top:0; z-index:3; background:var(--bg); padding:var(--s2) 0}
 .year h3{font-size:clamp(2.4rem,9vw,4.6rem); font-weight:800; letter-spacing:-.05em; color:var(--line); line-height:.8}
 .year hr{flex:1; border:0; border-top:var(--rule)}
 .year .n{font-family:var(--f-mono); font-size:.64rem; letter-spacing:.16em; color:var(--faint); text-transform:uppercase}
@@ -234,6 +260,13 @@ a{color:var(--sea)}
 /* Fixed height: the plates are composed at 320x200, so letting them stretch to a
    tall stub would slice off the landmark that identifies the place. */
 .plate{display:block; width:100%; height:168px; flex:0 0 auto}
+/* keyline + plate number, the way an illustration is set in a printed book */
+.plate-frame{position:relative; flex:0 0 auto}
+.plate-frame::after{content:""; position:absolute; inset:6px; border:1px solid rgba(255,255,255,.22); pointer-events:none}
+.plate-no{
+  position:absolute; right:8px; bottom:8px; font-family:var(--f-mono); font-size:.52rem;
+  letter-spacing:.18em; color:#fff; opacity:.65; text-shadow:0 1px 2px rgba(0,0,0,.6);
+}
 @media (max-width:760px){.plate{height:150px}}
 .pass.is-cancelled .plate{filter:grayscale(.72) contrast(.86); opacity:.62}
 
@@ -324,6 +357,13 @@ footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mo
 .strip__hop{display:block; width:34px; height:10px; color:var(--mark-sea); flex:0 0 auto}
 .pass.is-cancelled .strip__hop{color:var(--mark-void)}
 .strip__none{font-family:var(--f-mono); font-size:.7rem; color:var(--faint)}
+.legs{margin-top:.5rem}
+.legs summary{font-family:var(--f-mono); font-size:.6rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); cursor:pointer}
+.legs table{border-collapse:collapse; margin-top:.45rem; font-family:var(--f-mono); font-size:.68rem}
+.legs td{padding:.16rem .7rem .16rem 0; color:var(--muted)}
+.legs td:last-child{text-align:right; color:var(--fg); font-variant-numeric:tabular-nums}
+.legs tr.tot td{border-top:var(--rule); padding-top:.3rem; color:var(--fg)}
 
 /* ============================================================
    TICKET ANATOMY — perforation + barcode
@@ -878,9 +918,11 @@ footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mo
       February 2021 and July 2026. Three of them never happened.
     </p>
 
-    <div class="flap" aria-live="off">
-      <span class="flap__label">Destination</span>
-      <div class="flap__cells" id="flap" aria-hidden="true"></div>
+    <div class="fids">
+      <div class="fids__head">
+        <span>Destination</span><span>Date</span><span>Carrier</span><span>Status</span>
+      </div>
+      <div id="fids" aria-live="off"></div>
     </div>
 
     <div class="hero__stats" id="heroStats"></div>
@@ -1294,34 +1336,66 @@ const io=new IntersectionObserver(es=>es.forEach(e=>{
 document.querySelectorAll("[data-count]").forEach(el=>io.observe(el));
 
 /* ============================================================
-   SPLIT-FLAP
+   DEPARTURE BOARD — rows roll one at a time, like a real FIDS
    ============================================================ */
 (function(){
-  const host=document.getElementById("flap");
-  const words=["TAMPA","MEXICO CITY","WHITEFISH","SEATTLE","VERO BEACH","LIBERIA","ST LOUIS","MELBOURNE","VENICE","SATELLITE BCH"];
-  const WIDTH=13, GLYPHS=" ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const cells=[];
-  for(let i=0;i<WIDTH;i++){
-    const c=document.createElement("div"); c.className="cell"; c.textContent=" ";
-    host.appendChild(c); cells.push(c);
-  }
-  const pad=w=>w.padEnd(WIDTH," ").slice(0,WIDTH);
-  if(reduce){ cells.forEach((c,i)=>c.textContent=pad(words[0])[i]); return; }
+  const host=document.getElementById("fids");
+  const WIDTH=14, GLYPHS=" ABCDEFGHIJKLMNOPQRSTUVWXYZ.", ROWS=5, MON=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  const pad=w=>w.toUpperCase().padEnd(WIDTH," ").slice(0,WIDTH);
 
-  let wi=0;
-  function show(word){
-    const target=pad(word);
-    cells.forEach((cell,i)=>{
-      const want=target[i];
-      let steps=4+i*2;
+  const queue=TRIPS.map(t=>{
+    const d=new Date(t.start+"T12:00");
+    return {
+      dest:(t.short||t.place).replace(/ → /,"–"),
+      date:`${String(d.getDate()).padStart(2,"0")} ${MON[d.getMonth()]} ${String(d.getFullYear()).slice(2)}`,
+      carrier:(t.carrier||"—").replace(/\(.*\)/,"").split("·")[0].trim(),
+      cancelled:t.kind==="cancelled"
+    };
+  });
+
+  const rows=[];
+  for(let i=0;i<ROWS;i++){
+    const row=document.createElement("div"); row.className="fids__row";
+    const cells=document.createElement("div"); cells.className="flap__cells";
+    const cs=[];
+    for(let j=0;j<WIDTH;j++){
+      const c=document.createElement("div"); c.className="cell"; c.textContent=" ";
+      cells.appendChild(c); cs.push(c);
+    }
+    const dt=document.createElement("span"); dt.className="d";
+    const cr=document.createElement("span"); cr.className="c";
+    const st=document.createElement("span"); st.className="fids__st";
+    row.append(cells,dt,cr,st); host.appendChild(row);
+    rows.push({cs,dt,cr,st,timers:[]});
+  }
+
+  function paint(row,item,animate){
+    row.dt.textContent=item.date;
+    row.cr.textContent=item.carrier;
+    row.st.textContent=item.cancelled?"Cancelled":"Departed";
+    row.st.classList.toggle("void",item.cancelled);
+    const target=pad(item.dest);
+    row.timers.forEach(clearInterval); row.timers=[];
+    if(!animate){ row.cs.forEach((c,i)=>c.textContent=target[i]); return; }
+    row.cs.forEach((cell,i)=>{
+      let steps=3+i*2;
       const tick=setInterval(()=>{
-        if(steps-- <= 0){ cell.textContent=want; clearInterval(tick); return; }
+        if(steps-- <= 0){ cell.textContent=target[i]; clearInterval(tick); return; }
         cell.textContent=GLYPHS[(Math.random()*GLYPHS.length)|0];
-      },42);
+      },40);
+      row.timers.push(tick);
     });
   }
-  show(words[0]);
-  setInterval(()=>{ wi=(wi+1)%words.length; show(words[wi]); },3600);
+
+  let head=0;
+  rows.forEach((r,i)=>paint(r,queue[i%queue.length],false));
+  head=ROWS;
+  if(reduce) return;              // static board, no rolling
+  let r=0;
+  setInterval(()=>{
+    paint(rows[r],queue[head%queue.length],true);
+    head++; r=(r+1)%ROWS;
+  },2200);
 })();
 
 /* ============================================================
@@ -1400,6 +1474,20 @@ document.querySelectorAll("[data-count]").forEach(el=>io.observe(el));
     svg.appendChild(g);
   });
 
+  // set per-spoke length + stagger, then trigger the draw when scrolled into view
+  const fig=svg.closest(".atlas__fig");
+  [...svg.querySelectorAll(".spoke")].forEach((ln,i)=>{
+    const len=Math.hypot(+ln.getAttribute("x2")-CX,+ln.getAttribute("y2")-CY);
+    ln.style.setProperty("--len",len.toFixed(1));
+    ln.style.setProperty("--d",(i*55)+"ms");
+  });
+  [...svg.querySelectorAll(".node")].forEach((n,i)=>n.style.setProperty("--d",(i*55)+"ms"));
+  if(!reduce){
+    new IntersectionObserver((es,o)=>es.forEach(e=>{
+      if(e.isIntersecting){ fig.classList.add("draw"); o.disconnect(); }
+    }),{threshold:.25}).observe(fig);
+  }
+
   // hub last so it sits on top
   const hub=el("g",{class:"hub"});
   hub.appendChild(el("circle",{cx:CX,cy:CY,r:8}));
@@ -1442,9 +1530,26 @@ function relicSvg(name,cls){
   return `<svg class="${cls}" viewBox="0 0 64 64" aria-hidden="true"><use href="#r-${name}"/></svg>`;
 }
 // Illustrated plate for a place. Drawn, not photographed — see the colophon.
+const PLATE_NO={}; Object.keys(RELIC_NOTES).forEach((k,i)=>PLATE_NO[k]=ROMAN(i+1));
+function ROMAN(n){const m=[[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]];let o="";
+  for(const [v,c] of m) while(n>=v){o+=c;n-=v} return o}
 function plateSvg(name,label){
-  return `<svg class="plate" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${label}">`
-       + `<use href="#p-${name}" width="320" height="200"/></svg>`;
+  return `<span class="plate-frame">`
+       + `<svg class="plate" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${label}">`
+       + `<use href="#p-${name}" width="320" height="200"/></svg>`
+       + `<span class="plate-no">PL. ${PLATE_NO[name]||"—"}</span></span>`;
+}
+/* leg-by-leg distances, computed from the same coordinates as the diagram */
+function legTable(t){
+  if(!t.legs.length) return "";
+  let total=0;
+  const rows=t.legs.map(([f,to])=>{
+    const mi=haversine(AIRPORTS[f],AIRPORTS[to]); total+=mi;
+    return `<tr><td>${f} → ${to}</td><td>${Math.round(mi).toLocaleString("en-US")} mi</td></tr>`;
+  }).join("");
+  return `<details class="legs"><summary>Leg distances</summary><table>${rows}`
+       + `<tr class="tot"><td>Total in the air</td><td>${Math.round(total).toLocaleString("en-US")} mi</td></tr>`
+       + `</table></details>`;
 }
 
 
@@ -1580,9 +1685,12 @@ function render(){
   list.forEach(t=>{
     const y=t.start.slice(0,4);
     if(y!==year){
+      // each year gets its own section so its sticky header is scoped to that
+      // group — sharing one container makes every header pile up at top:0
+      if(year!==null) html+=`</section>`;
       year=y;
       const n=list.filter(x=>x.start.slice(0,4)===y).length;
-      html+=`<div class="year"><h3>${y}</h3><hr><span class="n">${n} ${n===1?"entry":"entries"}</span></div>`;
+      html+=`<section class="yr"><div class="year"><h3>${y}</h3><hr><span class="n">${n} ${n===1?"entry":"entries"}</span></div>`;
     }
     const isC=t.kind==="cancelled";
     const nn=nights(t);
@@ -1601,7 +1709,7 @@ function render(){
         <dl class="pass__meta">
           <div><dt>Party</dt><dd>${t.party.map(p=>PEOPLE[p].name).join(", ")}</dd></div>
           <div><dt>Nights</dt><dd>${isC?"—":nn||"day trip"}</dd></div>
-          <div style="flex-basis:100%"><dt>Routing</dt><dd>${route}</dd></div>
+          <div style="flex-basis:100%"><dt>Routing</dt><dd>${route}${legTable(t)}</dd></div>
           ${t.carrier?`<div><dt>Carrier</dt><dd>${t.carrier}</dd></div>`:""}
           ${t.lodging.length?`<div><dt>Stayed</dt><dd>${t.lodging.join("<br>")}</dd></div>`:""}
           <div><dt>Evidence</dt><dd>${t.evidence}</dd></div>
@@ -1619,6 +1727,7 @@ function render(){
       </aside>
     </article>`;
   });
+  if(year!==null) html+=`</section>`;
   host.innerHTML=html;
 }
 render();

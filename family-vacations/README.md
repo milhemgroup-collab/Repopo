@@ -91,6 +91,26 @@ piece carries information rather than decorating:
   so a given entry always renders the same bars.
 - **Figure 2, departures by month** — a real derived finding. July is the peak, February
   is a habit, and spring is completely empty.
+- **A departure board** in the hero, built from the ledger rather than decorative: five
+  rows of destination, date, carrier and status, rolling one row at a time the way a real
+  flight-information display does. Cancelled trips read `CANCELLED`.
+- **Leg distances** under each routing, computed from the same coordinates as Figure 1,
+  with a total. Italy comes to 10,254 miles in the air.
+- **Plate keylines and numbers** (`PL. I`–`PL. XIII`), the way an illustration is set in
+  a printed book.
+- **A sticky year rail** so the year stays visible while scrolling a long group.
+
+### Two motion/layout details worth keeping
+
+Route spokes on Figure 1 draw outward from the hub on first scroll-in, staggered by
+distance, then the nodes pop. All of it is gated on `prefers-reduced-motion`; under
+reduce the diagram renders complete and the departure board paints once and stops
+rolling.
+
+Each year group is its own `<section class="yr">`. That is load-bearing, not tidiness:
+`position: sticky` is scoped to the containing block, so with every `.year` sharing one
+parent they all pinned at `top: 0` simultaneously and overlapped. One section per year
+lets each header push the previous one out.
 
 ## Colour
 
