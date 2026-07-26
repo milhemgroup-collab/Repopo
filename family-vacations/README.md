@@ -100,7 +100,27 @@ piece carries information rather than decorating:
   a printed book.
 - **A sticky year rail** so the year stays visible while scrolling a long group.
 
-### Two motion/layout details worth keeping
+### Editorial layer
+
+The page was structurally uniform — every section was eyebrow, uppercase heading, grid —
+so it gained some variety and some print character:
+
+- **A full-bleed illustrated band** between the diagram and the timeline, carrying the
+  Venice plate under a serif pull-quote. It is top-anchored: the band is roughly 3.3:1
+  and the plates are composed at 1.6:1, so something is always cropped, and keeping the
+  top holds the campanile, the domes and the moon while the scrim carries the text across
+  the lower half.
+- **A guilloche watermark** behind the ledger and the colophon — two epitrochoids at
+  slightly different radii, the way security print on a ticket builds a moiré. It is
+  generated in JS rather than hand-authored, and deliberately bleeds behind the opaque
+  stat cards.
+- **Registration marks** on the two figure panels, the way a press sheet is aligned.
+- **A key hairline** across the top of each boarding pass, drawn from that trip's own
+  plate palette, tying illustration to layout. It is decorative only and encodes nothing.
+- **More scale contrast** — bigger section heads and stat figures, and a lede style for
+  the opening paragraph of a section.
+
+### Three motion/layout details worth keeping
 
 Route spokes on Figure 1 draw outward from the hub on first scroll-in, staggered by
 distance, then the nodes pop. All of it is gated on `prefers-reduced-motion`; under
@@ -111,6 +131,13 @@ Each year group is its own `<section class="yr">`. That is load-bearing, not tid
 `position: sticky` is scoped to the containing block, so with every `.year` sharing one
 parent they all pinned at `top: 0` simultaneously and overlapped. One section per year
 lets each header push the previous one out.
+
+`.has-guilloche > *:not(.guilloche)` — the `:not()` is required. That selector has higher
+specificity than `.guilloche` itself, so without the exclusion it overrode the watermark's
+own `position: absolute`, forcing it to `relative`, at which point `inset: 0` meant
+nothing and the whole thing collapsed silently into normal flow. It rendered, reported
+sane dimensions, and was simply in the wrong place — the kind of bug only a screenshot
+catches.
 
 ## Colour
 

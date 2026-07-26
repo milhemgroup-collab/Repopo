@@ -405,6 +405,78 @@ footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mo
 .data-table th,.data-table td{border:var(--rule); padding:.3rem .6rem; text-align:left}
 .data-table td:last-child{text-align:right; font-variant-numeric:tabular-nums}
 
+
+/* ============================================================
+   EDITORIAL LAYER
+   Scale contrast, printed-document texture, full-bleed plates.
+   ============================================================ */
+
+/* --- a lede: the opening paragraph of a section carries more weight --- */
+.lede{font-size:1.16rem; line-height:1.55; color:var(--fg); max-width:54ch; letter-spacing:-.005em}
+.lede b{font-weight:600}
+@media (min-width:900px){.lede{font-size:1.3rem}}
+
+/* --- section heads get a hairline rule and a figure marker --- */
+.sect__head{position:relative}
+.sect__head h2{font-size:clamp(1.9rem,5.2vw,3.4rem); line-height:.96}
+.sect__head--wide{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.85fr);
+  gap:var(--s4); align-items:end}
+@media (max-width:820px){.sect__head--wide{grid-template-columns:1fr; gap:var(--s3)}}
+
+/* --- registration marks, the way a press sheet is aligned --- */
+.reg{position:relative}
+.reg::before,.reg::after{
+  content:""; position:absolute; width:13px; height:13px; pointer-events:none; opacity:.5;
+  background:
+    linear-gradient(var(--faint),var(--faint)) center/1px 100% no-repeat,
+    linear-gradient(var(--faint),var(--faint)) center/100% 1px no-repeat;
+}
+.reg::before{top:-20px; left:-20px}
+.reg::after{bottom:-20px; right:-20px}
+@media (max-width:820px){.reg::before,.reg::after{display:none}}
+
+/* --- guilloche watermark, the engraved rosette on printed stock --- */
+.guilloche{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0}
+/* sits in the open space beside the lede — the stat cards below are opaque and
+   would otherwise hide it entirely */
+.guilloche svg{position:absolute; right:-5%; top:2%;
+  width:min(430px,44%); height:auto; color:var(--fg); opacity:.10}
+@media (prefers-color-scheme:dark){.guilloche svg{opacity:.16}}
+:root[data-theme="dark"] .guilloche svg{opacity:.16}
+:root[data-theme="light"] .guilloche svg{opacity:.10}
+.guilloche.left svg{right:auto; left:-9%; top:14%; width:min(400px,40%)}
+.has-guilloche{position:relative}
+/* :not(.guilloche) matters — this selector outranks .guilloche's own
+   position:absolute, and without the exclusion the watermark collapses
+   into normal flow and inset:0 stops meaning anything. */
+.has-guilloche > *:not(.guilloche){position:relative; z-index:1}
+
+/* --- full-bleed illustrated band --- */
+.band{position:relative; height:clamp(300px,38vw,470px); overflow:hidden;
+  border-top:var(--rule); border-bottom:var(--rule)}
+.band .plate{height:100%; width:100%}
+/* text sits in the lower band so the skyline reads above it, rather than a
+   side wash that fights the illustration */
+.band__scrim{position:absolute; inset:0;
+  background:linear-gradient(to top,rgba(4,10,14,.94) 0%,rgba(4,10,14,.72) 34%,rgba(4,10,14,.10) 72%)}
+.band__txt{position:absolute; inset:0; display:flex; align-items:flex-end; padding-bottom:var(--s4)}
+.band__txt .wrap{width:100%}
+.band__k{font-family:var(--f-mono); font-size:.6rem; letter-spacing:.24em;
+  text-transform:uppercase; color:#F0B44E; display:block; margin-bottom:.6rem}
+.band__q{font-family:var(--f-prose); color:#fff; max-width:22ch;
+  font-size:clamp(1.5rem,4.2vw,2.9rem); line-height:1.14; margin:0; text-wrap:balance}
+.band__c{font-family:var(--f-mono); font-size:.62rem; letter-spacing:.16em;
+  text-transform:uppercase; color:#A9BEC7; margin-top:.9rem; display:block}
+
+/* --- each pass carries a hairline in its plate's own key --- */
+.pass{border-top-width:1px}
+.pass__key{position:absolute; top:0; left:0; right:0; height:2px; background:var(--key); opacity:.85}
+.pass.is-cancelled .pass__key{opacity:.35}
+
+/* --- stat figures get real scale --- */
+.board__c b{font-size:clamp(2rem,5vw,3.1rem)}
+.hstat b{font-size:clamp(1.7rem,5.4vw,3rem)}
+
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms !important; transition-duration:.001ms !important}
 }
@@ -931,15 +1003,15 @@ footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mo
 
 <main>
   <!-- ============ LEDGER ============ -->
-  <section class="sect" style="border-top:0">
+  <section class="sect has-guilloche" style="border-top:0"><div class="guilloche" id="guil" aria-hidden="true"></div>
     <div class="wrap">
       <div class="sect__head">
         <p class="eyebrow">The ledger at a glance</p>
         <h2>What the receipts add up to</h2>
-        <p>
-          Counted from confirmed bookings only. Air miles are great-circle distances for
-          flight legs that appear in an actual itinerary — the drives to Vero Beach and
-          the Space Coast are not in that number.
+        <p class="lede">
+          <b>Sixteen bookings, thirteen of them flown.</b> Counted from confirmed records
+          only. Air miles are great-circle distances for flight legs that appear in a real
+          itinerary — the drives to Vero Beach and the Space Coast are not in that number.
         </p>
       </div>
       <div class="board" id="board"></div>
@@ -959,7 +1031,7 @@ footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mo
         </p>
       </div>
       <div class="atlas">
-        <figure class="atlas__fig" style="margin:0">
+        <figure class="atlas__fig reg" style="margin:0">
           <svg id="radial" viewBox="0 0 780 780" role="img"
                aria-label="Radial diagram of travel destinations plotted by compass bearing and distance from Orlando"></svg>
         </figure>
@@ -996,6 +1068,23 @@ footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mo
     </div>
   </section>
 
+
+  <!-- ============ BAND ============ -->
+  <figure class="band" style="margin:0">
+    <!-- top-anchored: the band is far wider than the plate's 1.6:1 composition, so
+         something is always cropped. Keeping the top holds the campanile, the domes
+         and the moon; the scrim then carries the text across the lower half. -->
+    <svg class="plate" viewBox="0 0 320 200" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+      <use href="#p-ferro" width="320" height="200"/>
+    </svg>
+    <div class="band__scrim"></div>
+    <div class="band__txt"><div class="wrap">
+      <span class="band__k">The longest entry</span>
+      <p class="band__q">They flew into one Italian city and out of another.</p>
+      <span class="band__c">Milan → Venice · 12–24 October 2025 · 10,254 miles in the air</span>
+    </div></div>
+  </figure>
+
   <!-- ============ TIMELINE ============ -->
   <section class="sect" id="timeline">
     <div class="wrap">
@@ -1021,7 +1110,7 @@ footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mo
           high summer, and a persistent February habit. Nothing at all in spring.
         </p>
       </div>
-      <div class="chart-card">
+      <div class="chart-card reg">
         <div class="chart-holder">
           <div class="chart-wrap">
             <svg id="months" viewBox="0 0 640 210" role="img"
@@ -1079,7 +1168,8 @@ footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mo
   </section>
 
   <!-- ============ COLOPHON ============ -->
-  <section class="sect">
+  <section class="sect has-guilloche">
+    <div class="guilloche left" aria-hidden="true"></div>
     <div class="wrap">
       <div class="sect__head">
         <p class="eyebrow">Provenance</p>
@@ -1553,6 +1643,40 @@ function legTable(t){
 }
 
 
+
+/* ---------- guilloche: an engraved rosette, generated rather than drawn ----------
+   Two epitrochoids at slightly different radii, the way security print on a ticket
+   builds a moire. Cheap to compute, so the path is generated instead of authored. */
+(function(){
+  const hosts=[...document.querySelectorAll(".guilloche")]; if(!hosts.length) return;
+  const S=520, c=S/2;
+  function rosette(R,r,d,turns,step){
+    let out="";
+    for(let t=0;t<Math.PI*2*turns;t+=step){
+      const k=(R-r)/r;
+      const x=c+(R-r)*Math.cos(t)+d*Math.cos(k*t);
+      const y=c+(R-r)*Math.sin(t)-d*Math.sin(k*t);
+      out+=(t?"L":"M")+x.toFixed(1)+" "+y.toFixed(1);
+    }
+    return out+"Z";
+  }
+  const svg=
+    `<svg viewBox="0 0 ${S} ${S}" fill="none" stroke="currentColor" stroke-width=".9">
+       <path d="${rosette(240,62,52,7,0.035)}"/>
+       <path d="${rosette(206,44,44,9,0.04)}" stroke-width=".7"/>
+       <circle cx="${c}" cy="${c}" r="248" stroke-width=".7"/>
+       <circle cx="${c}" cy="${c}" r="120" stroke-width=".7"/>
+     </svg>`;
+  hosts.forEach(h=>h.innerHTML=svg);
+})();
+
+/* ---------- each pass takes a hairline from its own plate's sky ---------- */
+const PLATE_KEY={
+  oak:"#D9795F", sunstone:"#7FA0BE", pine:"#7FA8BE", evergreen:"#8CA8BC",
+  shell:"#5E9EC0", guanacaste:"#2E7E8C", arch:"#93AEBE", rocket:"#7A5570",
+  ferro:"#8A6675", guitar:"#B85A50", citrus:"#6FB4CE", peach:"#7E6E8E", flame:"#5E4A63"
+};
+
 /* ---------- route strip: the itinerary as a line of stops ---------- */
 function routeStrip(t){
   if(!t.legs.length) return `<span class="strip__none">No flights — drove, or the ticket was someone else's.</span>`;
@@ -1697,7 +1821,9 @@ function render(){
     const route=routeStrip(t);
 
     html+=`
-    <article class="pass ${isC?"is-cancelled":""}" id="trip-${t.id}">
+    <article class="pass ${isC?"is-cancelled":""}" id="trip-${t.id}"
+             style="--key:${PLATE_KEY[t.relic]||"var(--line)"}">
+      <span class="pass__key" aria-hidden="true"></span>
       <div class="pass__main">
         <div class="pass__rowtop">
           <span class="tag k-${t.kind}">${KINDS[t.kind]}</span>
