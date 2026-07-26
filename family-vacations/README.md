@@ -5,7 +5,12 @@ and July 2026 from booking confirmations.
 
 - `index.html` — the site. Open it directly in a browser; no server, no build step.
 - `data/trips.json` — the extracted ledger, kept separately so it can be read or
-  edited without touching the page.
+  edited without touching the page. Top-level keys: `meta`, `people`, `airports`,
+  `trips`, `milestones`, `crossings` (the four international entries drawn as passport
+  stamps), and `seasonality` (the month counts behind Figure 2).
+
+The page carries its own copy of this data inline, so the two must be kept in step —
+see **Editing** below.
 
 ## What it's built from
 
@@ -104,7 +109,14 @@ at all. It is the page's single accent (the hub, hover states, milestone figures
 
 To add a trip, append an object to the `TRIPS` array near the top of the `<script>` block
 in `index.html`, and mirror it into `data/trips.json`. The stats, the diagram, the year
-groupings and the filters all derive from that array, so nothing else needs updating.
+groupings, Figure 2 and the filters all derive from that array, so nothing else needs
+updating.
+
+The page is the renderer and the JSON is the record, so drift between them is the failure
+mode to watch. To check, load the page in a headless browser, read the `TRIPS` and
+`STAMPS` globals, and diff them against `trips.json` — that is how the `place` fields for
+`atlanta-2022` and `italy-2025` were caught after they were edited in one file and not
+the other. A new international entry needs a row in `crossings` as well as its trip.
 
 Fields: `id`, `start`, `end` (ISO), `place`, `region`, `country`, `lat`, `lon`, `party`
 (keys into `PEOPLE`), `kind` (`vacation` · `cancelled` · `work` · `visit` · `outing`),
