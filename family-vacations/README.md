@@ -52,6 +52,19 @@ monospace for codes and times, a serif for prose. All are system stacks — the 
 no external fonts, scripts, styles or images, so it works offline and satisfies a strict
 CSP.
 
+Because there were no usable photographs, each destination gets an illustrated **plate**
+— a layered SVG scene drawn in the manifest palette, so the set reads as printed
+ticket stock rather than stock photography. Thirteen plates cover every place in the
+ledger: the Salute domes and a gondola's ferro for Venice, Rainier behind the Sound for
+Seattle, a night launch off the Space Coast, the Gateway Arch, Popocatépetl above the
+cathedral towers in Mexico City. Each plate pairs with the smaller monoline souvenir
+emblem. Plates live as `<symbol id="p-*">` and emblems as `<g id="r-*">` in the sprite at
+the top of the file; a trip's `relic` key selects both.
+
+Plates are composed at 320×200 and rendered at a fixed height rather than stretched to
+fill, because `preserveAspectRatio="slice"` in a tall container crops away the very
+landmark that identifies the place.
+
 Figure 1 is a radial route diagram, not a map. Every destination sits at its true compass
 bearing from Orlando with distance on a log scale, so the short Florida hops stay legible
 next to the Atlantic crossing. Distances and bearings are computed at runtime from
