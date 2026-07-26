@@ -1,0 +1,326 @@
+{
+  "meta": {
+    "title": "Family Travel Ledger",
+    "range": "2021-2026",
+    "home": "MCO",
+    "compiled": "2026-07-26",
+    "sources": {
+      "gmail": "Booking confirmations, itineraries, hotel receipts and cancellation notices. Primary and only substantive source.",
+      "googleCalendar": "Searched across 2021-2026. Contributed nothing - no trip events exist.",
+      "googleDrive": "Two Southwest itinerary PDFs for the cancelled Aug 2022 booking. No other trip material.",
+      "photos": "No usable photos. See photoAudit."
+    },
+    "photoAudit": {
+      "foldersScanned": 2,
+      "imagesFound": "~120",
+      "clusters": ["Nov 2019 (outside range)", "Oct 2023 (camera-roll dump)"],
+      "dateMatches": 4,
+      "usableMatches": 0,
+      "finding": "The four Oct 2023 images that date-match the St. Louis trip are screenshots - a rental-car confirmation, a work all-hands email, and a private family text thread - not photographs. Nothing was embedded."
+    },
+    "privacy": "Confirmation codes, ticket numbers, loyalty-program numbers, card digits and email addresses were stripped at extraction and never written to this file."
+  },
+
+  "people": {
+    "matt": { "name": "Matt", "role": "Books everything. Flies out of Orlando." },
+    "heather": { "name": "Heather", "role": "On the international routes - Costa Rica and Italy." },
+    "chris": { "name": "Chris", "role": "Flies in. Tampa 2021, Orlando 2022." }
+  },
+
+  "airports": {
+    "MCO": { "name": "Orlando", "lat": 28.4312, "lon": -81.3081 },
+    "MIA": { "name": "Miami", "lat": 25.7959, "lon": -80.2871 },
+    "MEX": { "name": "Mexico City", "lat": 19.4363, "lon": -99.0721 },
+    "STL": { "name": "St. Louis", "lat": 38.7487, "lon": -90.3700 },
+    "SEA": { "name": "Seattle/Tacoma", "lat": 47.4502, "lon": -122.3088 },
+    "DAL": { "name": "Dallas Love", "lat": 32.8471, "lon": -96.8518 },
+    "HOU": { "name": "Houston Hobby", "lat": 29.6454, "lon": -95.2789 },
+    "LIR": { "name": "Liberia", "lat": 10.5933, "lon": -85.5444 },
+    "EWR": { "name": "Newark", "lat": 40.6895, "lon": -74.1745 },
+    "MXP": { "name": "Milan Malpensa", "lat": 45.6306, "lon": 8.7281 },
+    "VCE": { "name": "Venice", "lat": 45.5053, "lon": 12.3519 },
+    "YYZ": { "name": "Toronto", "lat": 43.6777, "lon": -79.6248 },
+    "PHL": { "name": "Philadelphia", "lat": 39.8729, "lon": -75.2437 },
+    "ATL": { "name": "Atlanta", "lat": 33.6407, "lon": -84.4277 },
+    "AUS": { "name": "Austin", "lat": 30.1975, "lon": -97.6664 },
+    "TPA": { "name": "Tampa", "lat": 27.9756, "lon": -82.5333 }
+  },
+
+  "trips": [
+    {
+      "id": "tampa-2021",
+      "start": "2021-02-19", "end": "2021-02-21",
+      "place": "Tampa", "region": "Florida", "country": "USA",
+      "lat": 27.9378, "lon": -82.4640,
+      "party": ["matt", "chris"],
+      "kind": "vacation",
+      "relic": "oak",
+      "lodging": ["The Old Bohemian, Jetton Ave", "Charming Guesthouse, Watrous Ave"],
+      "legs": [],
+      "carrier": "Southwest (Chris, inbound 02/18)",
+      "headline": "Two houses, one weekend",
+      "note": "Two Airbnbs booked the same minute in January for the same February nights, both in Hyde Park, a four-minute walk apart. Chris flew into Tampa the day before.",
+      "evidence": "Airbnb confirmations 24 Jan 2021; host messages through checkout; Southwest itinerary for Chris"
+    },
+    {
+      "id": "mexico-city-2021",
+      "start": "2021-07-16", "end": "2021-07-19",
+      "place": "Mexico City", "region": "Ciudad de Mexico", "country": "Mexico",
+      "lat": 19.4326, "lon": -99.1332,
+      "party": ["matt"],
+      "kind": "vacation",
+      "relic": "sunstone",
+      "lodging": [],
+      "legs": [["MCO","MIA"],["MIA","MEX"],["MEX","MIA"],["MIA","MCO"]],
+      "carrier": "American Airlines",
+      "headline": "First passport stamp of the ledger",
+      "note": "Booked on points through Amex Travel five weeks out. Seat 23A down, 22A back. The first time the record leaves the country.",
+      "evidence": "American Express Travel confirmation, 11 Jun 2021"
+    },
+    {
+      "id": "whitefish-2021",
+      "start": "2021-07-22", "end": "2021-07-25",
+      "place": "Whitefish", "region": "Montana", "country": "USA",
+      "lat": 48.4108, "lon": -114.3376,
+      "party": ["matt"],
+      "kind": "vacation",
+      "relic": "pine",
+      "lodging": ["3 Arrows Luxury Cabin"],
+      "legs": [],
+      "carrier": null,
+      "headline": "Someone else's booking, shared",
+      "note": "The only trip in the ledger Matt did not book. Prateek reserved the cabin and shared the itinerary. House rules: quiet hours nine to seven, sign the agreement before you arrive, and there is a card by the door explaining how to light the fire.",
+      "evidence": "Airbnb shared itinerary, 28 May 2021"
+    },
+    {
+      "id": "seattle-2021",
+      "start": "2021-07-29", "end": "2021-08-01",
+      "place": "Seattle", "region": "Washington", "country": "USA",
+      "lat": 47.4502, "lon": -122.3088,
+      "party": ["matt"],
+      "kind": "vacation",
+      "relic": "evergreen",
+      "lodging": [],
+      "legs": [["MCO","STL"],["STL","SEA"],["SEA","DAL"],["DAL","MCO"]],
+      "carrier": "Southwest",
+      "headline": "Third trip in seventeen days",
+      "note": "52,083 points and $11.20 in security fees. Out through St. Louis at 6:10 in the morning, home through Dallas Love Field sixteen hours later.",
+      "evidence": "Southwest confirmation, 18 Jun 2021"
+    },
+    {
+      "id": "orlando-2022",
+      "start": "2022-02-03", "end": "2022-02-03",
+      "place": "Orlando", "region": "Florida", "country": "USA",
+      "lat": 28.4312, "lon": -81.3081,
+      "party": ["chris"],
+      "kind": "visit",
+      "relic": "citrus",
+      "lodging": [],
+      "legs": [],
+      "carrier": "Southwest",
+      "headline": "Chris comes to them",
+      "note": "An inbound itinerary rather than a departure. Forwarded on to Heather the same evening.",
+      "evidence": "Southwest itinerary, 6 Jan 2022"
+    },
+    {
+      "id": "vero-2022",
+      "start": "2022-06-17", "end": "2022-06-19",
+      "place": "Vero Beach", "region": "Florida", "country": "USA",
+      "lat": 27.6386, "lon": -80.3973,
+      "party": ["matt"],
+      "kind": "vacation",
+      "relic": "shell",
+      "lodging": ["SpringHill Suites, Indian River Blvd"],
+      "legs": [],
+      "carrier": null,
+      "headline": "Seventy-eight miles east",
+      "note": "Close enough to drive. The Treasure Coast - the opposite side of the state from Tampa, and, as it happens, exactly the same distance from home.",
+      "evidence": "Marriott early check-in notice, 17 Jun 2022",
+      "datePrecision": "approximate"
+    },
+    {
+      "id": "atlanta-2022",
+      "start": "2022-08-09", "end": "2022-08-09",
+      "place": "Philadelphia to Atlanta to Orlando", "region": "multi-state", "country": "USA",
+      "lat": 33.6407, "lon": -84.4277,
+      "party": ["matt", "heather"],
+      "kind": "cancelled",
+      "relic": "peach",
+      "lodging": [],
+      "legs": [["PHL","ATL"],["ATL","MCO"]],
+      "carrier": "Southwest",
+      "headline": "Cancelled the morning of",
+      "note": "Two seats, two confirmations, a 5:25am departure out of Philadelphia. Both were cancelled on the day of travel and the funds became flight credit. The pair of PDFs sitting in Drive are the only trace of it there.",
+      "evidence": "Southwest cancellations, 9 Aug 2022; itinerary PDFs in Google Drive"
+    },
+    {
+      "id": "costa-rica-2022",
+      "start": "2022-08-27", "end": "2022-09-02",
+      "place": "Liberia", "region": "Guanacaste", "country": "Costa Rica",
+      "lat": 10.6339, "lon": -85.5444,
+      "party": ["matt", "heather"],
+      "kind": "vacation",
+      "relic": "guanacaste",
+      "lodging": [],
+      "legs": [["MCO","HOU"],["HOU","LIR"],["LIR","HOU"],["HOU","MCO"]],
+      "carrier": "Southwest",
+      "headline": "Six nights in Guanacaste",
+      "note": "Rebooked three separate times between March and May before it stuck. Paid with 28,552 points; the taxes read like a geography lesson - baggage inspection, boarding tax, common area user charge, tourism arrival tax.",
+      "evidence": "Southwest change confirmations Mar/Apr/May 2022, forwarded to Heather"
+    },
+    {
+      "id": "st-louis-2023",
+      "start": "2023-10-10", "end": "2023-10-11",
+      "place": "St. Louis", "region": "Missouri", "country": "USA",
+      "lat": 38.6270, "lon": -90.1994,
+      "party": ["matt"],
+      "kind": "work",
+      "relic": "arch",
+      "lodging": ["Drury Inn & Suites, Brentwood"],
+      "legs": [["MCO","STL"],["STL","MCO"]],
+      "carrier": "Southwest",
+      "headline": "Not a vacation, and the ledger should say so",
+      "note": "An all-hands at the Knight Center on the WashU campus, an economy rental car picked up at 9am, dinner on Delmar. Included because it is the one trip where photographs almost existed - four images date-match it exactly, and every one turned out to be a screenshot.",
+      "evidence": "Southwest upgraded-boarding confirmation, 11 Oct 2023"
+    },
+    {
+      "id": "austin-2024",
+      "start": "2024-01-31", "end": "2024-01-31",
+      "place": "Austin", "region": "Texas", "country": "USA",
+      "lat": 30.2672, "lon": -97.7431,
+      "party": ["matt"],
+      "kind": "cancelled",
+      "relic": "guitar",
+      "lodging": [],
+      "legs": [],
+      "carrier": "Southwest",
+      "headline": "Austin, first attempt",
+      "note": "Booked, then cancelled. The confirmation number was kept so the funds could be applied to a future reservation.",
+      "evidence": "Southwest cancellation, 9 Jan 2024"
+    },
+    {
+      "id": "melbourne-2024",
+      "start": "2024-09-26", "end": "2024-09-28",
+      "place": "Melbourne", "region": "Florida", "country": "USA",
+      "lat": 28.0836, "lon": -80.6081,
+      "party": ["matt"],
+      "kind": "vacation",
+      "relic": "rocket",
+      "lodging": ["Comfort Inn & Suites, Melbourne-Viera"],
+      "legs": [],
+      "carrier": null,
+      "headline": "The Space Coast, first visit",
+      "note": "Two nights paid entirely with 13,977 points. Free breakfast. The first of two bookings on this stretch of coast.",
+      "evidence": "Chase Travel confirmation, 26 Sep 2024"
+    },
+    {
+      "id": "italy-2025",
+      "start": "2025-10-12", "end": "2025-10-24",
+      "place": "Milan to Venice", "region": "Lombardy and Veneto", "country": "Italy",
+      "lat": 45.5053, "lon": 12.3519,
+      "party": ["matt", "heather"],
+      "kind": "vacation",
+      "relic": "ferro",
+      "lodging": ["Holiday Inn, Newark Airport (overnight out)"],
+      "legs": [["MCO","EWR"],["EWR","MXP"],["VCE","YYZ"],["YYZ","MCO"]],
+      "carrier": "United, Air Canada",
+      "headline": "Twelve days. In through Milan, out through Venice.",
+      "note": "Booked in March for October, seats 51K and 51L side by side on the overnight to Malpensa. They flew into one Italian city and out of another, which means the middle of this trip happened on the ground and left no receipts. The longest and farthest entry in the ledger by a wide margin.",
+      "evidence": "United eTicket receipt; Chase Travel hotel confirmation, 12 Oct 2025"
+    },
+    {
+      "id": "celebration-2025",
+      "start": "2025-12-29", "end": "2025-12-29",
+      "place": "Celebration", "region": "Florida", "country": "USA",
+      "lat": 28.3253, "lon": -81.5337,
+      "party": ["matt"],
+      "kind": "outing",
+      "relic": "flame",
+      "lodging": [],
+      "legs": [],
+      "carrier": null,
+      "headline": "A table, not a trip",
+      "note": "Charley's Steak House, between Christmas and New Year. Included because a ledger built from confirmations should show what the small ones look like too.",
+      "evidence": "OpenTable reminder, 28 Dec 2025",
+      "datePrecision": "approximate"
+    },
+    {
+      "id": "brandon-2026",
+      "start": "2026-02-28", "end": "2026-03-01",
+      "place": "Brandon", "region": "Florida", "country": "USA",
+      "lat": 27.9378, "lon": -82.2859,
+      "party": ["matt"],
+      "kind": "vacation",
+      "relic": "oak",
+      "lodging": ["Embassy Suites, Tampa-Brandon"],
+      "legs": [],
+      "carrier": null,
+      "headline": "Back to the Tampa side",
+      "note": "Booked in January, moved by one night, then stayed two. Five years and nine days after the first Tampa weekend in this record.",
+      "evidence": "Hilton confirmations Jan 2026; final folio 1 Mar 2026"
+    },
+    {
+      "id": "satellite-beach-2026",
+      "start": "2026-07-10", "end": "2026-07-13",
+      "place": "Satellite Beach", "region": "Florida", "country": "USA",
+      "lat": 28.1761, "lon": -80.5901,
+      "party": ["matt"],
+      "kind": "vacation",
+      "relic": "rocket",
+      "lodging": ["Americas Best Value Inn, Satellite Beach"],
+      "legs": [],
+      "carrier": null,
+      "headline": "Three nights on the Space Coast",
+      "note": "Booked the same day it began. Three nights of barrier island between the Banana River and the Atlantic, twenty minutes from the Melbourne stay two years earlier.",
+      "evidence": "Priceline hotel receipt, 10 Jul 2026"
+    },
+    {
+      "id": "austin-2026",
+      "start": "2026-07-10", "end": "2026-07-10",
+      "place": "Austin", "region": "Texas", "country": "USA",
+      "lat": 30.2672, "lon": -97.7431,
+      "party": ["matt", "heather", "chris"],
+      "kind": "cancelled",
+      "relic": "guitar",
+      "lodging": [],
+      "legs": [["MCO","AUS"]],
+      "carrier": "Southwest",
+      "headline": "Austin, second attempt",
+      "note": "Booked on the 29th of June and circulated to Heather and Chris. The flight changed that same evening and a corrected itinerary went out. Forty-five minutes after that, Matt wrote again to say a family situation had come up and he could not go. The others kept the plan. The airline cancellation landed on the morning of the tenth.",
+      "evidence": "Southwest booking, change and cancellation 29 Jun - 10 Jul 2026; three emails to Heather, Chris and Matt"
+    }
+  ],
+
+  "milestones": [
+    {
+      "label": "First entry",
+      "value": "19 Feb 2021",
+      "detail": "Tampa. Two Airbnbs, four minutes apart, booked in the same minute."
+    },
+    {
+      "label": "Busiest stretch",
+      "value": "17 days",
+      "detail": "July 2021: Mexico City on the 16th, a Montana cabin on the 22nd, Seattle on the 29th."
+    },
+    {
+      "label": "Farthest from home",
+      "value": "Venice",
+      "detail": "5,011 miles from Orlando - roughly twice the next-farthest entry, Seattle at 2,551."
+    },
+    {
+      "label": "Longest stay",
+      "value": "12 days",
+      "detail": "Italy, October 2025. Nothing else in the ledger runs past a week."
+    },
+    {
+      "label": "Most-returned-to",
+      "value": "Florida",
+      "detail": "Seven of sixteen entries never leave the state. Tampa twice, the Space Coast twice."
+    },
+    {
+      "label": "Never flown",
+      "value": "Austin, twice",
+      "detail": "Booked January 2024, cancelled. Booked June 2026, cancelled. The only place in this record with two confirmations and no arrival."
+    }
+  ]
+}

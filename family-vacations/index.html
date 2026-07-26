@@ -1,0 +1,966 @@
+<title>Family Travel Ledger — 2021–2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+/* ============================================================
+   TOKENS
+   Ground and neutrals biased toward teal; amber is the single
+   bold accent; the stamp red is reserved exclusively for
+   cancelled trips and never used decoratively.
+   ============================================================ */
+:root{
+  --bg:#E9EDEE;
+  --bg-2:#DFE5E7;
+  --surface:#FFFFFF;
+  --fg:#0C1A21;
+  --muted:#566B74;
+  --faint:#8398A1;
+  --line:#C7D2D6;
+  --line-soft:#DBE3E6;
+  --amber:#9A6510;
+  --amber-bright:#C4841C;
+  --sea:#17606F;
+  --void:#8F3826;
+  --board:#12222A;
+  --board-fg:#F0B44E;
+
+  --f-sign:"Helvetica Neue",Helvetica,Arial,"Liberation Sans",sans-serif;
+  --f-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --f-prose:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Liberation Serif",serif;
+
+  --s1:.5rem; --s2:.875rem; --s3:1.25rem; --s4:2rem; --s5:3.25rem; --s6:5rem;
+  --maxw:1180px;
+  --rule:1px solid var(--line);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#08131A; --bg-2:#0B1A22; --surface:#0F1F27;
+    --fg:#DFE9ED; --muted:#8DA3AD; --faint:#5E7683;
+    --line:#1E333D; --line-soft:#16272F;
+    --amber:#F0B44E; --amber-bright:#F7C86F;
+    --sea:#58B0C2; --void:#D9765E;
+    --board:#050E13; --board-fg:#F0B44E;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#08131A; --bg-2:#0B1A22; --surface:#0F1F27;
+  --fg:#DFE9ED; --muted:#8DA3AD; --faint:#5E7683;
+  --line:#1E333D; --line-soft:#16272F;
+  --amber:#F0B44E; --amber-bright:#F7C86F;
+  --sea:#58B0C2; --void:#D9765E;
+  --board:#050E13; --board-fg:#F0B44E;
+}
+:root[data-theme="light"]{
+  --bg:#E9EDEE; --bg-2:#DFE5E7; --surface:#FFFFFF;
+  --fg:#0C1A21; --muted:#566B74; --faint:#8398A1;
+  --line:#C7D2D6; --line-soft:#DBE3E6;
+  --amber:#9A6510; --amber-bright:#C4841C;
+  --sea:#17606F; --void:#8F3826;
+  --board:#12222A; --board-fg:#F0B44E;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:var(--f-prose); font-size:17px; line-height:1.65;
+  overflow-x:hidden;
+}
+h1,h2,h3{font-family:var(--f-sign); text-wrap:balance; margin:0; line-height:1.02; letter-spacing:-.02em}
+a{color:var(--sea)}
+:focus-visible{outline:2px solid var(--amber-bright); outline-offset:3px; border-radius:2px}
+
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 var(--s3)}
+
+/* ---------- shared atoms ---------- */
+.eyebrow{
+  font-family:var(--f-mono); font-size:.66rem; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--faint); margin:0 0 var(--s2)
+}
+.mono{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
+.sect{padding:var(--s6) 0; border-top:var(--rule)}
+.sect__head{margin-bottom:var(--s4)}
+.sect__head h2{font-size:clamp(1.5rem,3.6vw,2.4rem); text-transform:uppercase; letter-spacing:.01em}
+.sect__head p{color:var(--muted); max-width:62ch; margin:var(--s2) 0 0; font-size:.98rem}
+
+/* ============================================================
+   HERO — departure board
+   ============================================================ */
+.hero{background:var(--board); color:#E8EEF1; padding:var(--s5) 0 var(--s4); position:relative; overflow:hidden}
+.hero::after{
+  /* scanline texture, very low contrast */
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(to bottom,rgba(255,255,255,.035) 0 1px,transparent 1px 3px);
+}
+.hero__top{display:flex; justify-content:space-between; align-items:baseline; gap:var(--s3); flex-wrap:wrap;
+  font-family:var(--f-mono); font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:#6E8894}
+.hero h1{
+  font-size:clamp(2.1rem,7.4vw,5rem); text-transform:uppercase; font-weight:800;
+  letter-spacing:-.035em; margin:var(--s3) 0 0; color:#FFF;
+}
+.hero h1 em{font-style:normal; color:var(--board-fg)}
+.hero__sub{max-width:56ch; color:#A9BEC7; margin:var(--s3) 0 0; font-size:1.02rem}
+
+/* split-flap */
+.flap{
+  margin-top:var(--s4); border-top:1px solid #22383F; border-bottom:1px solid #22383F;
+  padding:var(--s2) 0; display:flex; align-items:center; gap:var(--s3); flex-wrap:wrap;
+}
+.flap__label{font-family:var(--f-mono); font-size:.64rem; letter-spacing:.22em; color:#6E8894; text-transform:uppercase}
+.flap__cells{display:flex; gap:3px}
+.cell{
+  width:clamp(15px,3.4vw,26px); height:clamp(24px,5vw,38px);
+  background:#050D11; color:var(--board-fg);
+  font-family:var(--f-mono); font-weight:700;
+  font-size:clamp(.8rem,2.2vw,1.25rem);
+  display:flex; align-items:center; justify-content:center;
+  border-radius:2px; box-shadow:inset 0 -1px 0 #223, inset 0 1px 0 #01070A;
+  position:relative;
+}
+.cell::after{content:""; position:absolute; left:0; right:0; top:50%; height:1px; background:rgba(0,0,0,.55)}
+
+.hero__stats{display:flex; gap:var(--s4); flex-wrap:wrap; margin-top:var(--s4)}
+.hstat b{display:block; font-family:var(--f-sign); font-size:clamp(1.5rem,4.6vw,2.6rem); font-weight:800; color:#FFF; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.hstat span{font-family:var(--f-mono); font-size:.63rem; letter-spacing:.18em; text-transform:uppercase; color:#7B95A1}
+
+/* theme toggle */
+.tgl{
+  background:transparent; border:1px solid #2C454E; color:#8FA8B3; cursor:pointer;
+  font-family:var(--f-mono); font-size:.62rem; letter-spacing:.18em; text-transform:uppercase;
+  padding:.4rem .7rem; border-radius:2px;
+}
+.tgl:hover{color:var(--board-fg); border-color:var(--board-fg)}
+
+/* ============================================================
+   LEDGER STATS
+   ============================================================ */
+.board{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--line); border:var(--rule)}
+.board__c{background:var(--surface); padding:var(--s3)}
+.board__c b{display:block; font-family:var(--f-sign); font-weight:800; font-size:clamp(1.4rem,3.6vw,2.1rem);
+  letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.board__c span{display:block; font-family:var(--f-mono); font-size:.6rem; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--faint); margin-top:.3rem}
+.board__c small{display:block; color:var(--muted); font-size:.83rem; margin-top:.45rem; line-height:1.45}
+
+/* ============================================================
+   RADIAL ROUTE DIAGRAM
+   ============================================================ */
+.atlas{display:grid; grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:var(--s4); align-items:start}
+@media (max-width:900px){.atlas{grid-template-columns:1fr}}
+.atlas__fig{background:var(--surface); border:var(--rule); padding:var(--s2); position:relative}
+.atlas__fig svg{display:block; width:100%; height:auto}
+.ring{fill:none; stroke:var(--line); stroke-width:1}
+.ring-lbl{font-family:var(--f-mono); font-size:9.5px; fill:var(--faint); letter-spacing:.09em}
+.spoke{stroke:var(--sea); stroke-width:1.4; opacity:.5}
+.spoke.is-void{stroke:var(--void); stroke-dasharray:4 4; opacity:.75}
+.node{cursor:pointer}
+.node circle{fill:var(--sea); stroke:var(--surface); stroke-width:2; transition:r .18s ease}
+.node.is-void circle{fill:var(--void)}
+.node .leader{stroke-width:1; opacity:.4}
+.node text{font-family:var(--f-mono); font-size:10.5px; fill:var(--fg); letter-spacing:.04em}
+.node:hover circle,.node:focus-visible circle{r:8}
+.node.is-active circle{fill:var(--amber-bright)}
+.hub circle{fill:var(--amber-bright); stroke:var(--surface); stroke-width:2.5}
+.hub text{font-family:var(--f-mono); font-size:11px; font-weight:700; fill:var(--fg); letter-spacing:.1em}
+
+.legend{font-family:var(--f-mono); font-size:.68rem; color:var(--muted); line-height:1.9}
+.legend .k{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:.5rem; vertical-align:-1px}
+.atlas__note{color:var(--muted); font-size:.92rem; margin:0 0 var(--s3)}
+
+/* ============================================================
+   TIMELINE — boarding pass stubs
+   ============================================================ */
+.filters{display:flex; gap:var(--s1); flex-wrap:wrap; margin-bottom:var(--s4)}
+.chip{
+  font-family:var(--f-mono); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase;
+  padding:.42rem .78rem; border:var(--rule); background:var(--surface); color:var(--muted);
+  cursor:pointer; border-radius:2px;
+}
+.chip:hover{border-color:var(--amber-bright); color:var(--fg)}
+.chip[aria-pressed="true"]{background:var(--fg); color:var(--bg); border-color:var(--fg)}
+
+.year{margin:var(--s5) 0 var(--s3); display:flex; align-items:center; gap:var(--s3)}
+.year h3{font-size:clamp(2.4rem,9vw,4.6rem); font-weight:800; letter-spacing:-.05em; color:var(--line); line-height:.8}
+.year hr{flex:1; border:0; border-top:var(--rule)}
+.year .n{font-family:var(--f-mono); font-size:.64rem; letter-spacing:.16em; color:var(--faint); text-transform:uppercase}
+
+.pass{
+  display:grid; grid-template-columns:minmax(0,1fr) 190px;
+  background:var(--surface); border:var(--rule); margin-bottom:var(--s3); position:relative;
+}
+@media (max-width:760px){.pass{grid-template-columns:1fr}}
+.pass.is-target{border-color:var(--amber-bright); box-shadow:0 0 0 2px var(--amber-bright)}
+.pass__main{padding:var(--s3); min-width:0}
+.pass__rowtop{display:flex; gap:var(--s2); align-items:baseline; flex-wrap:wrap; margin-bottom:var(--s1)}
+.tag{
+  font-family:var(--f-mono); font-size:.58rem; letter-spacing:.16em; text-transform:uppercase;
+  padding:.2rem .45rem; border:1px solid var(--line); color:var(--muted); border-radius:2px;
+}
+.tag.k-cancelled{color:var(--void); border-color:var(--void)}
+.tag.k-work{color:var(--amber); border-color:var(--amber)}
+.pass__date{font-family:var(--f-mono); font-size:.7rem; letter-spacing:.1em; color:var(--faint); text-transform:uppercase}
+.pass h4{font-family:var(--f-sign); font-weight:800; letter-spacing:-.025em;
+  font-size:clamp(1.25rem,3.2vw,1.85rem); margin:.1rem 0 .1rem; text-wrap:balance}
+.pass__place{font-family:var(--f-mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--sea); margin-bottom:var(--s2)}
+.pass__note{color:var(--muted); font-size:.97rem; margin:0 0 var(--s2); max-width:66ch}
+.pass__meta{display:flex; gap:var(--s3) var(--s4); flex-wrap:wrap; font-family:var(--f-mono); font-size:.7rem; color:var(--muted)}
+.pass__meta dt{font-size:.56rem; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); margin-bottom:.15rem}
+.pass__meta dd{margin:0}
+.pass__meta div{min-width:0}
+.route{display:flex; align-items:center; gap:.35rem; flex-wrap:wrap}
+.route i{font-style:normal; color:var(--faint)}
+
+/* stub */
+.pass__stub{
+  border-left:1px dashed var(--line); padding:var(--s3);
+  display:flex; flex-direction:column; justify-content:space-between; gap:var(--s2);
+  background:var(--bg-2); position:relative; overflow:hidden;
+}
+@media (max-width:760px){.pass__stub{border-left:0; border-top:1px dashed var(--line)}}
+.pass__stub .relic{width:100%; height:88px; color:var(--sea)}
+.pass.is-cancelled .pass__stub .relic{color:var(--void); opacity:.55}
+.stub__n{font-family:var(--f-mono); font-size:.58rem; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); text-align:center}
+.void-stamp{
+  position:absolute; inset:0; display:grid; place-items:center; pointer-events:none;
+  font-family:var(--f-sign); font-weight:800; font-size:1.5rem; letter-spacing:.3em;
+  color:var(--void); opacity:.42; transform:rotate(-14deg);
+}
+
+/* ============================================================
+   RELICS
+   ============================================================ */
+.relics{display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:var(--s2)}
+.relic-card{
+  background:var(--surface); border:var(--rule); padding:var(--s3) var(--s2);
+  text-align:center; display:flex; flex-direction:column; align-items:center; gap:var(--s1);
+}
+.relic-card .relic{width:62px; height:62px; color:var(--sea)}
+.relic-card b{font-family:var(--f-mono); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase}
+.relic-card small{color:var(--muted); font-size:.8rem; line-height:1.45}
+
+/* ============================================================
+   MILESTONES
+   ============================================================ */
+.miles{display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:1px; background:var(--line); border:var(--rule)}
+.mile{background:var(--surface); padding:var(--s3)}
+.mile .l{font-family:var(--f-mono); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--faint)}
+.mile .v{font-family:var(--f-sign); font-weight:800; font-size:1.6rem; letter-spacing:-.025em; margin:.3rem 0 .4rem; color:var(--amber)}
+.mile .d{color:var(--muted); font-size:.9rem; margin:0}
+
+/* ============================================================
+   CAST + COLOPHON
+   ============================================================ */
+.cast{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:var(--s2)}
+.person{background:var(--surface); border:var(--rule); padding:var(--s3)}
+.person b{font-family:var(--f-sign); font-weight:800; font-size:1.35rem; letter-spacing:-.02em; display:block}
+.person .c{font-family:var(--f-mono); font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--amber); margin:.25rem 0 .5rem}
+.person p{margin:0; color:var(--muted); font-size:.9rem}
+
+.colo{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:var(--s3)}
+.src{border-left:2px solid var(--line); padding-left:var(--s2)}
+.src b{font-family:var(--f-mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; display:block; margin-bottom:.35rem}
+.src.ok b{color:var(--sea)} .src.no b{color:var(--void)}
+.src p{margin:0; color:var(--muted); font-size:.88rem}
+
+footer{padding:var(--s4) 0 var(--s6); color:var(--faint); font-family:var(--f-mono); font-size:.68rem; line-height:1.9}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important; transition-duration:.001ms !important}
+}
+</style>
+
+<!-- ============================================================
+     RELIC SPRITE — geometric emblems, one per destination type
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="r-oak"><!-- live oak with hanging moss: Tampa -->
+      <path d="M32 56V34" stroke="currentColor" stroke-width="2.5" fill="none"/>
+      <path d="M12 30c0-9 9-16 20-16s20 7 20 16c0 6-4 10-9 11H21c-5-1-9-5-9-11z" stroke="currentColor" stroke-width="2" fill="none"/>
+      <path d="M20 42v8M27 43v11M38 42v10M45 43v7" stroke="currentColor" stroke-width="1.4" fill="none" opacity=".65"/>
+      <path d="M32 34l-8-6M32 34l9-7" stroke="currentColor" stroke-width="1.6" fill="none"/>
+    </g>
+    <g id="r-sunstone"><!-- Aztec sun disc: Mexico City -->
+      <circle cx="32" cy="32" r="9" stroke="currentColor" stroke-width="2" fill="none"/>
+      <circle cx="32" cy="32" r="17" stroke="currentColor" stroke-width="1.5" fill="none"/>
+      <circle cx="32" cy="32" r="3" fill="currentColor"/>
+      <g stroke="currentColor" stroke-width="2" fill="none">
+        <path d="M32 6v7M32 51v7M6 32h7M51 32h7"/>
+        <path d="M14 14l5 5M45 45l5 5M50 14l-5 5M19 45l-5 5" stroke-width="1.5"/>
+      </g>
+    </g>
+    <g id="r-pine"><!-- pine + ridge: Whitefish -->
+      <path d="M6 50h52" stroke="currentColor" stroke-width="1.5" fill="none"/>
+      <path d="M8 44l14-18 9 12 8-11 17 17" stroke="currentColor" stroke-width="1.6" fill="none" opacity=".55"/>
+      <path d="M32 50V38" stroke="currentColor" stroke-width="2.5" fill="none"/>
+      <path d="M32 8l10 16H22zM32 18l13 20H19z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+    </g>
+    <g id="r-evergreen"><!-- sound + peak: Seattle -->
+      <path d="M6 46l16-24 10 14 8-10 18 20z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      <path d="M6 52h52M6 58h52" stroke="currentColor" stroke-width="1.5" fill="none" opacity=".55"/>
+      <path d="M17 30l5-8 5 8" stroke="currentColor" stroke-width="1.4" fill="none"/>
+    </g>
+    <g id="r-shell"><!-- scallop: Vero Beach -->
+      <path d="M32 54C18 44 8 32 8 22c0-1 24-14 24-14s24 13 24 14c0 10-10 22-24 32z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      <path d="M32 8v46M20 12l4 36M44 12l-4 36M12 18l6 28M52 18l-6 28" stroke="currentColor" stroke-width="1.2" fill="none" opacity=".6"/>
+    </g>
+    <g id="r-guanacaste"><!-- broad canopy: Costa Rica -->
+      <path d="M32 56V36" stroke="currentColor" stroke-width="2.5" fill="none"/>
+      <path d="M6 28c0-8 7-13 14-13 3-6 9-8 14-6 6-3 13 0 15 6 6 1 9 6 9 12 0 4-3 7-7 7H13c-4 0-7-3-7-6z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      <path d="M32 40l-9-6M32 44l10-7" stroke="currentColor" stroke-width="1.5" fill="none"/>
+      <path d="M14 56h36" stroke="currentColor" stroke-width="1.4" fill="none" opacity=".5"/>
+    </g>
+    <g id="r-arch"><!-- Gateway Arch: St. Louis -->
+      <path d="M10 54C10 26 20 10 32 10s22 16 22 44" stroke="currentColor" stroke-width="2.5" fill="none"/>
+      <path d="M17 54C17 31 24 18 32 18s15 13 15 36" stroke="currentColor" stroke-width="1.4" fill="none" opacity=".55"/>
+      <path d="M6 56h52" stroke="currentColor" stroke-width="1.5" fill="none"/>
+    </g>
+    <g id="r-rocket"><!-- launch + surf: Space Coast -->
+      <path d="M32 6c6 7 9 15 9 24v10H23V30c0-9 3-17 9-24z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      <path d="M23 34l-7 8v6l7-4M41 34l7 8v6l-7-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/>
+      <circle cx="32" cy="24" r="4" stroke="currentColor" stroke-width="1.6" fill="none"/>
+      <path d="M6 56c5-4 9-4 13 0s9 4 13 0 9-4 13 0 9 4 13 0" stroke="currentColor" stroke-width="1.8" fill="none"/>
+    </g>
+    <g id="r-ferro"><!-- gondola ferro: Venice -->
+      <path d="M40 8c6 4 8 9 8 15v33" stroke="currentColor" stroke-width="2.5" fill="none"/>
+      <path d="M40 8H26M48 22H30M48 30H30M48 38H30M48 46H30" stroke="currentColor" stroke-width="2" fill="none"/>
+      <path d="M26 8c-4 3-6 7-6 12" stroke="currentColor" stroke-width="1.6" fill="none"/>
+      <path d="M8 58c6-4 10-4 16 0s10 4 16 0" stroke="currentColor" stroke-width="1.6" fill="none" opacity=".6"/>
+    </g>
+    <g id="r-guitar"><!-- headstock: Austin -->
+      <path d="M24 6h16v30H24z" stroke="currentColor" stroke-width="2" fill="none"/>
+      <path d="M28 36h8v22h-8z" stroke="currentColor" stroke-width="1.6" fill="none"/>
+      <g stroke="currentColor" stroke-width="1.5" fill="none">
+        <path d="M24 13h-7M24 21h-7M24 29h-7M40 13h7M40 21h7M40 29h7"/>
+      </g>
+      <path d="M30 6v30M34 6v30" stroke="currentColor" stroke-width="1" fill="none" opacity=".55"/>
+    </g>
+    <g id="r-flame"><!-- fork + flame: Celebration -->
+      <path d="M40 20c0-8-8-12-8-12s2 6-3 10-7 8-7 13a13 13 0 0 0 26 0c0-5-4-8-8-11z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      <path d="M14 8v14a4 4 0 0 0 8 0V8M18 26v30" stroke="currentColor" stroke-width="1.8" fill="none"/>
+    </g>
+    <g id="r-citrus"><!-- orange section: Orlando -->
+      <circle cx="32" cy="34" r="22" stroke="currentColor" stroke-width="2" fill="none"/>
+      <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".7">
+        <path d="M32 12v44M10 34h44M16 18l32 32M48 18L16 50"/>
+      </g>
+      <circle cx="32" cy="34" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+    </g>
+    <g id="r-peach"><!-- peach: Atlanta (cancelled) -->
+      <path d="M32 18c-11 0-20 8-20 19s9 19 20 19 20-8 20-19-9-19-20-19z" stroke="currentColor" stroke-width="2" fill="none"/>
+      <path d="M32 18V8M32 12c5-4 11-4 14-2-2 5-8 7-14 4z" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linejoin="round"/>
+      <path d="M32 22v30" stroke="currentColor" stroke-width="1.2" fill="none" opacity=".5"/>
+    </g>
+  </defs>
+</svg>
+
+<!-- ============================================================ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero__top">
+      <span>Compiled 2026-07-26 &nbsp;·&nbsp; Source: booking confirmations</span>
+      <button class="tgl" id="tgl" type="button">Toggle theme</button>
+    </div>
+
+    <h1>Departures from<br><em>Orlando</em></h1>
+
+    <p class="hero__sub">
+      Every trip below was reconstructed from a paper trail — airline confirmations,
+      hotel folios, an Airbnb itinerary someone else shared. Sixteen entries between
+      February 2021 and July 2026. Three of them never happened.
+    </p>
+
+    <div class="flap" aria-live="off">
+      <span class="flap__label">Destination</span>
+      <div class="flap__cells" id="flap" aria-hidden="true"></div>
+    </div>
+
+    <div class="hero__stats" id="heroStats"></div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ LEDGER ============ -->
+  <section class="sect" style="border-top:0">
+    <div class="wrap">
+      <div class="sect__head">
+        <p class="eyebrow">The ledger at a glance</p>
+        <h2>What the receipts add up to</h2>
+        <p>
+          Counted from confirmed bookings only. Air miles are great-circle distances for
+          flight legs that appear in an actual itinerary — the drives to Vero Beach and
+          the Space Coast are not in that number.
+        </p>
+      </div>
+      <div class="board" id="board"></div>
+    </div>
+  </section>
+
+  <!-- ============ ATLAS ============ -->
+  <section class="sect" id="atlas">
+    <div class="wrap">
+      <div class="sect__head">
+        <p class="eyebrow">Figure 1 — Route diagram</p>
+        <h2>Everything radiates from MCO</h2>
+        <p>
+          Not a map. Each destination sits at its true compass bearing from Orlando, at a
+          distance scaled logarithmically so the Florida hops don't collapse into the hub.
+          Select any point to jump to its entry.
+        </p>
+      </div>
+      <div class="atlas">
+        <figure class="atlas__fig" style="margin:0">
+          <svg id="radial" viewBox="0 0 780 780" role="img"
+               aria-label="Radial diagram of travel destinations plotted by compass bearing and distance from Orlando"></svg>
+        </figure>
+        <div>
+          <p class="atlas__note">
+            The shape of this diagram is the honest summary of the whole record: a dense
+            cluster inside 200 miles of home, one long arm reaching northwest, and a single
+            spoke crossing the Atlantic.
+          </p>
+          <p class="legend">
+            <span class="k" style="background:var(--amber-bright)"></span>Orlando — home airport<br>
+            <span class="k" style="background:var(--sea)"></span>Travelled<br>
+            <span class="k" style="background:var(--void)"></span>Booked and cancelled
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TIMELINE ============ -->
+  <section class="sect" id="timeline">
+    <div class="wrap">
+      <div class="sect__head">
+        <p class="eyebrow">The entries</p>
+        <h2>Sixteen bookings, in order</h2>
+        <p>Each stub carries what the confirmation actually said. Nothing here is inferred.</p>
+      </div>
+      <div class="filters" id="filters"></div>
+      <div id="entries"></div>
+    </div>
+  </section>
+
+  <!-- ============ RELICS ============ -->
+  <section class="sect">
+    <div class="wrap">
+      <div class="sect__head">
+        <p class="eyebrow">Souvenirs</p>
+        <h2>One emblem per place</h2>
+        <p>
+          Drawn rather than photographed — there were no usable photographs, and a
+          fabricated one would have been worse than none.
+        </p>
+      </div>
+      <div class="relics" id="relics"></div>
+    </div>
+  </section>
+
+  <!-- ============ MILESTONES ============ -->
+  <section class="sect">
+    <div class="wrap">
+      <div class="sect__head">
+        <p class="eyebrow">Extremes and firsts</p>
+        <h2>Milestones</h2>
+      </div>
+      <div class="miles" id="miles"></div>
+    </div>
+  </section>
+
+  <!-- ============ CAST ============ -->
+  <section class="sect">
+    <div class="wrap">
+      <div class="sect__head">
+        <p class="eyebrow">Who appears</p>
+        <h2>Named on the bookings</h2>
+        <p>Only people who appear as a passenger or guest on a confirmation are listed.</p>
+      </div>
+      <div class="cast" id="cast"></div>
+    </div>
+  </section>
+
+  <!-- ============ COLOPHON ============ -->
+  <section class="sect">
+    <div class="wrap">
+      <div class="sect__head">
+        <p class="eyebrow">Provenance</p>
+        <h2>Where this came from, and what it isn't</h2>
+      </div>
+      <div class="colo">
+        <div class="src ok">
+          <b>Gmail — everything</b>
+          <p>Airline confirmations, hotel folios, Airbnb messages, cancellation notices,
+             and three emails Matt wrote himself about the Austin plan. This is the entire
+             substantive source.</p>
+        </div>
+        <div class="src no">
+          <b>Google Calendar — nothing</b>
+          <p>Searched across the full range for vacation, trip, flight, beach and travel.
+             Zero matching events. Not one trip in this ledger appears on a calendar.</p>
+        </div>
+        <div class="src no">
+          <b>Google Drive — almost nothing</b>
+          <p>Two PDFs of the same cancelled August 2022 Southwest booking. No other trip
+             material exists in the Drive.</p>
+        </div>
+        <div class="src no">
+          <b>Photos — none usable</b>
+          <p>Around 120 images across two folders. One cluster predates the range; the
+             other is a camera-roll dump. Four images date-match the St. Louis trip exactly
+             and all four turned out to be screenshots — a rental confirmation, a work
+             email, and a private message thread. Nothing was embedded.</p>
+        </div>
+      </div>
+      <footer>
+        Confirmation codes, ticket and loyalty numbers, card digits and email addresses were
+        stripped before this page was written.<br>
+        Dates marked <span class="mono">approx.</span> come from a reminder or receipt rather
+        than a booking, so the exact nights may be off by a day.
+      </footer>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ============================================================
+   DATA — mirrors data/trips.json
+   ============================================================ */
+const AIRPORTS={
+  MCO:{n:"Orlando",lat:28.4312,lon:-81.3081}, MIA:{n:"Miami",lat:25.7959,lon:-80.2871},
+  MEX:{n:"Mexico City",lat:19.4363,lon:-99.0721}, STL:{n:"St. Louis",lat:38.7487,lon:-90.3700},
+  SEA:{n:"Seattle",lat:47.4502,lon:-122.3088}, DAL:{n:"Dallas Love",lat:32.8471,lon:-96.8518},
+  HOU:{n:"Houston Hobby",lat:29.6454,lon:-95.2789}, LIR:{n:"Liberia",lat:10.5933,lon:-85.5444},
+  EWR:{n:"Newark",lat:40.6895,lon:-74.1745}, MXP:{n:"Milan",lat:45.6306,lon:8.7281},
+  VCE:{n:"Venice",lat:45.5053,lon:12.3519}, YYZ:{n:"Toronto",lat:43.6777,lon:-79.6248},
+  PHL:{n:"Philadelphia",lat:39.8729,lon:-75.2437}, ATL:{n:"Atlanta",lat:33.6407,lon:-84.4277},
+  AUS:{n:"Austin",lat:30.1975,lon:-97.6664}, TPA:{n:"Tampa",lat:27.9756,lon:-82.5333}
+};
+
+const PEOPLE={
+  matt:{name:"Matt",code:"Passenger of record",bio:"Books everything, almost always out of Orlando. Appears on fifteen of the sixteen entries."},
+  heather:{name:"Heather",code:"On the long-haul routes",bio:"Named on the Costa Rica and Italy bookings and on the cancelled Atlanta pair — the international half of the record."},
+  chris:{name:"Chris",code:"Inbound",bio:"Flies toward them rather than with them: Tampa in February 2021, Orlando in February 2022, and on the Austin plan that fell through."}
+};
+
+const TRIPS=[
+ {id:"tampa-2021",start:"2021-02-19",end:"2021-02-21",place:"Tampa",region:"Florida",country:"USA",lat:27.9378,lon:-82.4640,
+  party:["matt","chris"],kind:"vacation",relic:"oak",lodging:["The Old Bohemian, Jetton Ave","Charming Guesthouse, Watrous Ave"],legs:[],carrier:"Southwest (Chris, inbound 02/18)",
+  headline:"Two houses, one weekend",
+  note:"Two Airbnbs booked in the same minute in January for the same February nights, both in Hyde Park, a four-minute walk apart. Chris flew into Tampa the day before.",
+  evidence:"Airbnb confirmations 24 Jan 2021; host messages through checkout"},
+
+ {id:"mexico-city-2021",start:"2021-07-16",end:"2021-07-19",place:"Mexico City",region:"Ciudad de México",country:"Mexico",lat:19.4326,lon:-99.1332,
+  party:["matt"],kind:"vacation",relic:"sunstone",lodging:[],legs:[["MCO","MIA"],["MIA","MEX"],["MEX","MIA"],["MIA","MCO"]],carrier:"American Airlines",
+  headline:"First passport stamp of the ledger",
+  note:"Booked on points through Amex Travel five weeks out. Seat 23A down, 22A back. The first time this record leaves the country.",
+  evidence:"American Express Travel confirmation, 11 Jun 2021"},
+
+ {id:"whitefish-2021",start:"2021-07-22",end:"2021-07-25",place:"Whitefish",region:"Montana",country:"USA",lat:48.4108,lon:-114.3376,
+  party:["matt"],kind:"vacation",relic:"pine",lodging:["3 Arrows Luxury Cabin"],legs:[],carrier:null,
+  headline:"Someone else's booking, shared",
+  note:"The only entry Matt did not book himself. Prateek reserved the cabin and shared the itinerary. House rules: quiet hours nine to seven, sign the agreement before arrival, and there's a card by the door explaining how to light the fire.",
+  evidence:"Airbnb shared itinerary, 28 May 2021"},
+
+ {id:"seattle-2021",start:"2021-07-29",end:"2021-08-01",place:"Seattle",region:"Washington",country:"USA",lat:47.4502,lon:-122.3088,
+  party:["matt"],kind:"vacation",relic:"evergreen",lodging:[],legs:[["MCO","STL"],["STL","SEA"],["SEA","DAL"],["DAL","MCO"]],carrier:"Southwest",
+  headline:"Third trip in seventeen days",
+  note:"52,083 points and $11.20 in security fees. Out through St. Louis at 6:10 in the morning, home through Dallas Love Field sixteen hours later.",
+  evidence:"Southwest confirmation, 18 Jun 2021"},
+
+ {id:"orlando-2022",start:"2022-02-03",end:"2022-02-03",place:"Orlando",region:"Florida",country:"USA",lat:28.4312,lon:-81.3081,
+  party:["chris"],kind:"visit",relic:"citrus",lodging:[],legs:[],carrier:"Southwest",
+  headline:"Chris comes to them",
+  note:"An inbound itinerary rather than a departure. Forwarded on to Heather the same evening.",
+  evidence:"Southwest itinerary, 6 Jan 2022"},
+
+ {id:"vero-2022",start:"2022-06-17",end:"2022-06-19",place:"Vero Beach",region:"Florida",country:"USA",lat:27.6386,lon:-80.3973,
+  party:["matt"],kind:"vacation",relic:"shell",lodging:["SpringHill Suites, Indian River Blvd"],legs:[],carrier:null,approx:true,
+  headline:"Seventy-eight miles east",
+  note:"Close enough to drive. The Treasure Coast — the opposite side of the state from Tampa, and, as it happens, exactly the same distance from home.",
+  evidence:"Marriott early check-in notice, 17 Jun 2022"},
+
+ {id:"atlanta-2022",short:"Atlanta (void)",start:"2022-08-09",end:"2022-08-09",place:"Philadelphia → Atlanta → Orlando",region:"multi-state",country:"USA",lat:33.6407,lon:-84.4277,
+  party:["matt","heather"],kind:"cancelled",relic:"peach",lodging:[],legs:[["PHL","ATL"],["ATL","MCO"]],carrier:"Southwest",
+  headline:"Cancelled the morning of",
+  note:"Two seats, two confirmations, a 5:25am departure out of Philadelphia. Both cancelled on the day of travel; the funds became flight credit. The two PDFs sitting in Drive are the only trace of this trip there.",
+  evidence:"Southwest cancellations, 9 Aug 2022; itinerary PDFs in Google Drive"},
+
+ {id:"costa-rica-2022",start:"2022-08-27",end:"2022-09-02",place:"Liberia",region:"Guanacaste",country:"Costa Rica",lat:10.6339,lon:-85.5444,
+  party:["matt","heather"],kind:"vacation",relic:"guanacaste",lodging:[],legs:[["MCO","HOU"],["HOU","LIR"],["LIR","HOU"],["HOU","MCO"]],carrier:"Southwest",
+  headline:"Six nights in Guanacaste",
+  note:"Rebooked three separate times between March and May before it stuck. Paid with 28,552 points; the taxes read like a geography lesson — baggage inspection, boarding tax, common area user charge, tourism arrival tax.",
+  evidence:"Southwest change confirmations Mar/Apr/May 2022, forwarded to Heather"},
+
+ {id:"st-louis-2023",short:"St. Louis",start:"2023-10-10",end:"2023-10-11",place:"St. Louis",region:"Missouri",country:"USA",lat:38.6270,lon:-90.1994,
+  party:["matt"],kind:"work",relic:"arch",lodging:["Drury Inn & Suites, Brentwood"],legs:[["MCO","STL"],["STL","MCO"]],carrier:"Southwest",
+  headline:"Not a vacation, and the ledger should say so",
+  note:"An all-hands at the Knight Center on the WashU campus, an economy rental picked up at 9am, dinner on Delmar. It earns its place because it is the one trip where photographs almost existed — four images date-match it exactly, and every one turned out to be a screenshot.",
+  evidence:"Southwest upgraded-boarding confirmation, 11 Oct 2023"},
+
+ {id:"austin-2024",start:"2024-01-31",end:"2024-01-31",place:"Austin",region:"Texas",country:"USA",lat:30.2672,lon:-97.7431,
+  party:["matt"],kind:"cancelled",relic:"guitar",lodging:[],legs:[],carrier:"Southwest",
+  headline:"Austin, first attempt",
+  note:"Booked, then cancelled. The confirmation number was kept so the funds could be applied to a future reservation. They were not.",
+  evidence:"Southwest cancellation, 9 Jan 2024"},
+
+ {id:"melbourne-2024",start:"2024-09-26",end:"2024-09-28",place:"Melbourne",region:"Florida",country:"USA",lat:28.0836,lon:-80.6081,
+  party:["matt"],kind:"vacation",relic:"rocket",lodging:["Comfort Inn & Suites, Melbourne-Viera"],legs:[],carrier:null,
+  headline:"The Space Coast, first visit",
+  note:"Two nights paid entirely with 13,977 points. Free breakfast. The first of two bookings on this stretch of coast.",
+  evidence:"Chase Travel confirmation, 26 Sep 2024"},
+
+ {id:"italy-2025",short:"Venice",start:"2025-10-12",end:"2025-10-24",place:"Milan → Venice",region:"Lombardy & Veneto",country:"Italy",lat:45.5053,lon:12.3519,
+  party:["matt","heather"],kind:"vacation",relic:"ferro",lodging:["Holiday Inn, Newark Airport (overnight out)"],legs:[["MCO","EWR"],["EWR","MXP"],["VCE","YYZ"],["YYZ","MCO"]],carrier:"United · Air Canada",
+  headline:"Twelve days. In through Milan, out through Venice.",
+  note:"Booked in March for October, seats 51K and 51L side by side on the overnight to Malpensa. They flew into one Italian city and out of another — which means the middle of this trip happened on the ground and left no receipts at all. The longest and farthest entry by a wide margin.",
+  evidence:"United eTicket receipt; Chase Travel hotel confirmation, 12 Oct 2025"},
+
+ {id:"celebration-2025",start:"2025-12-29",end:"2025-12-29",place:"Celebration",region:"Florida",country:"USA",lat:28.3253,lon:-81.5337,
+  party:["matt"],kind:"outing",relic:"flame",lodging:[],legs:[],carrier:null,approx:true,
+  headline:"A table, not a trip",
+  note:"Charley's Steak House, between Christmas and New Year. Included because a ledger built from confirmations should show what the small ones look like too.",
+  evidence:"OpenTable reminder, 28 Dec 2025"},
+
+ {id:"brandon-2026",start:"2026-02-28",end:"2026-03-01",place:"Brandon",region:"Florida",country:"USA",lat:27.9378,lon:-82.2859,
+  party:["matt"],kind:"vacation",relic:"oak",lodging:["Embassy Suites, Tampa-Brandon"],legs:[],carrier:null,
+  headline:"Back to the Tampa side",
+  note:"Booked in January, moved by one night, then stayed two. Five years and nine days after the first Tampa weekend in this record.",
+  evidence:"Hilton confirmations Jan 2026; final folio 1 Mar 2026"},
+
+ {id:"satellite-beach-2026",short:"Satellite Bch",start:"2026-07-10",end:"2026-07-13",place:"Satellite Beach",region:"Florida",country:"USA",lat:28.1761,lon:-80.5901,
+  party:["matt"],kind:"vacation",relic:"rocket",lodging:["Americas Best Value Inn, Satellite Beach"],legs:[],carrier:null,
+  headline:"Three nights on the Space Coast",
+  note:"Booked the same day it began. Three nights of barrier island between the Banana River and the Atlantic, twenty minutes up the beach from the Melbourne stay two years earlier.",
+  evidence:"Priceline hotel receipt, 10 Jul 2026"},
+
+ {id:"austin-2026",start:"2026-07-10",end:"2026-07-10",place:"Austin",region:"Texas",country:"USA",lat:30.2672,lon:-97.7431,
+  party:["matt","heather","chris"],kind:"cancelled",relic:"guitar",lodging:[],legs:[["MCO","AUS"]],carrier:"Southwest",
+  headline:"Austin, second attempt",
+  note:"Booked on the 29th of June and circulated to Heather and Chris. The flight changed that same evening and a corrected itinerary went out. Forty-five minutes later Matt wrote again to say a family situation had come up and he couldn't go. The others kept the plan. The airline's cancellation notice landed on the morning of the tenth.",
+  evidence:"Southwest booking, change and cancellation 29 Jun – 10 Jul 2026"}
+];
+
+const MILESTONES=[
+ {l:"First entry",v:"19 Feb 2021",d:"Tampa. Two Airbnbs, four minutes apart, booked in the same minute."},
+ {l:"Busiest stretch",v:"17 days",d:"July 2021 — Mexico City on the 16th, a Montana cabin on the 22nd, Seattle on the 29th."},
+ {l:"Farthest from home",v:"Venice",d:"5,011 miles from Orlando — roughly twice the next-farthest entry, Seattle at 2,551."},
+ {l:"Longest stay",v:"12 days",d:"Italy, October 2025. Nothing else in the ledger runs past a week."},
+ {l:"Most returned to",v:"Florida",d:"Seven of sixteen entries never leave the state. Tampa twice, the Space Coast twice."},
+ {l:"Never flown",v:"Austin, twice",d:"Booked January 2024, cancelled. Booked June 2026, cancelled. The only place here with two confirmations and no arrival."}
+];
+
+const RELIC_NOTES={
+ oak:["Tampa & Brandon","Live oak and Spanish moss — Hyde Park, twice, five years apart."],
+ sunstone:["Mexico City","The sun stone. First stamp outside the United States."],
+ pine:["Whitefish","Lodgepole pine under the Whitefish range."],
+ evergreen:["Seattle","Peak and sound, reached the long way round through St. Louis."],
+ shell:["Vero Beach","A calico scallop off the Treasure Coast."],
+ guanacaste:["Guanacaste","The broad-crowned tree the province is named for."],
+ arch:["St. Louis","The Gateway Arch. A work trip, honestly labelled."],
+ rocket:["The Space Coast","Melbourne and Satellite Beach — launch pads and surf."],
+ ferro:["Venice","The six-toothed ferro on a gondola's prow."],
+ guitar:["Austin","A headstock for the city booked twice and never reached."],
+ flame:["Celebration","A steakhouse table, four days after Christmas."],
+ citrus:["Orlando","Home. The one place everything departs from."],
+ peach:["Atlanta","Cancelled on the morning of departure."]
+};
+
+/* ============================================================
+   GEO
+   ============================================================ */
+const R2D=180/Math.PI, D2R=Math.PI/180;
+function haversine(a,b){
+  const R=3958.8, dLat=(b.lat-a.lat)*D2R, dLon=(b.lon-a.lon)*D2R;
+  const s=Math.sin(dLat/2)**2+Math.cos(a.lat*D2R)*Math.cos(b.lat*D2R)*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(s));
+}
+function bearing(a,b){
+  const p1=a.lat*D2R,p2=b.lat*D2R,dl=(b.lon-a.lon)*D2R;
+  const y=Math.sin(dl)*Math.cos(p2);
+  const x=Math.cos(p1)*Math.sin(p2)-Math.sin(p1)*Math.cos(p2)*Math.cos(dl);
+  return (Math.atan2(y,x)*R2D+360)%360;
+}
+const HOME=AIRPORTS.MCO;
+const nights=t=>Math.max(0,Math.round((new Date(t.end)-new Date(t.start))/864e5));
+const took=t=>t.kind!=="cancelled";
+
+/* ============================================================
+   DERIVED STATS — computed, never hand-typed
+   ============================================================ */
+let airMiles=0;
+TRIPS.filter(took).forEach(t=>t.legs.forEach(([f,to])=>{airMiles+=haversine(AIRPORTS[f],AIRPORTS[to])}));
+const taken=TRIPS.filter(took);
+const totalNights=taken.reduce((s,t)=>s+nights(t),0);
+const countries=[...new Set(taken.map(t=>t.country))];
+const states=[...new Set(taken.filter(t=>t.country==="USA").map(t=>t.region))].filter(r=>r!=="multi-state");
+const cancelled=TRIPS.filter(t=>t.kind==="cancelled").length;
+const carriers=[...new Set(taken.map(t=>t.carrier).filter(Boolean)
+  .flatMap(c=>c.split("·")).map(c=>c.replace(/\(.*\)/,"").trim()))];
+
+const fmt=n=>Math.round(n).toLocaleString("en-US");
+
+/* ---------- hero stats ---------- */
+document.getElementById("heroStats").innerHTML=[
+  [TRIPS.length,"Entries logged"],
+  [taken.length,"Actually taken"],
+  [countries.length,"Countries"],
+  [fmt(airMiles),"Air miles"],
+  [cancelled,"Never happened"]
+].map(([v,l])=>`<div class="hstat"><b data-count="${String(v).replace(/,/g,"")}">0</b><span>${l}</span></div>`).join("");
+
+/* ---------- board ---------- */
+document.getElementById("board").innerHTML=[
+  [TRIPS.length,"Bookings on file","Sixteen confirmations between Feb 2021 and Jul 2026."],
+  [totalNights,"Nights away","Counted from check-in to check-out on trips that happened."],
+  [fmt(airMiles),"Great-circle air miles","Summed from flight legs that appear in a real itinerary."],
+  [states.length,"US states","Plus a multi-state routing that was cancelled."],
+  [countries.length,"Countries","United States, Mexico, Costa Rica and Italy."],
+  [carriers.length,"Airlines","Southwest, American, United and Air Canada."]
+].map(([v,l,d])=>`<div class="board__c"><b data-count="${String(v).replace(/,/g,"")}">0</b><span>${l}</span><small>${d}</small></div>`).join("");
+
+/* ============================================================
+   COUNT-UP
+   ============================================================ */
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const el=e.target, target=+el.dataset.count;
+  io.unobserve(el);
+  if(reduce){el.textContent=target.toLocaleString("en-US");return}
+  const dur=900, t0=performance.now();
+  (function step(now){
+    const p=Math.min(1,(now-t0)/dur), eased=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*eased).toLocaleString("en-US");
+    if(p<1)requestAnimationFrame(step);
+  })(t0);
+}),{threshold:.4});
+document.querySelectorAll("[data-count]").forEach(el=>io.observe(el));
+
+/* ============================================================
+   SPLIT-FLAP
+   ============================================================ */
+(function(){
+  const host=document.getElementById("flap");
+  const words=["TAMPA","MEXICO CITY","WHITEFISH","SEATTLE","VERO BEACH","LIBERIA","ST LOUIS","MELBOURNE","VENICE","SATELLITE BCH"];
+  const WIDTH=13, GLYPHS=" ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const cells=[];
+  for(let i=0;i<WIDTH;i++){
+    const c=document.createElement("div"); c.className="cell"; c.textContent=" ";
+    host.appendChild(c); cells.push(c);
+  }
+  const pad=w=>w.padEnd(WIDTH," ").slice(0,WIDTH);
+  if(reduce){ cells.forEach((c,i)=>c.textContent=pad(words[0])[i]); return; }
+
+  let wi=0;
+  function show(word){
+    const target=pad(word);
+    cells.forEach((cell,i)=>{
+      const want=target[i];
+      let steps=4+i*2;
+      const tick=setInterval(()=>{
+        if(steps-- <= 0){ cell.textContent=want; clearInterval(tick); return; }
+        cell.textContent=GLYPHS[(Math.random()*GLYPHS.length)|0];
+      },42);
+    });
+  }
+  show(words[0]);
+  setInterval(()=>{ wi=(wi+1)%words.length; show(words[wi]); },3600);
+})();
+
+/* ============================================================
+   RADIAL DIAGRAM
+   ============================================================ */
+(function(){
+  const svg=document.getElementById("radial");
+  const CX=390, CY=390, RMAX=310, NS="http://www.w3.org/2000/svg";
+  const el=(t,a)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n};
+
+  const pts=TRIPS.filter(t=>t.id!=="orlando-2022").map(t=>({
+    t, d:haversine(HOME,{lat:t.lat,lon:t.lon}), b:bearing(HOME,{lat:t.lat,lon:t.lon})
+  }));
+  const dmax=Math.max(...pts.map(p=>p.d));
+  const K=20;
+  const scale=d=>RMAX*(Math.log(d+K)-Math.log(K))/(Math.log(dmax+K)-Math.log(K));
+  const xy=(d,b)=>[CX+scale(d)*Math.sin(b*D2R), CY-scale(d)*Math.cos(b*D2R)];
+
+  // distance rings
+  [100,500,1500,5000].forEach(d=>{
+    if(d>dmax*1.05)return;
+    svg.appendChild(el("circle",{cx:CX,cy:CY,r:scale(d).toFixed(1),class:"ring"}));
+    const lb=el("text",{x:CX+4,y:(CY-scale(d)-4).toFixed(1),class:"ring-lbl"});
+    lb.textContent=d.toLocaleString("en-US")+" mi";
+    svg.appendChild(lb);
+  });
+
+  // dedupe by place so the two Austin bookings don't double-draw
+  const seen=new Map();
+  pts.forEach(p=>{ if(!seen.has(p.t.place)||took(p.t)) seen.set(p.t.place,p); });
+
+  // resolve screen positions, then de-collide the labels: within each side of the
+  // hub, walk top-to-bottom and push any label that lands too close to its neighbour.
+  const placed=[...seen.values()].sort((a,b)=>a.d-b.d).map(p=>{
+    const [x,y]=xy(p.d,p.b);
+    return {p,x,y,ly:y,right:x>=CX};
+  });
+  const GAP=13;
+  [true,false].forEach(side=>{
+    placed.filter(n=>n.right===side).sort((a,b)=>a.ly-b.ly)
+      .forEach((n,i,arr)=>{ if(i && n.ly-arr[i-1].ly<GAP) n.ly=arr[i-1].ly+GAP; });
+  });
+
+  placed.forEach(({p,x,y,ly,right})=>{
+    const voidish=p.t.kind==="cancelled";
+    svg.appendChild(el("line",{x1:CX,y1:CY,x2:x.toFixed(1),y2:y.toFixed(1),
+      class:"spoke"+(voidish?" is-void":"")}));
+
+    const g=el("g",{class:"node"+(voidish?" is-void":""),tabindex:"0",role:"button",
+      "aria-label":`${p.t.short||p.t.place}, ${Math.round(p.d)} miles from Orlando`});
+    g.appendChild(el("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:5.5}));
+
+    // leader line when the label had to be nudged away from its dot
+    if(Math.abs(ly-y)>2){
+      g.appendChild(el("line",{x1:x.toFixed(1),y1:y.toFixed(1),
+        x2:(x+(right?9:-9)).toFixed(1),y2:ly.toFixed(1),
+        stroke:"currentColor",class:"leader"}));
+    }
+    const tx=el("text",{x:(x+(right?11:-11)).toFixed(1),y:(ly+3.5).toFixed(1),
+      "text-anchor":right?"start":"end"});
+    tx.textContent=p.t.short||p.t.place;
+    g.appendChild(tx);
+
+    const go=()=>{
+      document.querySelectorAll(".node").forEach(n=>n.classList.remove("is-active"));
+      g.classList.add("is-active");
+      const card=document.getElementById("trip-"+p.t.id);
+      if(card){
+        document.querySelectorAll(".pass").forEach(c=>c.classList.remove("is-target"));
+        card.classList.add("is-target");
+        card.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});
+      }
+    };
+    g.addEventListener("click",go);
+    g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}});
+    svg.appendChild(g);
+  });
+
+  // hub last so it sits on top
+  const hub=el("g",{class:"hub"});
+  hub.appendChild(el("circle",{cx:CX,cy:CY,r:8}));
+  const ht=el("text",{x:CX,y:CY+26,"text-anchor":"middle"}); ht.textContent="MCO";
+  hub.appendChild(ht); svg.appendChild(hub);
+})();
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function dateRange(t){
+  const a=new Date(t.start+"T12:00"), b=new Date(t.end+"T12:00");
+  const one=t.start===t.end;
+  const s=`${a.getDate()} ${MON[a.getMonth()]}`;
+  const e=`${b.getDate()} ${MON[b.getMonth()]}`;
+  return (one?s:`${s} – ${e}`)+` ${b.getFullYear()}`+(t.approx?" (approx.)":"");
+}
+const KINDS={vacation:"Trip",cancelled:"Cancelled",work:"Work",visit:"Inbound visit",outing:"Local"};
+
+let filter={kind:"all",who:"all"};
+
+const filterEl=document.getElementById("filters");
+filterEl.innerHTML=
+  [["all","Everything"],["vacation","Trips"],["cancelled","Cancelled"],["work","Work"],["outing","Local"],["visit","Inbound"]]
+    .map(([k,l])=>`<button class="chip" type="button" data-f="kind" data-v="${k}" aria-pressed="${k==="all"}">${l}</button>`).join("")
+  +`<span style="width:var(--s3)"></span>`
+  +[["all","Anyone"],["matt","Matt"],["heather","Heather"],["chris","Chris"]]
+    .map(([k,l])=>`<button class="chip" type="button" data-f="who" data-v="${k}" aria-pressed="${k==="all"}">${l}</button>`).join("");
+
+filterEl.addEventListener("click",e=>{
+  const b=e.target.closest(".chip"); if(!b)return;
+  filter[b.dataset.f]=b.dataset.v;
+  filterEl.querySelectorAll(`[data-f="${b.dataset.f}"]`).forEach(x=>
+    x.setAttribute("aria-pressed",String(x.dataset.v===b.dataset.v)));
+  render();
+});
+
+function relicSvg(name,cls){
+  return `<svg class="${cls}" viewBox="0 0 64 64" aria-hidden="true"><use href="#r-${name}"/></svg>`;
+}
+
+function render(){
+  const list=TRIPS.filter(t=>
+    (filter.kind==="all"||t.kind===filter.kind) &&
+    (filter.who==="all"||t.party.includes(filter.who))
+  );
+  const host=document.getElementById("entries");
+  if(!list.length){
+    host.innerHTML=`<p style="color:var(--muted)">No entries match that combination.</p>`;
+    return;
+  }
+  let html="", year=null;
+  list.forEach(t=>{
+    const y=t.start.slice(0,4);
+    if(y!==year){
+      year=y;
+      const n=list.filter(x=>x.start.slice(0,4)===y).length;
+      html+=`<div class="year"><h3>${y}</h3><hr><span class="n">${n} ${n===1?"entry":"entries"}</span></div>`;
+    }
+    const isC=t.kind==="cancelled";
+    const nn=nights(t);
+    const route=t.legs.length
+      ? t.legs.map(([f,to])=>`${f}<i>→</i>${to}`).join(' <i>·</i> ')
+      : "—";
+
+    html+=`
+    <article class="pass ${isC?"is-cancelled":""}" id="trip-${t.id}">
+      <div class="pass__main">
+        <div class="pass__rowtop">
+          <span class="tag k-${t.kind}">${KINDS[t.kind]}</span>
+          <span class="pass__date mono">${dateRange(t)}</span>
+        </div>
+        <h4>${t.headline}</h4>
+        <div class="pass__place mono">${t.place} · ${t.region}${t.country!=="USA"?" · "+t.country:""}</div>
+        <p class="pass__note">${t.note}</p>
+        <dl class="pass__meta">
+          <div><dt>Party</dt><dd>${t.party.map(p=>PEOPLE[p].name).join(", ")}</dd></div>
+          <div><dt>Nights</dt><dd>${isC?"—":nn||"day trip"}</dd></div>
+          <div><dt>Routing</dt><dd class="route">${route}</dd></div>
+          ${t.carrier?`<div><dt>Carrier</dt><dd>${t.carrier}</dd></div>`:""}
+          ${t.lodging.length?`<div><dt>Stayed</dt><dd>${t.lodging.join("<br>")}</dd></div>`:""}
+          <div><dt>Evidence</dt><dd>${t.evidence}</dd></div>
+        </dl>
+      </div>
+      <aside class="pass__stub">
+        ${relicSvg(t.relic,"relic")}
+        <div class="stub__n mono">${RELIC_NOTES[t.relic]?RELIC_NOTES[t.relic][0]:""}</div>
+        ${isC?`<div class="void-stamp">VOID</div>`:""}
+      </aside>
+    </article>`;
+  });
+  host.innerHTML=html;
+}
+render();
+
+/* ---------- relics ---------- */
+document.getElementById("relics").innerHTML=Object.entries(RELIC_NOTES)
+  .map(([k,[title,desc]])=>`
+    <div class="relic-card">
+      ${relicSvg(k,"relic")}
+      <b>${title}</b>
+      <small>${desc}</small>
+    </div>`).join("");
+
+/* ---------- milestones ---------- */
+document.getElementById("miles").innerHTML=MILESTONES
+  .map(m=>`<div class="mile"><div class="l">${m.l}</div><div class="v">${m.v}</div><p class="d">${m.d}</p></div>`).join("");
+
+/* ---------- cast ---------- */
+document.getElementById("cast").innerHTML=Object.values(PEOPLE)
+  .map(p=>`<div class="person"><b>${p.name}</b><div class="c">${p.code}</div><p>${p.bio}</p></div>`).join("");
+
+/* ---------- theme toggle ---------- */
+document.getElementById("tgl").addEventListener("click",()=>{
+  const cur=document.documentElement.getAttribute("data-theme")
+    || (matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+  document.documentElement.setAttribute("data-theme",cur==="dark"?"light":"dark");
+});
+</script>
