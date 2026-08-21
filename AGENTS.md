@@ -31,12 +31,13 @@ There is no build step. "Testing" means validating the JSON config and Markdown.
 
 ## Architecture
 
-Flat layout at the root, plus one project subdirectory.
+Flat layout at the root, plus project subdirectories.
 
 - `claude_desktop_config.json` — sanitized Claude Desktop MCP config template (entry point for the setup it documents).
 - `MCP_TROUBLESHOOTING.md` — issue/symptom/fix runbook for the Obsidian MCP servers.
 - `README.md` — overview and audit status for humans.
 - `gmail-assistant/` — reviewed source for the daily Gmail draft assistant (config, automation prompt, SQLite scripts, test fixtures). The runtime copy lives in the MilhemVault control folder; deploy per `gmail-assistant/UPGRADE.md`. Validate with a YAML parse of `config.yaml` and `python gmail-assistant/init_state.py <db> --check`.
+- `repstracker-candidate-search/` — reviewed source for the REPStracker candidate search skill (`SKILL.md`): sweeps Gmail `AI/REPS Candidate` labels, Calendar, Drive, the maintenance log, and vault notes for unlogged REPS hours and produces an evidence-backed entry list. Deployed to the user's skill library; this copy is for review.
 - No module boundaries; files are independent reference documents.
 
 ## Boundaries
