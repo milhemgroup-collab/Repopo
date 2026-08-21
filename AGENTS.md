@@ -37,7 +37,7 @@ Flat layout at the root, plus one project subdirectory.
 - `MCP_TROUBLESHOOTING.md` — issue/symptom/fix runbook for the Obsidian MCP servers.
 - `README.md` — overview and audit status for humans.
 - `gmail-assistant/` — reviewed source for the daily Gmail draft assistant (config, automation prompt, SQLite scripts, test fixtures). The runtime copy lives in the MilhemVault control folder; deploy per `gmail-assistant/UPGRADE.md`. Validate with a YAML parse of `config.yaml` and `python gmail-assistant/init_state.py <db> --check`.
-- `grokbot-agents/` — build packet for a four-agent GrokBot fleet (`Inbox`, `Filings`, `Logbook`, `Subscriptions`) that hangs off an existing Chief of Staff bot. Prose and prompt text only, no runtime. `MASTER-PROMPT.md` is the single paste-in prompt; the four `agent-*.md` files are the field-by-field build specs. Nothing here executes, so "validation" means the fenced blocks stay balanced and the placeholders stay placeholders.
+- `grokbot-agents/` — build packet for a four-agent GrokBot fleet (`Inbox`, `Filings`, `Logbook`, `Subscriptions`) that hangs off an existing Chief of Staff bot. Prose and prompt text only, no runtime. `MASTER-PROMPT.md` is the single paste-in prompt and `CHANGE-ORDER-*.md` files are paste-in deltas for a fleet already built; the four `agent-*.md` files are the field-by-field build specs. Nothing here executes, so "validation" means the fenced blocks stay balanced and the placeholders stay placeholders.
 - No module boundaries; files are independent reference documents.
 
 ## Boundaries

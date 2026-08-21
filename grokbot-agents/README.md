@@ -14,6 +14,10 @@ Staff bot, derived from the research dossier
 ## Files
 
 - `MASTER-PROMPT.md` — the single prompt to paste into the Chief of Staff bot
+- `CHANGE-ORDER-inbox.md` — paste-in change order that rebuilds `Inbox` on a
+  fleet already built from the earlier read-only version. Skip it if you have
+  not pasted `MASTER-PROMPT.md` yet; the master prompt already carries the new
+  `Inbox`.
 - `chief-of-staff-addendum.md` — profile text to add to the Chief of Staff bot
 - `agent-1-inbox-manager.md` — field-by-field build spec
 - `agent-2-research-analyst.md` — field-by-field build spec
