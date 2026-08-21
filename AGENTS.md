@@ -37,6 +37,7 @@ Flat layout at the root, plus one project subdirectory.
 - `MCP_TROUBLESHOOTING.md` — issue/symptom/fix runbook for the Obsidian MCP servers.
 - `README.md` — overview and audit status for humans.
 - `gmail-assistant/` — reviewed source for the daily Gmail draft assistant (config, automation prompt, SQLite scripts, test fixtures). The runtime copy lives in the MilhemVault control folder; deploy per `gmail-assistant/UPGRADE.md`. Validate with a YAML parse of `config.yaml` and `python gmail-assistant/init_state.py <db> --check`.
+- `grokbot-agents/` — build packet for a four-agent GrokBot fleet (`Inbox`, `Filings`, `Logbook`, `Subscriptions`) that hangs off an existing Chief of Staff bot. Prose and prompt text only, no runtime. `MASTER-PROMPT.md` is the single paste-in prompt and `CHANGE-ORDER-*.md` files are paste-in deltas for a fleet already built; the four `agent-*.md` files are the field-by-field build specs. Nothing here executes, so "validation" means the fenced blocks stay balanced and the placeholders stay placeholders.
 - No module boundaries; files are independent reference documents.
 
 ## Boundaries
@@ -50,3 +51,4 @@ Flat layout at the root, plus one project subdirectory.
 - The JSON config intentionally contains the literal placeholder `YOUR_OBSIDIAN_API_KEY_HERE`; keep it.
 - The repo documents a Windows-specific `.exe`-based setup; do not "port" the paths to other OSes.
 - A "Legacy Note" in the docs references an older `npx`/filesystem-server setup — keep it as historical context, do not delete.
+- `grokbot-agents/MASTER-PROMPT.md` intentionally ships with the placeholders `<SPREADSHEET_URL>`, `<ORG_NAME>`, and `<CONTACT_EMAIL>` unfilled; keep them. `Inbox` also ships with `MODE: SHADOW` hardcoded on the first line of its description; that is a safety default, not a placeholder, and it stays SHADOW in git. The SEC User-Agent needs a real contact address at paste time, not in git.
