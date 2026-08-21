@@ -6,7 +6,7 @@ Staff bot, derived from the research dossier
 
 | # | Bot name | Job | Sends / acts externally? |
 |---|---|---|---|
-| 1 | `Inbox` | Email triage and daily decision digest | Never |
+| 1 | `Inbox` | Trashes junk mail, drafts replies | Trash + drafts, never sends |
 | 2 | `Filings` | Public-source research, SEC EDGAR weighted | Never |
 | 3 | `Logbook` | Bot activity log to Google Sheets | Writes one spreadsheet only |
 | 4 | `Subscriptions` | Recurring-charge inventory and cancel packets | Never cancels |
@@ -89,7 +89,6 @@ The account-wide connector list for this fleet is deliberately short:
 | Google Drive | `Logbook`, `Filings`, `Subscriptions` | Browser OAuth (you) | Native, confirmed; reaches Sheets files |
 | Google Sheets | `Logbook` | Browser OAuth (you) | **Verify** — may not exist natively |
 | Composio | `Logbook` (fallback) | Per-toolkit OAuth | Optional bridge for deterministic row appends |
-| Google Calendar | `Inbox` (optional) | Browser OAuth (you) | Only if you want calendar context in the digest |
 
 Nothing else. No Slack, GitHub, Notion, or X connector is required by this
 fleet; every extra connector is another credential sitting on the shared
@@ -106,27 +105,29 @@ If a GrokBot inbox bot also drafts into that mailbox, three things break at
 once: you get duplicate drafts, the Codex assistant starts silently skipping
 threads GrokBot drafted into, and you pay twice for the same triage.
 
-Agent 1 therefore ships with a mode switch:
+Agent 1 drafts, so parking the Codex assistant is a prerequisite rather than a
+preference. Set `assistant.run_mode: paused` in `gmail-assistant/config.yaml`
+and redeploy per `gmail-assistant/UPGRADE.md` before `Inbox` goes LIVE. Pausing
+writes a one-line skip report and exits, so nothing is lost if you want it
+back, and it also stops the `AI/*` labels being applied.
 
-- **Mode A (default, recommended): digest only.** `Inbox` reads the `AI/*`
-  labels the Codex assistant already applied and produces the
-  decisions-needed digest on top. No drafts, no label writes, no collision,
-  and it reuses work already paid for.
-- **Mode B: GrokBot drafts instead.** Before enabling it, set
-  `assistant.run_mode: shadow` in `gmail-assistant/config.yaml` and redeploy
-  per `gmail-assistant/UPGRADE.md`. Do not run both drafting engines against
-  one mailbox.
+`Inbox` itself ships with `MODE: SHADOW` on the first line of its description:
+it reports what it would trash and draft, and touches nothing, until you change
+that word to `LIVE`.
 
 ## Build order
 
-1. Read this file and the four agent specs. Decide Agent 1's mode and Agent
-   3's Sheets path.
+1. Read this file and the four agent specs. Decide Agent 3's Sheets path.
+   Agent 1 needs no decision: it starts in SHADOW.
 2. Install connectors at Settings → Plugins (you, once, account-wide).
 3. Create the work-log spreadsheet and copy its URL.
 4. Paste `MASTER-PROMPT.md` into the Chief of Staff bot.
 5. Work the punch list it returns.
-6. Test each bot manually, one at a time, before enabling any routine.
+6. Pause the Codex Gmail assistant, then test each bot manually, one at a
+   time, before enabling any routine.
 7. Enable routines last, one per day, watching consumption.
+8. Run `Inbox` in SHADOW for about a week. Read every would-trash list. Flip
+   it to LIVE only when a week of them contains nothing you wanted to read.
 
 ## Cost discipline
 

@@ -51,4 +51,4 @@ Flat layout at the root, plus one project subdirectory.
 - The JSON config intentionally contains the literal placeholder `YOUR_OBSIDIAN_API_KEY_HERE`; keep it.
 - The repo documents a Windows-specific `.exe`-based setup; do not "port" the paths to other OSes.
 - A "Legacy Note" in the docs references an older `npx`/filesystem-server setup — keep it as historical context, do not delete.
-- `grokbot-agents/MASTER-PROMPT.md` intentionally ships with the placeholders `<SPREADSHEET_URL>`, `<ORG_NAME>`, `<CONTACT_EMAIL>`, and `<INBOX_MODE>` unfilled; keep them. The SEC User-Agent needs a real contact address at paste time, not in git.
+- `grokbot-agents/MASTER-PROMPT.md` intentionally ships with the placeholders `<SPREADSHEET_URL>`, `<ORG_NAME>`, and `<CONTACT_EMAIL>` unfilled; keep them. `Inbox` also ships with `MODE: SHADOW` hardcoded on the first line of its description; that is a safety default, not a placeholder, and it stays SHADOW in git. The SEC User-Agent needs a real contact address at paste time, not in git.
